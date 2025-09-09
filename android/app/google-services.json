@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "287231900196",
+    "project_id": "bvb-cp-prod",
+    "storage_bucket": "bvb-cp-prod.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:287231900196:android:e88f61113f174aae5936b1",
+        "android_client_info": {
+          "package_name": "com.bivocal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "287231900196-i01krv7rnlklmomj10d7n95ekf7hk07v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDX-pUHubYPpCnIyHZVzAvVoHt3pFFP8hc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "287231900196-i01krv7rnlklmomj10d7n95ekf7hk07v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:287231900196:android:93fbcde49eb100065936b1",
+        "android_client_info": {
+          "package_name": "com.bivocalbirds.cp_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "287231900196-i01krv7rnlklmomj10d7n95ekf7hk07v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDX-pUHubYPpCnIyHZVzAvVoHt3pFFP8hc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "287231900196-i01krv7rnlklmomj10d7n95ekf7hk07v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
