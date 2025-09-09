@@ -1,6 +1,6 @@
 export const NAVIGATION = {
   authNav: 'AuthNav',
-  drawerNav: 'DrawerNav',
+  appNav: 'AppNav',
   loginNav: 'LoginNav',
   notificationNav: 'NotificationNav',
 

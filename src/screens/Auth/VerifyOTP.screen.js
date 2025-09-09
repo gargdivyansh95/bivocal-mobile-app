@@ -8,6 +8,7 @@ import { CustomButton, CustomTextInput } from '../../components';
 import { NAVIGATION } from '../../constants';
 import { Snackbar } from 'react-native-paper';
 import GlobalStyle from '../../style/globalstyle';
+import Toast from 'react-native-toast-message';
 
 const VerifyOTP = props => {
 
@@ -19,7 +20,12 @@ const VerifyOTP = props => {
   const [seconds, setSeconds] = useState(60);
 
   useEffect(() => {
-    setSanck({ visible: true, message: 'OTP sent on your number', status: 'success' });
+    // setSanck({ visible: true, message: 'OTP sent on your number', status: 'success' });
+    Toast.show({
+      type: 'success',
+      text1: 'OTP sent on your number',
+      text2: '',
+    });
   }, [])
 
   useEffect(() => {
@@ -50,7 +56,12 @@ const VerifyOTP = props => {
       verifyData,
       response => {
         console.log('SUCCESS', response);
-        setSanck({ visible: true, message: 'OTP Verified Successfully', status: 'success' });
+        Toast.show({
+          type: 'success',
+          text1: 'OTP Verified Successfully',
+          text2: '',
+        });
+        // setSanck({ visible: true, message: 'OTP Verified Successfully', status: 'success' });
         setLoading(false);
         console.log(response?.data?.user?.fullName?.length, 'response?.data')
         if (!response?.data?.user?.fullName || response?.data?.user?.fullName?.length === 0) {
@@ -58,13 +69,19 @@ const VerifyOTP = props => {
         } else {
           props.navigation.reset({
             index: 0,
-            routes: [{ name: NAVIGATION.tabHome }]
+            routes: [{ name: NAVIGATION.appNav }]
           })
+          // props.navigation.navigate(NAVIGATION.tabHome);
         }
       },
       error => {
         console.log('ERROR', error);
-        setSanck({ visible: true, message: 'OTP Mismatch', status: 'error' });
+        Toast.show({
+          type: 'error',
+          text1: 'OTP Mismatch',
+          text2: '',
+        });
+        // setSanck({ visible: true, message: 'OTP Mismatch', status: 'error' });
         setLoading(false);
       },
     );
@@ -78,14 +95,24 @@ const VerifyOTP = props => {
       resendData,
       response => {
         console.log('SUCCESS', response);
-        setSanck({ visible: true, message: 'OTP resend on your number', status: 'success' });
+        Toast.show({
+          type: 'success',
+          text1: 'OTP resend on your number',
+          text2: '',
+        });
+        // setSanck({ visible: true, message: 'OTP resend on your number', status: 'success' });
         setMinutes(1);
         setSeconds(60);
         setData(response?.data);
       },
       error => {
         console.log('ERROR', error);
-        setSanck({ visible: true, message: error.message, status: 'error' });
+        Toast.show({
+          type: 'error',
+          text1: error.message,
+          text2: '',
+        });
+        // setSanck({ visible: true, message: error.message, status: 'error' });
       },
     );
   };

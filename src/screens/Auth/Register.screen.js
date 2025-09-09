@@ -41,7 +41,7 @@ const Register = props => {
           setLoading(false);
           props.navigation.reset({
             index: 0,
-            routes: [{ name: NAVIGATION.tabHome }]
+            routes: [{ name: NAVIGATION.appNav }]
           })
         },
         error => {

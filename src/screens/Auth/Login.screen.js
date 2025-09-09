@@ -8,6 +8,7 @@ import { authActions } from './Auth.action';
 import { bindActionCreators } from 'redux';
 import { Checkbox, Snackbar } from 'react-native-paper';
 import GlobalStyle from '../../style/globalstyle';
+import Toast from 'react-native-toast-message';
 
 const Login = props => {
   const [inputValue, setInputValue] = useState();
@@ -27,7 +28,12 @@ const Login = props => {
       },
       error => {
         console.log('ERROR', error);
-        setSanck({ visible: true, message: error?.data ? error.data : 'Something went wrong.', status: 'error' });
+        // setSanck({ visible: true, message: error?.data ? error.data : 'Something went wrong.', status: 'error' });
+        Toast.show({
+          type: 'error',
+          text1: error?.data ? error.data : 'Something went wrong.',
+          text2: '',
+        });
         setLoading(false);
       },
     );
