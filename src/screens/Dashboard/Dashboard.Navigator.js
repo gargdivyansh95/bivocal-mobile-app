@@ -24,22 +24,25 @@ export function DashboardNavigator(props) {
         headerTitleAlign: 'center',
         headerBackVisible: false,
         headerShadowVisible: false,
+        // headerStyle: {
+        //   backgroundColor: '#290000ff',
+        // },
       })}>
       <Stack.Screen
         name={NAVIGATION.dashboard}
         component={DashboardScreen}
         options={({ navigation }) => ({
           headerShown: true,
-          headerLeft: props => {
-            return (
-              <HamburgerIcon
-                name="menu"
-                size={28}
-                color="#000"
-                onPress={(() => navigation.openDrawer())}
-              />
-            );
-          },
+          // headerLeft: props => {
+          //   return (
+          //     <HamburgerIcon
+          //       name="menu"
+          //       size={28}
+          //       color="#000"
+          //       onPress={(() => navigation.openDrawer())}
+          //     />
+          //   );
+          // },
           headerTitle: props => {
             return (
               <Image source={AppLogo} style={GlobalStyle.headerLogo} />

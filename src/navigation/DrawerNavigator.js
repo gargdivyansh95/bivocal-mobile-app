@@ -1,5 +1,4 @@
 /* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable prettier/prettier */
 import * as React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { ContactUsScreen, DashboardScreen, MenuScreen, MyProfileScreen, OffersScreen, SupportScreen } from '../screens';
@@ -9,11 +8,8 @@ import BackIcon from 'react-native-vector-icons/AntDesign';
 import { AuthNavigator } from '../screens/Auth/Auth.Navigator';
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import GlobalStyle from '../style/globalstyle';
-
 import { IconButton } from 'react-native-paper';
 import { DashboardNavigator } from '../screens/Dashboard/Dashboard.Navigator';
-
-
 
 const Drawer = createDrawerNavigator();
 

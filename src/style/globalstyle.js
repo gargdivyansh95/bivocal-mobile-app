@@ -14,8 +14,9 @@ const GlobalStyle = {
   fontSet: _fontSet,
   width: Dimensions.get('screen').width,
   headerLogo: {
-    marginTop: Platform.OS === 'android' ? 20 : 0,
-    width: 130,
+    // marginTop: Platform.OS === 'android' ? 20 : 0,
+    marginTop: 0,
+    width: 160,
     height: 40,
     resizeMode: 'contain',
     alignSelf: 'center'

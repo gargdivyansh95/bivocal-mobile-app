@@ -1,9 +1,13 @@
-/* eslint-disable prettier/prettier */
 export const NAVIGATION = {
   authNav: 'AuthNav',
   drawerNav: 'DrawerNav',
-  loginNav: "LoginNav",
-  notificationNav: "NotificationNav",
+  loginNav: 'LoginNav',
+  notificationNav: 'NotificationNav',
+
+  tabHome: 'tab-home',
+  tabInventory: 'tab-inventory',
+  tabVisits: 'tab-visits',
+  tabSettings: 'tab-settings',
 
   intro: 'intro',
   login: 'Login',
@@ -18,6 +22,6 @@ export const NAVIGATION = {
   visitDetail: 'VisitDetail',
   contactUs: 'ContactUs',
   support: 'Support',
-  notificationDetail: "NotificationDetail",
+  notificationDetail: 'NotificationDetail',
   needQuery: 'NeedQuery',
 };

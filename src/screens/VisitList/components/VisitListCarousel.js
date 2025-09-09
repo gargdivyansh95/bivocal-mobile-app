@@ -1,5 +1,4 @@
 /* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable prettier/prettier */
 import React, { useRef } from 'react';
 import { View, Image, Dimensions, StyleSheet, Text } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
