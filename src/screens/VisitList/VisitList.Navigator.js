@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NAVIGATION } from '../../constants';
 import { Image, StyleSheet, Text } from 'react-native';
 import { Platform } from 'react-native';
-import BackIcon from 'react-native-vector-icons/AntDesign';
+import BackIcon from 'react-native-vector-icons/Entypo';
 import { VisitListScreen, FilterScreen } from '../index';
 import AppLogo from '../../assets/images/appLogo.png';
 import GlobalStyle from '../../style/globalstyle';
@@ -57,15 +57,14 @@ export function VisitListNavigator(props) {
           headerShown: true,
           headerLeft: props => {
             return (
-              <IconButton
+              <IconButton style={{ backgroundColor: '#f7f7f7' }}
                 icon={() => <BackIcon
-                  name="arrowleft"
-                  size={28}
+                  name="chevron-thin-left"
+                  size={18}
                   color="#000"
 
                 />}
-
-                size={20}
+                size={24}
                 onPress={() => navigation.goBack()}
               />
             );
@@ -84,15 +83,14 @@ export function VisitListNavigator(props) {
           headerShown: true,
           headerLeft: props => {
             return (
-              <IconButton
+              <IconButton style={{ backgroundColor: '#f7f7f7' }}
                 icon={() => <BackIcon
-                  name="arrowleft"
-                  size={28}
+                  name="chevron-thin-left"
+                  size={18}
                   color="#000"
 
                 />}
-
-                size={20}
+                size={24}
                 onPress={() => navigation.goBack()}
               />
             );
@@ -112,17 +110,16 @@ export function VisitListNavigator(props) {
           headerShown: true,
           headerLeft: props => {
             return (
-              <IconButton
-                icon={() => <BackIcon
-                  name="arrowleft"
-                  size={28}
-                  color="#000"
-
-                />}
-
-                size={20}
-                onPress={() => navigation.goBack()}
-              />
+              <IconButton style={{backgroundColor: '#f7f7f7'}}
+                                                  icon={() => <BackIcon
+                                                      name="chevron-thin-left"
+                                                      size={18}
+                                                      color="#000"
+              
+                                                  />}
+                                                  size={24}
+                                                  onPress={() => navigation.goBack()}
+                                              />
             );
           },
           headerTitle: props => {
@@ -139,7 +136,7 @@ export function VisitListNavigator(props) {
 export const styles = StyleSheet.create({
   navigatorText: {
     color: '#000',
-    fontSize: 20,
+    fontSize: 16,
     fontFamily: GlobalStyle.fontSet.Poppins600,
   },
 });

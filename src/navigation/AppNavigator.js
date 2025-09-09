@@ -10,6 +10,7 @@ import { TabNavigatorIcons } from '../components';
 import { NAVIGATION } from '../constants';
 import { DashboardNavigator } from '../screens/Dashboard/Dashboard.Navigator';
 import { VisitListNavigator } from '../screens/VisitList/VisitList.Navigator';
+import { SettingsNavigator } from '../screens/Settings/Settings.Navigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -80,7 +81,7 @@ export default function AppNavigator() {
       />
       <Tab.Screen
         name={NAVIGATION.tabSettings}
-        component={DashboardNavigator}
+        component={SettingsNavigator}
         options={{
           title: 'Settings',
         }}

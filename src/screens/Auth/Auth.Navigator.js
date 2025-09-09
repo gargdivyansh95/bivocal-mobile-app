@@ -2,10 +2,11 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NAVIGATION } from '../../constants';
-import { Platform } from 'react-native';
-import BackIcon from 'react-native-vector-icons/AntDesign';
+import { Platform, Text } from 'react-native';
+import BackIcon from 'react-native-vector-icons/Entypo';
 import { LoginScreen, RegisterScreen, VerifyOTPScreen, Introduction } from '../index';
 import { isAppInstalled } from '../../util/helpers';
+import { IconButton } from 'react-native-paper';
 
 const Stack = createNativeStackNavigator();
 export function AuthNavigator(props) {
@@ -33,15 +34,19 @@ export function AuthNavigator(props) {
         options={({ navigation }) => ({
           headerShown: true,
           headerLeft: props => {
-
             return (
-              !isAppInstalled() &&
-              <BackIcon
-                name="arrowleft"
-                size={28}
-                color="#000"
+              !isAppInstalled() ?
+              <IconButton style={{ backgroundColor: '#f7f7f7' }}
+                icon={() => <BackIcon
+                  name="chevron-thin-left"
+                  size={18}
+                  color="#000"
+
+                />}
+                size={24}
                 onPress={() => navigation.goBack()}
-              />
+              /> :
+              <Text />
             );
           },
           title: ""
@@ -54,10 +59,14 @@ export function AuthNavigator(props) {
           headerShown: true,
           headerLeft: props => {
             return (
-              <BackIcon
-                name="arrowleft"
-                size={28}
-                color="#000"
+              <IconButton style={{ backgroundColor: '#f7f7f7' }}
+                icon={() => <BackIcon
+                  name="chevron-thin-left"
+                  size={18}
+                  color="#000"
+
+                />}
+                size={24}
                 onPress={() => navigation.goBack()}
               />
             );
@@ -72,10 +81,14 @@ export function AuthNavigator(props) {
           headerShown: true,
           headerLeft: props => {
             return (
-              <BackIcon
-                name="arrowleft"
-                size={28}
-                color="#000"
+              <IconButton style={{ backgroundColor: '#f7f7f7' }}
+                icon={() => <BackIcon
+                  name="chevron-thin-left"
+                  size={18}
+                  color="#000"
+
+                />}
+                size={24}
                 onPress={() => navigation.goBack()}
               />
             );

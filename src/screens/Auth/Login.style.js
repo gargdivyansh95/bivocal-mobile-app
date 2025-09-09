@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { StyleSheet } from 'react-native';
 import GlobalStyle from '../../style/globalstyle';
 

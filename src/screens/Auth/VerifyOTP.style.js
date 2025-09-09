@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { StyleSheet } from 'react-native';
 import GlobalStyle from '../../style/globalstyle';
 
@@ -9,6 +8,7 @@ export const styles = StyleSheet.create({
     },
     screenContainer: {
         paddingHorizontal: 20,
+        paddingTop: 10,
         backgroundColor: '#fff',
         flex: 1,
     },

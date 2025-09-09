@@ -6,7 +6,7 @@ import { Image, StyleSheet, Text } from 'react-native';
 import { Platform } from 'react-native';
 import HamburgerIcon from 'react-native-vector-icons/Feather';
 import { DashboardScreen, NeedQueryScreen } from '../index';
-import BackIcon from 'react-native-vector-icons/AntDesign';
+import BackIcon from 'react-native-vector-icons/Entypo';
 import AppLogo from '../../assets/images/appLogo.png';
 import GlobalStyle from '../../style/globalstyle';
 // import NotificationDetail from '../Notification/NotificationDetail.screen';
@@ -51,15 +51,14 @@ export function DashboardNavigator(props) {
           headerShown: true,
           headerLeft: props => {
             return (
-              <IconButton
+              <IconButton style={{ backgroundColor: '#f7f7f7' }}
                 icon={() => <BackIcon
-                  name="arrowleft"
-                  size={28}
+                  name="chevron-thin-left"
+                  size={18}
                   color="#000"
 
                 />}
-
-                size={20}
+                size={24}
                 onPress={() => navigation.goBack()}
               />
             );
@@ -78,15 +77,14 @@ export function DashboardNavigator(props) {
           headerShown: true,
           headerLeft: props => {
             return (
-              <IconButton
+              <IconButton style={{ backgroundColor: '#f7f7f7' }}
                 icon={() => <BackIcon
-                  name="arrowleft"
-                  size={28}
+                  name="chevron-thin-left"
+                  size={18}
                   color="#000"
 
                 />}
-
-                size={20}
+                size={24}
                 onPress={() => navigation.goBack()}
               />
             );
@@ -105,7 +103,7 @@ export function DashboardNavigator(props) {
 export const styles = StyleSheet.create({
   navigatorText: {
     color: '#000',
-    fontSize: 20,
+    fontSize: 16,
     fontFamily: GlobalStyle.fontSet.Poppins600,
   },
 });

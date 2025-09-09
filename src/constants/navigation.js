@@ -24,4 +24,5 @@ export const NAVIGATION = {
   support: 'Support',
   notificationDetail: 'NotificationDetail',
   needQuery: 'NeedQuery',
+  settings: 'Settings',
 };

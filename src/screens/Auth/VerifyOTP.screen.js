@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView, Text, View, Keyboard, Pressable } from 'react-native';
 import { styles } from './VerifyOTP.style';
@@ -59,7 +58,7 @@ const VerifyOTP = props => {
         } else {
           props.navigation.reset({
             index: 0,
-            routes: [{ name: NAVIGATION.drawerNav }]
+            routes: [{ name: NAVIGATION.tabHome }]
           })
         }
       },
