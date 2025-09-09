@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import TAB_HOME from '../assets/images/tabHome.png';
 import TAB_INVENTORY from '../assets/images/tabInventory.png';
 import TAB_VISITS from '../assets/images/tabInventory.png';
@@ -17,7 +17,7 @@ export default function AppNavigator() {
 
   return (
     <Tab.Navigator
-      screenOptions={({route, navigation}) => ({
+      screenOptions={({ route, navigation }) => ({
         tabBarStyle: {
           backgroundColor: '#fff',
           height: 75,
@@ -34,20 +34,20 @@ export default function AppNavigator() {
         },
         tabBarShowLabel: true,
         headerShown: false,
-        tabBarIcon: ({color}) => {
-            var iconName;
-            if (route.name === NAVIGATION.tabHome) {
-              iconName = TAB_HOME;
-            } else if (route.name === NAVIGATION.tabInventory) {
-              iconName = TAB_INVENTORY;
-            } else if (route.name === NAVIGATION.tabVisits) {
-              iconName = TAB_VISITS;
-            } else if (route.name === NAVIGATION.tabSettings) {
-              iconName = TAB_SETTINGS;
-            }
-            return (
-              <TabNavigatorIcons tintColor={{tintColor: color}} source={iconName} />
-            );
+        tabBarIcon: ({ color }) => {
+          var iconName;
+          if (route.name === NAVIGATION.tabHome) {
+            iconName = TAB_HOME;
+          } else if (route.name === NAVIGATION.tabInventory) {
+            iconName = TAB_INVENTORY;
+          } else if (route.name === NAVIGATION.tabVisits) {
+            iconName = TAB_VISITS;
+          } else if (route.name === NAVIGATION.tabSettings) {
+            iconName = TAB_SETTINGS;
+          }
+          return (
+            <TabNavigatorIcons tintColor={{ tintColor: color }} source={iconName} />
+          );
         },
         tabBarActiveTintColor: '#2668E0',
         tabBarInactiveTintColor: '#000000',

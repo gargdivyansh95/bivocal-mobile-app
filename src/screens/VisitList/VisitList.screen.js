@@ -20,7 +20,7 @@ import { visitListActions } from './VisitList.action';
 import moment from 'moment';
 import { authActions } from '../Auth/Auth.action';
 
-const PAGE_SIZE = 20
+const PAGE_SIZE = 20;
 
 const VisitList = props => {
 
@@ -29,14 +29,14 @@ const VisitList = props => {
   const [requestSent, setRequestSent] = useState(true);
   const [hasMore, setHasMore] = useState(false);
 
-  const [currentDate, setCurrentDate] = useState(moment().startOf('D').toLocaleString())
-  const [endDate, setEndDate] = useState(moment().endOf('D').toLocaleString())
+  const [currentDate, setCurrentDate] = useState(moment().startOf('D').toLocaleString());
+  const [endDate, setEndDate] = useState(moment().endOf('D').toLocaleString());
 
-  const offsetRef = useRef()
+  const offsetRef = useRef();
   const visitListState = useSelector(state => state.visitList);
   // const refreshTokenApiCallCount = useRef(1)
 
-  console.log(visitListState, 'visitListState')
+  console.log(visitListState, 'visitListState');
 
   React.useLayoutEffect(() => {
     props.navigation.setOptions({
@@ -55,16 +55,16 @@ const VisitList = props => {
   });
 
   useEffect(() => {
-    console.log("userProfile: ", props.userProfile)
+    console.log('userProfile: ', props.userProfile);
 
-    offsetRef.current = 0
+    offsetRef.current = 0;
     // let { actions } = props;
     // actions.appInstalled({})
 
     // refreshingToken()
-    getScheduleVisits(currentDate, endDate)
-    getOfferList()
-    getUserDetail()
+    getScheduleVisits(currentDate, endDate);
+    getOfferList();
+    getUserDetail();
     // saveDeviceId()
   }, []);
 
@@ -172,10 +172,10 @@ const VisitList = props => {
 
           setRequestSent(false);
           if (response.data.length >= PAGE_SIZE) {
-            offsetRef.current = offsetRef.current + PAGE_SIZE
-            setHasMore(true)
+            offsetRef.current = offsetRef.current + PAGE_SIZE;
+            setHasMore(true);
           } else {
-            setHasMore(false)
+            setHasMore(false);
           }
         }
       },
@@ -185,7 +185,7 @@ const VisitList = props => {
         // refreshingToken()
       },
     );
-  }
+  };
 
   const getOfferList = () => {
     let { actions } = props;
@@ -201,7 +201,7 @@ const VisitList = props => {
         setRequestSent(false);
       },
     );
-  }
+  };
 
   const getUserDetail = () => {
     let { actions } = props;
@@ -214,7 +214,7 @@ const VisitList = props => {
         console.log('ERROR', error);
       },
     );
-  }
+  };
 
   // const refreshingToken = () => {
   //   let { actions } = props;
@@ -251,13 +251,13 @@ const VisitList = props => {
   };
 
   const getFiter = (data) => {
-    console.log(data)
-    offsetRef.current = 0
-    setCurrentDate(data.start)
-    setEndDate(data.end)
-    setRequestSent(true)
-    getScheduleVisits(data.start, data.end)
-  }
+    console.log(data);
+    offsetRef.current = 0;
+    setCurrentDate(data.start);
+    setEndDate(data.end);
+    setRequestSent(true);
+    getScheduleVisits(data.start, data.end);
+  };
 
   const renderHeader = () => {
     if (!visitList.length > 0) {
@@ -286,23 +286,23 @@ const VisitList = props => {
     } else {
       if (props?.userProfileData?.data?.relationshipManager?.fullName) {
         return (
-          <EmptyMessage title={`Opps!\n There is no visit schedule for you.`} iconName="message1" />
+          <EmptyMessage title={'Opps!\n There is no visit schedule for you.'} iconName="message1" />
         );
       }
       return (
         <EmptyMessage title="We will shortly assign you a Relationship Manager, then you will see the leads." iconName="message1" />
       );
     }
-  }
+  };
 
   const renderFooter = () => {
     if (hasMore) {
       return (
         <ActivityIndicator size="large" color="#199fba" />
-      )
+      );
     }
-    return null
-  }
+    return null;
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -321,7 +321,7 @@ const VisitList = props => {
           onEndReached={() => {
             if (!requestSent && hasMore) {
               //fetchData(page);
-              getScheduleVisits(currentDate, endDate)
+              getScheduleVisits(currentDate, endDate);
             }
           }}
           ListFooterComponent={renderFooter}
@@ -334,7 +334,7 @@ const VisitList = props => {
 const mapStateToProps = state => ({
   userProfile: state.auth.userProfile,
   userProfileData: state.visitList.userProfileData,
-  deviceId: state.auth.deviceId
+  deviceId: state.auth.deviceId,
 });
 
 const ActionCreators = Object.assign(

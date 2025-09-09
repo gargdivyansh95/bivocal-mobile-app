@@ -1,5 +1,4 @@
 /* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable prettier/prettier */
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NAVIGATION } from '../../constants';

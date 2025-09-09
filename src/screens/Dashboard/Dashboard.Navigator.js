@@ -1,5 +1,4 @@
 /* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable prettier/prettier */
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NAVIGATION } from '../../constants';
@@ -33,16 +32,11 @@ export function DashboardNavigator(props) {
         component={DashboardScreen}
         options={({ navigation }) => ({
           headerShown: true,
-          // headerLeft: props => {
-          //   return (
-          //     <HamburgerIcon
-          //       name="menu"
-          //       size={28}
-          //       color="#000"
-          //       onPress={(() => navigation.openDrawer())}
-          //     />
-          //   );
-          // },
+          headerLeft: props => {
+            return (
+              <Text />
+            );
+          },
           headerTitle: props => {
             return (
               <Image source={AppLogo} style={GlobalStyle.headerLogo} />
