@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import {StyleSheet} from 'react-native';
 import GlobalStyle from '../../style/globalstyle';
 
@@ -16,6 +15,37 @@ export const styles = StyleSheet.create({
         paddingTop: 10,
         paddingBottom: 15,
         backgroundColor: '#fff',
+    },
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 20,
+    },
+    title: {
+        fontFamily: GlobalStyle.fontSet.Poppins600,
+        fontSize: 16,
+        color: '#000',
+    },
+    gradientBox: {
+        borderRadius: 8,
+        overflow: 'hidden',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        columnGap: 10,
+        paddingVertical: 6,
+        paddingHorizontal: 10,
+    },
+    gradientIcon: {
+        width: 16,
+        height: 16,
+    },
+    gradientButton: {
+        color: '#FFFFFF',
+        fontFamily: GlobalStyle.fontSet.Poppins500,
+        fontSize: 14,
+        paddingTop: 2,
     },
     loader: {
         flex: 1,
@@ -41,11 +71,6 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         marginTop: 30,
-    },
-    chartText: {
-        fontFamily: GlobalStyle.fontSet.Poppins600,
-        fontSize: 18,
-        color: '#000',
     },
     chartBox: {
         marginBottom: 20,
@@ -127,24 +152,9 @@ export const styles = StyleSheet.create({
     noData: {
         marginTop: 60,
     },
-    contactButton: {
+    inventoryBtn: {
         position: 'absolute',
         bottom: 10,
         right: 5,
-    },
-    buttonStyle: {
-        borderRadius: 4,
-        width: '100%',
-        height: 44,
-        justifyContent: 'center',
-        alignContent: 'center',
-    },
-    buttonActive: {
-        backgroundColor: '#199fba',
-    },
-    actionTitle: {
-        color: '#FFFFFF',
-        fontFamily: GlobalStyle.fontSet.Poppins500,
-        fontSize: 14,
     },
 });

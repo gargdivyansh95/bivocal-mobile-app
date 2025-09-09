@@ -28,21 +28,21 @@ export function VisitListNavigator(props) {
         component={VisitListScreen}
         options={({ navigation }) => ({
           headerShown: true,
-          headerLeft: props => {
-            return (
-              <IconButton
-                icon={() => <BackIcon
-                  name="arrowleft"
-                  size={28}
-                  color="#000"
+          // headerLeft: props => {
+          //   return (
+          //     <IconButton
+          //       icon={() => <BackIcon
+          //         name="arrowleft"
+          //         size={28}
+          //         color="#000"
 
-                />}
+          //       />}
 
-                size={20}
-                onPress={() => navigation.goBack()}
-              />
-            );
-          },
+          //       size={20}
+          //       onPress={() => navigation.goBack()}
+          //     />
+          //   );
+          // },
           headerTitle: props => {
             return (
               <Image source={AppLogo} style={GlobalStyle.headerLogo} />

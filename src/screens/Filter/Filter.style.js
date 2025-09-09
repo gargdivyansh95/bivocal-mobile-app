@@ -131,7 +131,7 @@ export const styles = StyleSheet.create({
     borderRadius: 4,
   },
   titleDark: {
-    color: '#000',
+    color: '#199fba',
     fontFamily: GlobalStyle.fontSet.Poppins500,
     fontSize: 14,
   },

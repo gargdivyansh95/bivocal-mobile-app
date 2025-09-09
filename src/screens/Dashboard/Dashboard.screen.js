@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Pressable, SafeAreaView, ScrollView, Text, View } from 'react-native';
+import { Image, Pressable, SafeAreaView, ScrollView, Text, View } from 'react-native';
 import { connect, useSelector } from 'react-redux';
 import { bindActionCreators } from '@reduxjs/toolkit';
 import { styles } from './Dashboard.style';
@@ -12,6 +12,9 @@ import GlobalStyle from '../../style/globalstyle';
 import { CustomButton, EmptyMessage } from '../../components';
 import { authActions } from '../Auth/Auth.action';
 import { NAVIGATION } from '../../constants';
+import LinearGradient from 'react-native-linear-gradient';
+import ReferIcon from '../../assets/images/refer.png';
+import AddIcon from '../../assets/images/add-square.png';
 
 const Dashboard = (props) => {
 
@@ -183,6 +186,20 @@ const Dashboard = (props) => {
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.screenContainer}>
+          <View style={styles.header}>
+            <Text style={styles.title}>Home</Text>
+            <Pressable onPress={() => handleSubmit()}>
+              <LinearGradient
+                colors={['#9C67D9', '#2668E0']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 0, y: 1 }}
+                style={styles.gradientBox}
+              >
+                <Image style={styles.gradientIcon} source={ReferIcon} />
+                <Text style={styles.gradientButton}>Refer & Earn</Text>
+              </LinearGradient>
+            </Pressable>
+          </View>
           <View style={styles.vistorCard}>
             {visitCountData?.map((item, index) => {
               const data = EVisitStatus.find((elem) => elem.id === item._id);
@@ -201,7 +218,7 @@ const Dashboard = (props) => {
             />
           </View>
           <View style={styles.chartFilter}>
-            <Text style={styles.chartText}>Overview</Text>
+            <Text style={styles.title}>Overview</Text>
             <View style={styles.filterBtns}>
               <Pressable style={type === 'today' ? styles.filterButtonActive : styles.filterButton} onPress={() => handleFilter('today')}>
                 <Text style={type === 'today' ? styles.titleDarkActive : styles.titleDark}>Today</Text>
@@ -252,15 +269,17 @@ const Dashboard = (props) => {
           }
         </View>
       </ScrollView>
-      <View style={styles.contactButton}>
-        <CustomButton
-          style={[styles.buttonStyle, styles.buttonActive]}
-          labelStyle={styles.actionTitle}
-          title="Refer & Earn"
-          mode="contained"
-          onPress={() => handleSubmit()}
-        />
-      </View>
+      <Pressable style={styles.inventoryBtn}>
+        <LinearGradient
+          colors={['#9C67D9', '#2668E0']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 1 }}
+          style={styles.gradientBox}
+        >
+          <Image style={styles.gradientIcon} source={AddIcon} />
+          <Text style={styles.gradientButton}>Add New Inventory</Text>
+        </LinearGradient>
+      </Pressable>
     </SafeAreaView>
   );
 };
