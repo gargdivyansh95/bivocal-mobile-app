@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useRef } from 'react';
 import { View, Image, Dimensions, StyleSheet, Text } from 'react-native';
-import Carousel from 'react-native-snap-carousel';
+import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import GlobalStyle from '../../../style/globalstyle';
 import { API_ENDPOINT_IMG_PREFIX } from '../../../constants/constants';
 
@@ -11,9 +11,7 @@ export default function VisitListCarousel(props) {
 
   const renderItem = ({ item, index }) => {
     return (
-      <View
-        style={styles.imageStyle}
-        key={index}>
+      <View style={styles.container} key={index}>
         <Image key={`${index}`} source={{ uri: `${API_ENDPOINT_IMG_PREFIX}` + item?.image }} style={[styles.imageStyle]} />
       </View>
     );
@@ -21,17 +19,16 @@ export default function VisitListCarousel(props) {
 
   return (
     <View style={styles.carouselBox}>
-      <Carousel
-        layout="default"
+      <SwiperFlatList
+        autoplay
+        autoplayDelay={2}
+        autoplayLoop
+        // index={2}
+        // showPagination
+        // paginationActiveColor="#199fba"
+        // paginationDefaultColor="#ccc"
         data={props.data}
         renderItem={renderItem}
-        sliderWidth={SLIDER_WIDTH}
-        itemWidth={300}
-        inactiveSlideShift={0}
-        //useScrollView={true}
-        activeSlideAlignment="center"
-        loop={true}
-        loopClonesPerSide={props.data.length}
       />
     </View>
   );
@@ -42,12 +39,16 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 5,
   },
-  imageStyle: {
-    width: 300,
+  container: {
+    width: GlobalStyle.width,
     height: (300 / 2.16),
     borderRadius: 5,
-
-    backgroundColor: '#e6e6e6'
+    backgroundColor: '#e6e6e6',
+  },
+  imageStyle: {
+    width: GlobalStyle.width,
+    height: (300 / 2.16),
+    borderRadius: 5,
   },
   heading: {
     padding: 15,

@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import React from 'react';
 import { Image, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import ArrowIcon from 'react-native-vector-icons/AntDesign';

@@ -262,8 +262,7 @@ const VisitList = props => {
   const renderHeader = () => {
     if (!visitList.length > 0) {
       return (
-        // <VisitListCarousel data={offersData} />
-        null
+        <VisitListCarousel data={offersData} />
       );
     } else {
       return null;
