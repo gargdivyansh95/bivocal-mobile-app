@@ -10,52 +10,52 @@ import CalendarIcon from '../../../assets/images/calendar.png';
 import RupeeIcon from '../../../assets/images/rupee.png';
 
 export default function InventoryItem() {
-  return (
-    <View style={styles.mainContainer}>
-        <View style={styles.inventoryCard}>
-            <View style={styles.imageBlock}>
-                <Image source={PropertyImage} style={styles.image} />
-            </View>
-            <View style={styles.contentBlock}>
-                <Text style={styles.title}>2 BHK Furnished Flat for Rent in Saya Zion at Noida</Text>
-                <View style={[styles.flexItem, styles.colGap12, styles.mt5]}>
-                    <View style={[styles.flexItem, styles.iconBlock]}>
-                        <Image source={CropIcon} style={styles.icon} />
-                        <Text style={styles.detailText}>1200 sqft</Text>
-                    </View>
-                    <View style={[styles.flexItem, styles.iconBlock]}>
-                        <Image source={KeyIcon} style={styles.icon} />
-                        <Text style={styles.detailText}>Yes</Text>
-                    </View>
+    return (
+        <View style={styles.mainContainer}>
+            <View style={styles.inventoryCard}>
+                <View style={styles.imageBlock}>
+                    <Image source={PropertyImage} style={styles.image} />
                 </View>
-                <View style={[styles.flexItem, styles.colGap6, styles.mt5]}>
-                    <Image source={LocationIcon} style={styles.icon} />
-                    <Text style={styles.infoText}>Noida Extension, Uttar Pradesh</Text>
-                </View>
-                <View style={[styles.flexItem, styles.colGap6, styles.mt5]}>
-                    <Image source={BuildingIcon} style={styles.icon} />
-                    <Text style={styles.linkText}>Solitaire VVIP Homes</Text>
-                </View>
-                <View style={[styles.flexItem, styles.colGap12, styles.mt5]}>
-                    <View style={[styles.flexItem, styles.iconBlock]}>
-                        <Image source={CalendarIcon} style={styles.icon} />
-                        <View>
-                            <Text style={styles.detailText}>Available from</Text>
-                            <Text style={styles.priceText}>DD/MM/YY</Text>
+                <View style={styles.contentBlock}>
+                    <Text style={styles.title}>2 BHK Furnished Flat for Rent in Saya Zion at Noida</Text>
+                    <View style={[styles.flexItem, styles.colGap12, styles.mt5]}>
+                        <View style={[styles.flexItem, styles.iconBlock]}>
+                            <Image source={CropIcon} style={styles.icon} />
+                            <Text style={styles.detailText}>1200 sqft</Text>
+                        </View>
+                        <View style={[styles.flexItem, styles.iconBlock]}>
+                            <Image source={KeyIcon} style={styles.icon} />
+                            <Text style={styles.detailText}>Yes</Text>
                         </View>
                     </View>
-                    <View style={[styles.flexItem, styles.iconBlock]}>
-                        <Image source={RupeeIcon} style={styles.icon} />
-                        <View>
-                            <Text style={styles.detailText}>Monthly Rent</Text>
-                            <Text style={styles.priceText}>₹12,345.0</Text>
+                    <View style={[styles.flexItem, styles.colGap6, styles.mt5]}>
+                        <Image source={LocationIcon} style={styles.icon} />
+                        <Text style={styles.infoText}>Noida Extension, Uttar Pradesh</Text>
+                    </View>
+                    <View style={[styles.flexItem, styles.colGap6, styles.mt5]}>
+                        <Image source={BuildingIcon} style={styles.icon} />
+                        <Text style={styles.linkText}>Solitaire VVIP Homes</Text>
+                    </View>
+                    <View style={[styles.flexItem, styles.colGap12, styles.mt5]}>
+                        <View style={[styles.flexItem, styles.iconBlock]}>
+                            <Image source={CalendarIcon} style={styles.icon} />
+                            <View>
+                                <Text style={styles.detailText}>Available from</Text>
+                                <Text style={styles.priceText}>DD/MM/YY</Text>
+                            </View>
+                        </View>
+                        <View style={[styles.flexItem, styles.iconBlock]}>
+                            <Image source={RupeeIcon} style={styles.icon} />
+                            <View>
+                                <Text style={styles.detailText}>Monthly Rent</Text>
+                                <Text style={styles.priceText}>₹12,345.0</Text>
+                            </View>
                         </View>
                     </View>
                 </View>
             </View>
         </View>
-    </View>
-  );
+    );
 }
 
 export const styles = StyleSheet.create({
