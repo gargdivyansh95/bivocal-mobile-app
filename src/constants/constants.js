@@ -18,4 +18,5 @@ export const API_ENDPOINTS = {
   REFRESH_TOKEN: API_ENDPOINT_BASE_URL + 'cpuser/refresh-token/<REFRESH_TOKEN>',
   VISITLISTCOUNT: API_ENDPOINT_BASE_URL + 'app/property-schedule/count/status',
   NEEDQUERY: API_ENDPOINT_BASE_URL + 'lead/cpquery',
+  GETSOCIETY: API_ENDPOINT_BASE_URL + '/society',
 };

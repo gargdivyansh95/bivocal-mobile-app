@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Pressable, SafeAreaView, StyleSheet, Switch, Text, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { CustomButton, CustomTextInput } from '../../components';
@@ -8,10 +8,14 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { PropertyBHKOptions, PropertyFurnishOptions, PropertyTypeOptions } from '../../constants/enum';
 import moment from 'moment';
 import DatePicker from 'react-native-date-picker';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { inventoryActions } from './Inventory.action';
 
-export default function AddInventory() {
+const AddInventory = (props) => {
 
     const [startdate, setStartDate] = useState(new Date());
+    const [societyType, setSocietyType] = useState(null);
     const [bhkType, setBhkType] = useState(null);
     const [furnishType, setFurnishType] = useState(null);
     const [propertyType, setPropertyType] = useState(null);
@@ -19,6 +23,27 @@ export default function AddInventory() {
     const [monthlyRent, setMonthlyRent] = useState('');
     const [openAvailDate, setOpenAvailDate] = useState(false);
     const [isKeyAvailable, setIsKeyAvailable] = useState(false);
+    const [societyList, setSocietyList] = useState([]);
+
+    useEffect(() => {
+        getSocietyList();
+    }, []);
+
+    const handleSocietyType = (item) => {
+        setSocietyType(item);
+    };
+
+    const handleBhkType = (item) => {
+        setBhkType(item);
+    };
+
+    const handleFurnishType = (item) => {
+        setFurnishType(item);
+    };
+
+    const handlePropertyType = (item) => {
+        setPropertyType(item);
+    };
 
     const handleAvailableDate = () => {
         setOpenAvailDate(true);
@@ -28,19 +53,29 @@ export default function AddInventory() {
         setIsKeyAvailable((prev) => !prev);
     };
 
-    const handleBhkType = (item) => {
-        const currentValue = PropertyBHKOptions.find((val) => val.id === item.id);
-        setBhkType(currentValue);
-    };
-
-    const handleFurnishType = (item) => {
-        const currentValue = PropertyFurnishOptions.find((val) => val.id === item.id);
-        setFurnishType(currentValue);
-    };
-
-    const handlePropertyType = (item) => {
-        const currentValue = PropertyTypeOptions.find((val) => val.id === item.id);
-        setPropertyType(currentValue);
+    const getSocietyList = () => {
+        const filter = {
+            'where': {
+                'name': {
+                    'options': 'i',
+                    'like': 'sa.*',
+                },
+                'active': true,
+            },
+        };
+        const filteredData = JSON.stringify(filter);
+        let { actions } = props;
+        actions.getSociety(
+            filteredData,
+            response => {
+                if (response?.data) {
+                    setSocietyList(response.data);
+                }
+            },
+            error => {
+                console.log('ERROR', error);
+            },
+        );
     };
 
     return (
@@ -52,6 +87,21 @@ export default function AddInventory() {
                 keyboardShouldPersistTaps="handled"
             >
                 <View style={styles.screenContainer}>
+                    <View style={styles.inputBox}>
+                        <Text style={styles.heading}>Society</Text>
+                        <Dropdown
+                            style={styles.selectContainer}
+                            data={societyList}
+                            labelField="title"
+                            valueField="id"
+                            placeholder="Select the Society"
+                            value={bhkType?.type}
+                            onChange={item => handleSocietyType(item)}
+                            itemTextStyle={styles.itemTextStyle}
+                            placeholderStyle={styles.placeholderStyle}
+                            selectedTextStyle={styles.selectedTextStyle}
+                        />
+                    </View>
                     <View style={styles.inputRow}>
                         <View style={styles.inputCol}>
                             <Text style={styles.heading}>BHK Type</Text>
@@ -134,24 +184,24 @@ export default function AddInventory() {
                         <View style={styles.inputCol}>
                             <Text style={styles.heading}>Key Available</Text>
                             <View style={[styles.modeSwitchContainer,
-                                {
-                                    flexDirection: !isKeyAvailable ? 'row-reverse' : 'row',
-                                    backgroundColor: !isKeyAvailable ? '#FF3B30' : '#34C759',
-                                },
-                                ]}>
-                                    <Text style={styles.switchText}>
-                                        {!isKeyAvailable ? 'No' : 'Yes'}
-                                    </Text>
-                                    <Switch
-                                        onValueChange={() => handleKeyAvailable(!isKeyAvailable)}
-                                        value={isKeyAvailable}
-                                        trackColor={{ false: 'rgba(205, 205, 205, 0.7)', true: 'rgba(205, 205, 205, 0.7)' }}
-                                        thumbColor={!isKeyAvailable ? '#fff' : '#fff'}
-                                        style={{
-                                            marginRight: isKeyAvailable ? 0 : 8,
-                                            marginLeft: !isKeyAvailable ? 0 : 8,
-                                        }}
-                                    />
+                            {
+                                flexDirection: !isKeyAvailable ? 'row-reverse' : 'row',
+                                backgroundColor: !isKeyAvailable ? '#FF3B30' : '#34C759',
+                            },
+                            ]}>
+                                <Text style={styles.switchText}>
+                                    {!isKeyAvailable ? 'No' : 'Yes'}
+                                </Text>
+                                <Switch
+                                    onValueChange={() => handleKeyAvailable(!isKeyAvailable)}
+                                    value={isKeyAvailable}
+                                    trackColor={{ false: 'rgba(205, 205, 205, 0.7)', true: 'rgba(205, 205, 205, 0.7)' }}
+                                    thumbColor={!isKeyAvailable ? '#fff' : '#fff'}
+                                    style={{
+                                        marginRight: isKeyAvailable ? 0 : 8,
+                                        marginLeft: !isKeyAvailable ? 0 : 8,
+                                    }}
+                                />
                             </View>
                         </View>
                     </View>
@@ -177,7 +227,26 @@ export default function AddInventory() {
             </KeyboardAwareScrollView>
         </SafeAreaView>
     );
-}
+};
+
+const mapStateToProps = state => ({
+    userProfile: state.auth.userProfile,
+    //   userProfileData: state.visitList.userProfileData,
+    //   deviceId: state.auth.deviceId,
+});
+
+const ActionCreators = Object.assign(
+    {},
+    {
+        getSociety: inventoryActions.getSociety,
+    },
+);
+
+const mapDispatchToProps = dispatch => ({
+    actions: bindActionCreators(ActionCreators, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddInventory);
 
 export const styles = StyleSheet.create({
     container: {

@@ -4,6 +4,7 @@ import * as visitList from '../screens/VisitList/VisitList.saga';
 import * as offers from '../screens/Offers/Offers.saga';
 import * as dashboard from '../screens/Dashboard/Dashboard.saga';
 import * as needQuery from '../screens/NeedQuery/NeedQuery.saga';
+import * as inventory from '../screens/Inventory/Inventory.saga';
 
 export function* rootSaga() {
   yield all([
@@ -12,5 +13,6 @@ export function* rootSaga() {
     offers.saga(),
     dashboard.saga(),
     needQuery.saga(),
+    inventory.saga(),
   ]);
 }
