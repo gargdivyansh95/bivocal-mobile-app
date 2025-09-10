@@ -31,16 +31,16 @@ const App = () => {
           <PaperProvider>
             {/* <BottomSheetModalProvider>
               <PortalProvider> */}
-            <RootNavigator />
-            <RemotePushController />
-            <Toast />
-            {/* </PortalProvider>
+                <RootNavigator />
+                <RemotePushController />
+                <Toast />
+              {/* </PortalProvider>
             </BottomSheetModalProvider> */}
           </PaperProvider>
         </PersistGate>
       </Provider>
     </GestureHandlerRootView>
   );
-}
+};
 
 export default App;

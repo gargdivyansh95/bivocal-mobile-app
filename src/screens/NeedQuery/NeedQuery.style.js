@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { StyleSheet } from 'react-native';
 import GlobalStyle from '../../style/globalstyle';
 
@@ -25,7 +24,7 @@ export const styles = StyleSheet.create({
         marginBottom: 25,
     },
     inputBox: {
-        marginBottom: 15,
+        marginBottom: 20,
     },
     inputStyle: {
         height: 44,
@@ -66,53 +65,68 @@ export const styles = StyleSheet.create({
         borderRadius: 4,
         paddingHorizontal: 10,
         paddingRight: 20,
-        marginBottom: 15,
+        marginBottom: 20,
     },
-    pickerButtonText: {
+    itemTextStyle:{
+        fontFamily: GlobalStyle.fontSet.Poppins500,
         fontSize: 14,
+        color: '#000',
+    },
+    placeholderStyle: {
         color: '#808191',
         fontFamily: GlobalStyle.fontSet.Poppins400,
-    },
-    pickerButtonTextSelected: {
         fontSize: 14,
-        color: '#000',
+    },
+    selectedTextStyle: {
+        color: '#000000',
         fontFamily: GlobalStyle.fontSet.Poppins400,
-    },
-    icon: {
-        width: 24,
-        height: 24,
-        resizeMode: 'contain',
-    },
-    sheetHeader: {
-        position: 'relative',
-        marginBottom: 15,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    closeIcon: {
-        position: 'absolute',
-        top: 0,
-        left: 15,
-        zIndex: 111,
-    },
-    sheetTitle: {
-        color: '#000',
-        fontFamily: GlobalStyle?.fontSet.Poppins500,
-        fontSize: 16,
-        textAlign: 'center',
-        flex: 1,
-        marginLeft: -24,
-
-    },
-    option: {
-        paddingHorizontal: 15,
-    },
-    optionText: {
-        color: '#000',
-        fontFamily: GlobalStyle?.fontSet.Poppins500,
         fontSize: 14,
-        borderBottomWidth: 1,
-        borderBottomColor: '#EAEAEA',
-        paddingVertical: 15,
     },
+    // pickerButtonText: {
+    //     fontSize: 14,
+    //     color: '#808191',
+    //     fontFamily: GlobalStyle.fontSet.Poppins400,
+    // },
+    // pickerButtonTextSelected: {
+    //     fontSize: 14,
+    //     color: '#000',
+    //     fontFamily: GlobalStyle.fontSet.Poppins400,
+    // },
+    // icon: {
+    //     width: 24,
+    //     height: 24,
+    //     resizeMode: 'contain',
+    // },
+    // sheetHeader: {
+    //     position: 'relative',
+    //     marginBottom: 15,
+    //     flexDirection: 'row',
+    //     alignItems: 'center',
+    // },
+    // closeIcon: {
+    //     position: 'absolute',
+    //     top: 0,
+    //     left: 15,
+    //     zIndex: 111,
+    // },
+    // sheetTitle: {
+    //     color: '#000',
+    //     fontFamily: GlobalStyle?.fontSet.Poppins500,
+    //     fontSize: 16,
+    //     textAlign: 'center',
+    //     flex: 1,
+    //     marginLeft: -24,
+
+    // },
+    // option: {
+    //     paddingHorizontal: 15,
+    // },
+    // optionText: {
+    //     color: '#000',
+    //     fontFamily: GlobalStyle?.fontSet.Poppins500,
+    //     fontSize: 14,
+    //     borderBottomWidth: 1,
+    //     borderBottomColor: '#EAEAEA',
+    //     paddingVertical: 15,
+    // },
 });

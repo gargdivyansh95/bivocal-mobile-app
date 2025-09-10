@@ -109,7 +109,7 @@ const MyProfileScreen = (props) => {
           <Text style={styles.heading}>First Name</Text>
           <CustomTextInput
             placeholder="First Name"
-            placeholderTextColor="#808191"
+            placeholderTextColor="#848484"
             style={styles.inputStyle}
             onChangeText={setFName}
             value={fName}
@@ -119,7 +119,7 @@ const MyProfileScreen = (props) => {
           <Text style={styles.heading}>Last Name</Text>
           <CustomTextInput
             placeholder="Last Name"
-            placeholderTextColor="#808191"
+            placeholderTextColor="#848484"
             style={styles.inputStyle}
             onChangeText={setLName}
             value={lName}
@@ -129,7 +129,7 @@ const MyProfileScreen = (props) => {
           <Text style={styles.heading}>Email</Text>
           <CustomTextInput
             placeholder="Email"
-            placeholderTextColor="#808191"
+            placeholderTextColor="#848484"
             style={styles.inputStyle}
             onChangeText={setEmail}
             value={email}
