@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useState } from 'react';
-import { Pressable, SafeAreaView, StyleSheet, Switch, Text, View } from 'react-native';
+import { Image, Pressable, SafeAreaView, StyleSheet, Switch, Text, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { CustomButton, CustomTextInput } from '../../components';
 import GlobalStyle from '../../style/globalstyle';
@@ -11,6 +11,8 @@ import DatePicker from 'react-native-date-picker';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { inventoryActions } from './Inventory.action';
+import UploadIcon from '../../assets/images/upload.png';
+import ImageCropPicker from 'react-native-image-crop-picker';
 
 const AddInventory = (props) => {
 
@@ -23,35 +25,12 @@ const AddInventory = (props) => {
     const [monthlyRent, setMonthlyRent] = useState('');
     const [openAvailDate, setOpenAvailDate] = useState(false);
     const [isKeyAvailable, setIsKeyAvailable] = useState(false);
+    const [propertyImage, setPropertyImage] = useState(null);
     const [societyList, setSocietyList] = useState([]);
 
     useEffect(() => {
         getSocietyList();
     }, []);
-
-    const handleSocietyType = (item) => {
-        setSocietyType(item);
-    };
-
-    const handleBhkType = (item) => {
-        setBhkType(item);
-    };
-
-    const handleFurnishType = (item) => {
-        setFurnishType(item);
-    };
-
-    const handlePropertyType = (item) => {
-        setPropertyType(item);
-    };
-
-    const handleAvailableDate = () => {
-        setOpenAvailDate(true);
-    };
-
-    const handleKeyAvailable = () => {
-        setIsKeyAvailable((prev) => !prev);
-    };
 
     const getSocietyList = () => {
         const filter = {
@@ -77,6 +56,45 @@ const AddInventory = (props) => {
             },
         );
     };
+
+    const handleSocietyType = (item) => {
+        setSocietyType(item);
+    };
+
+    const handleBhkType = (item) => {
+        setBhkType(item);
+    };
+
+    const handleFurnishType = (item) => {
+        setFurnishType(item);
+    };
+
+    const handlePropertyType = (item) => {
+        setPropertyType(item);
+    };
+
+    const handleAvailableDate = () => {
+        setOpenAvailDate(true);
+    };
+
+    const handleKeyAvailable = () => {
+        setIsKeyAvailable((prev) => !prev);
+    };
+
+    const handleChoosePhoto = async () => {
+        try {
+            const image = await ImageCropPicker.openPicker({
+                multiple: true,
+                maxFiles: 5,
+                mediaType: 'photo',
+                cropping: false,
+            });
+            setPropertyImage(image);
+        } catch (error) {
+            console.log('Error selecting or cropping image:', error);
+        }
+    };
+    console.log(propertyImage, 'propertyImage');
 
     return (
         <SafeAreaView style={[styles.container]}>
@@ -215,6 +233,14 @@ const AddInventory = (props) => {
                             value={monthlyRent ?? ''}
                         />
                     </View>
+                    <View style={styles.inputBox}>
+                        <Text style={styles.heading}>Upload property Photo</Text>
+                        {propertyImage?.path && <Image source={{ uri: propertyImage?.path }} style={styles.propertyImage} />}
+                        <Pressable style={styles.uploadBox} onPress={handleChoosePhoto}>
+                            <Text style={styles.uploadText}>Upload Photo</Text>
+                            <Image source={UploadIcon} style={styles.uploadIcon} />
+                        </Pressable>
+                    </View>
                 </View>
                 <View style={styles.buttonContainer}>
                     <CustomButton
@@ -349,6 +375,30 @@ export const styles = StyleSheet.create({
         color: '#fff',
         fontFamily: GlobalStyle.fontSet.Poppins600,
         fontSize: 16,
+    },
+    uploadBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        backgroundColor: '#848484',
+        borderRadius: 8,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+    },
+    uploadIcon: {
+        width: 18,
+        height: 18,
+    },
+    uploadText: {
+        color: '#fff',
+        fontFamily: GlobalStyle.fontSet.Poppins500,
+        fontSize: 14,
+    },
+    propertyImage: {
+        width: 150,
+        height: 150,
+        borderRadius: 8,
+        marginBottom: 10,
     },
     buttonContainer: {
         paddingBottom: 5,
