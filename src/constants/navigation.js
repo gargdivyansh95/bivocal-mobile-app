@@ -25,4 +25,6 @@ export const NAVIGATION = {
   notificationDetail: 'NotificationDetail',
   needQuery: 'NeedQuery',
   settings: 'Settings',
+
+  inventory: 'Inventory',
 };

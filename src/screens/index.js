@@ -11,6 +11,7 @@ import ContactUsScreen from './ContactUs/ContactUs.screen';
 import SupportScreen from './Support/Support.screen';
 import NeedQueryScreen from './NeedQuery/NeedQuery.screen';
 import SettingsScreen from './Settings/Settings.screen';
+import InventoryScreen from './Inventory/Inventory.screen';
 export {
   LoginScreen,
   VerifyOTPScreen,
@@ -25,4 +26,5 @@ export {
   SupportScreen,
   NeedQueryScreen,
   SettingsScreen,
+  InventoryScreen,
 };

@@ -11,6 +11,7 @@ import { NAVIGATION } from '../constants';
 import { DashboardNavigator } from '../screens/Dashboard/Dashboard.Navigator';
 import { VisitListNavigator } from '../screens/VisitList/VisitList.Navigator';
 import { SettingsNavigator } from '../screens/Settings/Settings.Navigator';
+import { InventoryNavigator } from '../screens/Inventory/Inventory.Navigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -67,7 +68,7 @@ export default function AppNavigator() {
       />
       <Tab.Screen
         name={NAVIGATION.tabInventory}
-        component={DashboardNavigator}
+        component={InventoryNavigator}
         options={{
           title: 'Inventory',
         }}

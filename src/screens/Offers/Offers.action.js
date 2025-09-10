@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 export const actionTypes = {
     OffersList: '[Offers] Offers List Action',
     OffersListSuccess: '[Offers] Offers List Success Action',
