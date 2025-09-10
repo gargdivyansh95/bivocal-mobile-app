@@ -7,6 +7,7 @@ import {
   StatusBar,
   Pressable,
   SafeAreaView,
+  Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AppIntroSlider from 'react-native-app-intro-slider';
@@ -89,7 +90,7 @@ export default function Introduction({ navigation }) {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff', }}>
       <StatusBar translucent backgroundColor="transparent" />
-      <Image source={AppLogo} style={GlobalStyle.headerLogo} />
+      <Image source={AppLogo} imageStyle={styles.headerLogo} style={styles.imageStyle} />
       <AppIntroSlider
         keyExtractor={keyExtractor}
         renderDoneButton={renderDoneButton}
@@ -103,6 +104,15 @@ export default function Introduction({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  imageStyle: {
+    marginTop: Platform.OS === 'android' ? 30 : 0,
+    alignSelf: 'center',
+  },
+  headerLogo:{
+    width: 160,
+    height: 40,
+    resizeMode: 'contain',
+  },
   slide: {
     width: '100%',
     height: '100%',
