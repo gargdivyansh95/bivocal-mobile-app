@@ -4,12 +4,12 @@ export const ETenantType = {
 };
 export const TenantSubCategory = {
   [ETenantType.Family]: [
-    {label: 'Business Family', value: 1},
-    {label: 'Professional Family', value: 2},
+    { label: 'Business Family', value: 1 },
+    { label: 'Professional Family', value: 2 },
   ],
   [ETenantType.Bachelor]: [
-    {label: 'Professional Bachelor', value: 1},
-    {label: 'Bachelor Students', value: 2},
+    { label: 'Professional Bachelor', value: 1 },
+    { label: 'Bachelor Students', value: 2 },
   ],
 };
 export const ELeadScheduleVisitType = {
@@ -99,4 +99,33 @@ export const ECustomerType = [
     type: 7,
     label: 'Fresh Commercial Buyer',
   },
-]
+];
+
+export const PropertyBHKOptions = [
+  { id: 1, type: 1, label: '1 BHK' },
+  { id: 2, type: 2, label: '1 + 1 BHK' },
+  { id: 3, type: 3, label: '2 BHK' },
+  { id: 4, type: 4, label: '2 + 1 BHK' },
+  { id: 5, type: 5, label: '3 BHK' },
+  { id: 6, type: 6, label: '3 + 1 BHK' },
+  { id: 7, type: 7, label: '4 BHK' },
+  { id: 8, type: 8, label: '4 + 1 BHK' },
+  { id: 9, type: 9, label: '5 BHK' },
+  { id: 10, type: 10, label: '5 + 1 BHK' },
+  { id: 11, type: 0, label: 'Not Sure' },
+];
+
+export const PropertyTypeOptions = [
+  { id: 1, type: 'residentialApartment', label: 'Residential Apartment' },
+  { id: 2, type: 'independentVilla', label: 'Independent Villa' },
+  { id: 3, type: 'builderFloor', label: 'Builder Floor' },
+  { id: 4, type: 'studioApartment', label: 'Studio Apartment' },
+  { id: 5, type: 'commercial', label: 'Commercial' },
+];
+
+export const PropertyFurnishOptions = [
+  { id: 0, type: 0, label: 'Unfurnished' },
+  { id: 1, type: 1, label: 'Furnished' },
+  { id: 2, type: 2, label: 'Semi-Furnished' },
+];
+
