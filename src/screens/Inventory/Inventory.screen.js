@@ -15,6 +15,7 @@ import { styles } from './Inventory.style';
 import LinearGradient from 'react-native-linear-gradient';
 import AddIcon from '../../assets/images/add-square.png';
 import { InventoryItem, ListHeader } from './components';
+import { NAVIGATION } from '../../constants';
 
 const data = [
     {
@@ -41,6 +42,10 @@ const Inventory = (props) => {
     const handleSearchItem = useCallback((text) => {
         setSearchText(text);
     }, []);
+
+    const handleAddInventory = () => {
+        props.navigation.navigate(NAVIGATION.addInventory);
+    };
 
     const renderHeader = useMemo(() => {
         return (
@@ -74,7 +79,7 @@ const Inventory = (props) => {
                     keyExtractor={item => item.id}
                     ListEmptyComponent={() => renderEmpty()}
                 />
-                <Pressable style={styles.inventoryBtn}>
+                <Pressable style={styles.inventoryBtn} onPress={handleAddInventory}>
                     <LinearGradient
                         colors={['#9C67D9', '#2668E0']}
                         start={{ x: 0, y: 0 }}

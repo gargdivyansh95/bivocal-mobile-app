@@ -27,4 +27,5 @@ export const NAVIGATION = {
   settings: 'Settings',
 
   inventory: 'Inventory',
+  addInventory: 'AddInventory',
 };

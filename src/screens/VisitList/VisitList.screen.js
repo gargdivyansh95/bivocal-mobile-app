@@ -297,7 +297,7 @@ const VisitList = props => {
   const renderFooter = () => {
     if (hasMore) {
       return (
-        <ActivityIndicator size="large" color="#199fba" />
+        <ActivityIndicator size="large" color="#2668E0" />
       );
     }
     return null;

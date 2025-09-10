@@ -1,14 +1,15 @@
 /* eslint-disable prettier/prettier */
-import React, {useEffect, useState} from 'react';
-import {Keyboard, SafeAreaView, ScrollView, Text, View} from 'react-native';
-import {Avatar, IconButton} from 'react-native-paper';
-import {styles} from './MyProfile.style';
-import {connect, useSelector} from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { Keyboard, SafeAreaView, ScrollView, Text, View } from 'react-native';
+import { Avatar, IconButton } from 'react-native-paper';
+import { styles } from './MyProfile.style';
+import { connect, useSelector } from 'react-redux';
 import { CustomButton, CustomTextInput } from '../../components';
 import { authActions } from '../Auth/Auth.action';
 import { bindActionCreators } from '@reduxjs/toolkit';
 import Toast from 'react-native-toast-message';
 import { dashboardActions } from '../Dashboard/Dashboard.action';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const MyProfileScreen = (props) => {
   const [userData, setUserData] = useState(null);
@@ -53,42 +54,47 @@ const MyProfileScreen = (props) => {
 
   const handleSubmit = () => {
     Keyboard.dismiss();
-      setLoading(true);
-      let data = {
-        firstName: fName,
-        lastName: lName,
-        email: email,
-      };
-      let { actions } = props;
-      actions.updateUser(
-        data,
-        response => {
-          console.log('SUCCESS', response);
-          setLoading(false);
-          Toast.show({
-            type: 'success',
-            text1: 'Profile Update Successfully.',
-            text2: '',
-          });
-          getUserDetail();
-        },
-        error => {
-          console.log('ERROR', error);
-          setLoading(false);
-          Toast.show({
-            type: 'error',
-            text1: error?.message,
-            text2: '',
-          });
-        },
-      );
+    setLoading(true);
+    let data = {
+      firstName: fName,
+      lastName: lName,
+      email: email,
+    };
+    let { actions } = props;
+    actions.updateUser(
+      data,
+      response => {
+        console.log('SUCCESS', response);
+        setLoading(false);
+        Toast.show({
+          type: 'success',
+          text1: 'Profile Update Successfully.',
+          text2: '',
+        });
+        getUserDetail();
+      },
+      error => {
+        console.log('ERROR', error);
+        setLoading(false);
+        Toast.show({
+          type: 'error',
+          text1: error?.message,
+          text2: '',
+        });
+      },
+    );
   };
 
   console.log(userData, 'authState.userProfile?.data');
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.screenContainer}>
+      <KeyboardAwareScrollView
+        enableOnAndroid={true}
+        extraScrollHeight={20}
+        keyboardShouldPersistTaps="handled"
+        style={styles.screenContainer}
+      >
         <View style={styles.profileAvatar}>
           <Avatar.Icon
             size={80}
@@ -156,7 +162,7 @@ const MyProfileScreen = (props) => {
           onPress={() => handleSubmit()}
           loading={loading}
         />
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 };

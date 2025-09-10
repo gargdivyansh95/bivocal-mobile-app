@@ -4,8 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NAVIGATION } from '../../constants';
 import { Image, StyleSheet, Text } from 'react-native';
 import { Platform } from 'react-native';
-import HamburgerIcon from 'react-native-vector-icons/Feather';
-import { DashboardScreen, InventoryScreen, NeedQueryScreen } from '../index';
+import { AddInventoryScreen, InventoryScreen } from '../index';
 import BackIcon from 'react-native-vector-icons/Entypo';
 import AppLogo from '../../assets/images/appLogo.png';
 import GlobalStyle from '../../style/globalstyle';
@@ -35,6 +34,31 @@ export function InventoryNavigator(props) {
                     headerTitle: props => {
                         return (
                             <Image source={AppLogo} style={GlobalStyle.headerLogo} />
+                        );
+                    },
+                })}
+            />
+            <Stack.Screen
+                name={NAVIGATION.addInventory}
+                component={AddInventoryScreen}
+                options={({ navigation }) => ({
+                    headerShown: true,
+                    headerLeft: props => {
+                        return (
+                            <IconButton style={{ backgroundColor: '#f7f7f7' }}
+                                icon={() => <BackIcon
+                                    name="chevron-thin-left"
+                                    size={18}
+                                    color="#000"
+                                />}
+                                size={24}
+                                onPress={() => navigation.goBack()}
+                            />
+                        );
+                    },
+                    headerTitle: props => {
+                        return (
+                            <Text style={styles.navigatorText}>Add New Inventory</Text>
                         );
                     },
                 })}

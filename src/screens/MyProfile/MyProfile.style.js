@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import {StyleSheet} from 'react-native';
 import GlobalStyle from '../../style/globalstyle';
 
@@ -45,7 +44,7 @@ export const styles = StyleSheet.create({
     },
     heading: {
         fontFamily: GlobalStyle.fontSet.Poppins500,
-        fontSize: 16,
+        fontSize: 14,
         color: '#000',
     },
     headingDetails: {
@@ -61,15 +60,17 @@ export const styles = StyleSheet.create({
         height: 44,
         fontSize: 14,
         paddingHorizontal: 10,
-        backgroundColor: '#f2f3f7',
-        borderRadius: 4,
+        // backgroundColor: '#f2f3f7',
+        borderWidth: 1,
+        borderColor: '#E8E8E8',
+        borderRadius: 8,
         color: '#000',
         fontFamily: GlobalStyle.fontSet.Poppins400,
         paddingTop: 0,
         paddingBottom: 0,
     },
     buttonStyle: {
-        borderRadius: 4,
+        borderRadius: 8,
         marginTop: 20,
         width: '100%',
         height: 44,
@@ -78,7 +79,7 @@ export const styles = StyleSheet.create({
         marginBottom: 50,
     },
     buttonActive: {
-        backgroundColor: '#199fba',
+        backgroundColor: '#2668E0',
     },
     buttonInActive: {
         backgroundColor: 'rgba(36,39,44,.3)',

@@ -9,7 +9,7 @@ export default function DashboardCard(props) {
     <View style={styles.visitBlock}>
       <View style={styles.countBox}>
         <View style={styles.iconCount}>
-          <Icon name={props.iconName} size={26} color="#199fba" />
+          <Icon name={props.iconName} size={26} color="#2668E0" />
         </View>
         <Text style={styles.count}>{props.count}</Text>
       </View>

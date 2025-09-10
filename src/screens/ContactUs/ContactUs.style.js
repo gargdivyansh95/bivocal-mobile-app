@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
   //   alignContent: 'center',
   // },
   // buttonActive: {
-  //     backgroundColor: '#199fba',
+  //     backgroundColor: '#2668E0',
   // },
   // buttonInActive: {
   //     backgroundColor: 'rgba(36,39,44,.3)',

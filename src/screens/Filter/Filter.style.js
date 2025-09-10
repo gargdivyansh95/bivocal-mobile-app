@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { StyleSheet } from 'react-native';
 import GlobalStyle from '../../style/globalstyle';
 
@@ -34,9 +33,9 @@ export const styles = StyleSheet.create({
   },
   selectBox: {
     height: 44,
-    borderColor: '#ddd',
     borderWidth: 1,
-    borderRadius: 4,
+    borderColor: '#E8E8E8',
+    borderRadius: 8,
     paddingHorizontal: 10,
     paddingVertical: 10,
     width: '100%',
@@ -111,14 +110,14 @@ export const styles = StyleSheet.create({
     flexBasis: '40%',
   },
   btnDark: {
-    backgroundColor: '#199fba',
+    backgroundColor: '#2668E0',
     height: 44,
     justifyContent: 'center',
     alignContent: 'center',
     borderWidth: 1,
-    borderColor: '#199fba',
+    borderColor: '#2668E0',
     width: '100%',
-    borderRadius: 4,
+    borderRadius: 8,
   },
   btnLight: {
     backgroundColor: 'transparent',
@@ -126,12 +125,12 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     borderWidth: 1,
-    borderColor: '#199fba',
+    borderColor: '#2668E0',
     width: '100%',
-    borderRadius: 4,
+    borderRadius: 8,
   },
   titleDark: {
-    color: '#199fba',
+    color: '#2668E0',
     fontFamily: GlobalStyle.fontSet.Poppins500,
     fontSize: 14,
   },

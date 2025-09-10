@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
     },
     userName: {
         fontSize: 15,
-        color: '#199fba',
+        color: '#2668E0',
         fontFamily: GlobalStyle.fontSet.Poppins500,
         marginTop: 10,
     },

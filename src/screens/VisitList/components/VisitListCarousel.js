@@ -25,7 +25,7 @@ export default function VisitListCarousel(props) {
         autoplayLoop
         // index={2}
         // showPagination
-        // paginationActiveColor="#199fba"
+        // paginationActiveColor="#2668E0"
         // paginationDefaultColor="#ccc"
         data={props.data}
         renderItem={renderItem}

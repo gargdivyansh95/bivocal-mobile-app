@@ -22,7 +22,7 @@ export default function VisitListItem(props) {
           </View>
         </View>
         <View style={styles.iconBox}>
-          <ArrowIcon name="rightcircle" size={15} color="#199fba" />
+          <ArrowIcon name="rightcircle" size={15} color="#2668E0" />
         </View>
       </Pressable>
     </View>

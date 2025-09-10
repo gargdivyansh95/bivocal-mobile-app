@@ -4,6 +4,7 @@ import GlobalStyle from '../../style/globalstyle';
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#fff',
     },
     screenContainer: {
         backgroundColor: '#fff',

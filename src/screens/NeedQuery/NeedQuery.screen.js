@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from '@reduxjs/toolkit';
 import { needQueryActions } from './NeedQuery.action';
 import { Dropdown } from 'react-native-element-dropdown';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const NeedQuery = (props) => {
 
@@ -114,71 +115,80 @@ const NeedQuery = (props) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.screenContainer}>
-        <Text style={styles.heading}>Please fill your details</Text>
-        <Text style={styles.subHeading}>
-          for Better Experience & Regular updates
-        </Text>
-        <Dropdown
-          style={styles.selectContainer}
-          data={ECustomerType}
-          labelField="label"
-          valueField="type"
-          placeholder="Select Customer Type"
-          value={customerType?.type}
-          onChange={item => handleType(item)}
-          itemTextStyle={styles.itemTextStyle}
-          placeholderStyle={styles.placeholderStyle}
-          selectedTextStyle={styles.selectedTextStyle}
-        />
-        <View style={styles.inputBox}>
-          <CustomTextInput
-            placeholder="First Name"
-            placeholderTextColor="#808191"
-            style={styles.inputStyle}
-            onChangeText={setFName}
-            value={fName ?? ''}
+      <KeyboardAwareScrollView
+        contentContainerStyle={[styles.scrollContainer]}
+        enableOnAndroid={true}
+        extraScrollHeight={20}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={styles.screenContainer}>
+          <Text style={styles.heading}>Please fill your details</Text>
+          <Text style={styles.subHeading}>
+            for Better Experience & Regular updates
+          </Text>
+          <Dropdown
+            style={styles.selectContainer}
+            data={ECustomerType}
+            labelField="label"
+            valueField="type"
+            placeholder="Select Customer Type"
+            value={customerType?.type}
+            onChange={item => handleType(item)}
+            itemTextStyle={styles.itemTextStyle}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+          />
+          <View style={styles.inputBox}>
+            <CustomTextInput
+              placeholder="First Name"
+              placeholderTextColor="#808191"
+              style={styles.inputStyle}
+              onChangeText={setFName}
+              value={fName ?? ''}
+            />
+          </View>
+          <View style={styles.inputBox}>
+            <CustomTextInput
+              placeholder="Last Name"
+              placeholderTextColor="#808191"
+              style={styles.inputStyle}
+              onChangeText={setLName}
+              value={lName ?? ''}
+            />
+          </View>
+          <View style={styles.inputBox}>
+            <CustomTextInput
+              placeholder="Email"
+              placeholderTextColor="#808191"
+              style={styles.inputStyle}
+              onChangeText={setEmail}
+              value={email ?? ''}
+              keyboardType="email"
+            />
+          </View>
+          <View style={styles.inputBox}>
+            <CustomTextInput
+              placeholder="Mobile"
+              placeholderTextColor="#808191"
+              style={styles.inputStyle}
+              onChangeText={setMobile}
+              value={mobile ?? ''}
+              keyboardType="number-pad"
+            />
+          </View>
+        </View>
+        <View style={styles.buttonContainer}>
+          <CustomButton
+            style={[styles.buttonStyle, fName && lName && email && mobile && customerType ? styles.buttonActive : styles.buttonInActive]}
+            labelStyle={styles.actionTitle}
+            title="Submit"
+            mode="contained"
+            disabled={fName && lName && email && mobile && customerType ? false : true || loading ? true : false}
+            onPress={() => handleSubmit()}
+            loading={loading}
           />
         </View>
-        <View style={styles.inputBox}>
-          <CustomTextInput
-            placeholder="Last Name"
-            placeholderTextColor="#808191"
-            style={styles.inputStyle}
-            onChangeText={setLName}
-            value={lName ?? ''}
-          />
-        </View>
-        <View style={styles.inputBox}>
-          <CustomTextInput
-            placeholder="Email"
-            placeholderTextColor="#808191"
-            style={styles.inputStyle}
-            onChangeText={setEmail}
-            value={email ?? ''}
-            keyboardType="email"
-          />
-        </View>
-        <View style={styles.inputBox}>
-          <CustomTextInput
-            placeholder="Mobile"
-            placeholderTextColor="#808191"
-            style={styles.inputStyle}
-            onChangeText={setMobile}
-            value={mobile ?? ''}
-            keyboardType="number-pad"
-          />
-        </View>
-        <CustomButton
-          style={[styles.buttonStyle, fName && lName && email && mobile && customerType ? styles.buttonActive : styles.buttonInActive]}
-          labelStyle={styles.actionTitle}
-          title="Submit"
-          mode="contained"
-          disabled={fName && lName && email && mobile && customerType ? false : true || loading ? true : false}
-          onPress={() => handleSubmit()}
-          loading={loading}
-        />
-      </View>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 };

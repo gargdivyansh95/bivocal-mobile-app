@@ -68,7 +68,7 @@ export default function Introduction({ navigation }) {
       <View style={styles.buttonCircle}>
         <Icon
           name="arrow-forward-circle"
-          color="#199fba"
+          color="#2668E0"
           size={44}
         />
       </View>
@@ -80,7 +80,7 @@ export default function Introduction({ navigation }) {
       <Pressable style={styles.buttonCircle} onPress={onPressNext}>
         <Icon
           name="checkmark-circle"
-          color="#199fba"
+          color="#2668E0"
           size={44}
         />
       </Pressable>
@@ -97,7 +97,7 @@ export default function Introduction({ navigation }) {
         renderNextButton={renderNextButton}
         renderItem={renderItem}
         data={data}
-        activeDotStyle={{ backgroundColor: '#199fba' }}
+        activeDotStyle={{ backgroundColor: '#2668E0' }}
       />
     </SafeAreaView>
   );
