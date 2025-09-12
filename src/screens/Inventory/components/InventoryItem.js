@@ -1,6 +1,7 @@
-import React from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, { useState } from 'react';
 import GlobalStyle from '../../../style/globalstyle';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import PropertyImage from '../../../assets/images/property.jpg';
 import CropIcon from '../../../assets/images/crop.png';
 import KeyIcon from '../../../assets/images/key.png';
@@ -8,9 +9,17 @@ import LocationIcon from '../../../assets/images/location.png';
 import BuildingIcon from '../../../assets/images/building1.png';
 import CalendarIcon from '../../../assets/images/calendar.png';
 import RupeeIcon from '../../../assets/images/rupee.png';
+import MoreIcon from '../../../assets/images/more.png';
 import moment from 'moment';
+import { Menu } from 'react-native-paper';
 
-export default function InventoryItem({item}) {
+export default function InventoryItem({ item }) {
+
+    const [visible, setVisible] = useState(false);
+
+    const openMenu = () => setVisible(true);
+    const closeMenu = () => setVisible(false);
+
     return (
         <View style={styles.mainContainer}>
             <View style={styles.inventoryCard}>
@@ -18,6 +27,26 @@ export default function InventoryItem({item}) {
                     <Image source={PropertyImage} style={styles.image} />
                 </View>
                 <View style={styles.contentBlock}>
+                    <View style={[styles.topBar]}>
+                        <View style={[styles.reviewBox, {
+                            borderColor: '#05C168',
+                            backgroundColor: '#05C1681A',
+                        }]}>
+                            <View style={[styles.reviewDot, { backgroundColor: '#05C168' }]} />
+                            <Text style={[styles.reviewText, { color: '#05C168' }]}>Published</Text>
+                        </View>
+                        <Menu visible={visible} onDismiss={closeMenu}
+                            anchor={
+                                <Pressable onPress={openMenu}>
+                                    <Image source={MoreIcon} style={{ width: 18, height: 18 }} />
+                                </Pressable>
+                            }
+                            contentStyle={styles.menuStyle}
+                        >
+                            <Menu.Item titleStyle={styles.menuItemTitle} onPress={() => { }} title="Edit Details" />
+                            <Menu.Item titleStyle={styles.menuItemTitle} onPress={() => { }} title="Mark Rent-Out" />
+                        </Menu>
+                    </View>
                     <Text style={styles.title}>{item?.title}</Text>
                     <View style={[styles.flexItem, styles.colGap12, styles.mt5]}>
                         <View style={[styles.flexItem, styles.iconBlock]}>
@@ -93,6 +122,21 @@ export const styles = StyleSheet.create({
     contentBlock: {
         flex: 1,
     },
+    topBar: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    menuStyle: {
+        backgroundColor: '#fff',
+        borderRadius: 12,
+        paddingVertical: 0,
+    },
+    menuItemTitle: {
+        fontFamily: GlobalStyle.fontSet.Poppins500,
+        fontSize: 14,
+        color: '#000',
+    },
     title: {
         fontFamily: GlobalStyle.fontSet.Poppins600,
         fontSize: 12,
@@ -144,5 +188,23 @@ export const styles = StyleSheet.create({
         fontFamily: GlobalStyle.fontSet.Poppins600,
         fontSize: 12,
         color: '#6924D9',
+    },
+    reviewBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        columnGap: 6,
+        borderWidth: 0.4,
+        borderRadius: 4,
+        paddingVertical: 2,
+        paddingHorizontal: 5,
+    },
+    reviewDot: {
+        width: 4,
+        height: 4,
+        borderRadius: 50,
+    },
+    reviewText: {
+        fontFamily: GlobalStyle.fontSet.Poppins600,
+        fontSize: 10,
     },
 });
