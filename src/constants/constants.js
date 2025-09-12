@@ -20,4 +20,6 @@ export const API_ENDPOINTS = {
   NEEDQUERY: API_ENDPOINT_BASE_URL + 'lead/cpquery',
   GETSOCIETY: API_ENDPOINT_BASE_URL + '/society',
   POSTPROPERTYIMAGES: API_ENDPOINT_BASE_URL + '/property/cpProperty/upload',
+  POSTPROPERTY: API_ENDPOINT_BASE_URL + '/property/cpProperty',
+  GETPROPERTY: API_ENDPOINT_BASE_URL + '/property/cpProperty',
 };

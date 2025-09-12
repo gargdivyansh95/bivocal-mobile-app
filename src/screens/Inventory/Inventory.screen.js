@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
     SafeAreaView,
     View,
@@ -16,28 +16,42 @@ import LinearGradient from 'react-native-linear-gradient';
 import AddIcon from '../../assets/images/add-square.png';
 import { InventoryItem, ListHeader } from './components';
 import { NAVIGATION } from '../../constants';
-
-const data = [
-    {
-        id: 1,
-    },
-    {
-        id: 2,
-    },
-    {
-        id: 3,
-    },
-    {
-        id: 4,
-    },
-    {
-        id: 5,
-    },
-]
+import { inventoryActions } from './Inventory.action';
 
 const Inventory = (props) => {
 
     const [searchText, setSearchText] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [propertyList, setPropertyList] = useState([]);
+    const cpUserId = props?.userProfile?.data?.cpUser?.id;
+
+    useEffect(() => {
+        getPropertyList();
+    }, []);
+
+    const getPropertyList = () => {
+        const filter = {
+            'where': {
+                'cpUserId': cpUserId,
+            },
+        };
+        setIsLoading(true);
+        const filteredData = JSON.stringify(filter);
+        let { actions } = props;
+        actions.getProperty(
+            filteredData,
+            response => {
+                if (response?.data) {
+                    setPropertyList(response.data);
+                    setIsLoading(false);
+                }
+            },
+            error => {
+                console.log('ERROR', error);
+                setIsLoading(false);
+            },
+        );
+    };
 
     const handleSearchItem = useCallback((text) => {
         setSearchText(text);
@@ -58,15 +72,24 @@ const Inventory = (props) => {
 
     const renderItem = ({ item }) => {
         return (
-            <InventoryItem />
+            <InventoryItem item={item} />
         );
     };
 
     const renderEmpty = () => {
-        return (
-            <EmptyMessage title="No Data Found" />
-        );
+        if (isLoading) {
+            return (
+                <View style={styles.loader}>
+                    <ActivityIndicator color="#2668E0" />
+                </View>
+            );
+        } else {
+            return (
+                <EmptyMessage title="No Data Found" />
+            );
+        }
     };
+    console.log(propertyList, 'propertyList')
 
     return (
         <SafeAreaView style={styles.container}>
@@ -74,7 +97,7 @@ const Inventory = (props) => {
                 <FlatList
                     ListHeaderComponent={renderHeader}
                     contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
-                    data={data}
+                    data={propertyList?.properties}
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
                     ListEmptyComponent={() => renderEmpty()}
@@ -97,20 +120,12 @@ const Inventory = (props) => {
 
 const mapStateToProps = state => ({
     userProfile: state.auth.userProfile,
-    userProfileData: state.visitList.userProfileData,
-    deviceId: state.auth.deviceId,
 });
 
 const ActionCreators = Object.assign(
     {},
     {
-        // visitList: visitListActions.visitList,
-        // offersList: offersActions.offersList,
-        // userProfile: visitListActions.userProfile,
-        // appInstalled: authActions.appInstalled,
-        // reafreshToken: authActions.reafreshToken,
-        // updateUser: authActions.updateUser,
-        // logoutSuccess: authActions.logoutSuccess,
+        getProperty: inventoryActions.getProperty,
     },
 );
 

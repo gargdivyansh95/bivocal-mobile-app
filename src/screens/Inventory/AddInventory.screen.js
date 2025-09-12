@@ -14,6 +14,7 @@ import { inventoryActions } from './Inventory.action';
 import UploadIcon from '../../assets/images/upload.png';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import { API_ENDPOINT_IMG_PREFIX } from '../../constants/constants';
+import Toast from 'react-native-toast-message';
 
 const AddInventory = (props) => {
 
@@ -30,6 +31,8 @@ const AddInventory = (props) => {
     const [propertyImage, setPropertyImage] = useState([]);
     const [societyList, setSocietyList] = useState([]);
     const [isRequestSent, setIsRequestSent] = useState(false);
+    const [isFormSubmit, setIsFormSubmit] = useState(false);
+    const cpUserId = props?.userProfile?.data?.cpUser?.id;
 
     useEffect(() => {
         getSocietyList();
@@ -121,7 +124,66 @@ const AddInventory = (props) => {
             setIsRequestSent(false);
         }
     };
-    console.log(propertyImage, 'propertyImage');
+
+    const isFormValid = societyType && bhkType && furnishType && propertyType && propertySize && monthlyRent && propertyImage.length > 0;
+    const handleSubmit = () => {
+        const updatedPropertyImage = propertyImage.map(item => ({
+            ...item,
+            isCover: false,
+            delete: false,
+        }));
+        const payload = {
+            fields: {
+                cpUserId: cpUserId,
+                propType: propertyType?.type,
+                status: 1,
+                bhk: bhkType?.type,
+                furnish: furnishType?.type,
+                propertyArea: Number(propertySize),
+                expectedRent: Number(monthlyRent),
+                keyy: isKeyAvailable,
+                availableFrom: startdate.toISOString(),
+                societyId: societyType?.id,
+                sharedByPartner: true,
+            },
+            imageList: updatedPropertyImage,
+        };
+        setIsFormSubmit(true);
+        let { actions } = props;
+        actions.postProperty(
+            payload,
+            response => {
+                if (response?.data?.success === true) {
+                    console.log(response, 'property response');
+                    Toast.show({
+                        type: 'success',
+                        text1: response?.data?.message || 'Property Added Successfully.',
+                        text2: '',
+                    });
+                    setStartDate(new Date());
+                    setSocietyType(null);
+                    setBhkType(null);
+                    setFurnishType(null);
+                    setPropertyType(null);
+                    setPropertySize('');
+                    setMonthlyRent('');
+                    setIsKeyAvailable(false);
+                    setPropertyImage([]);
+                    setIsFormSubmit(false);
+                    props.navigation.goBack();
+                }
+            },
+            error => {
+                console.log('ERROR', error);
+                setIsFormSubmit(false);
+                Toast.show({
+                    type: 'error',
+                    text1: error?.message || 'Something went wrong.',
+                    text2: '',
+                });
+            },
+        );
+    };
 
     return (
         <SafeAreaView style={[styles.container]}>
@@ -283,10 +345,14 @@ const AddInventory = (props) => {
                 </View>
                 <View style={styles.buttonContainer}>
                     <CustomButton
-                        style={[styles.buttonDark]}
+                        // style={[styles.buttonDark]}
+                        style={[styles.buttonDark, isFormValid ? styles.buttonActive : styles.buttonInActive]}
                         labelStyle={[styles.titleLight]}
                         title={'Add Inventory'}
                         mode="contained"
+                        disabled={!isFormValid}
+                        loading={isFormSubmit}
+                        onPress={handleSubmit}
                     />
                 </View>
             </KeyboardAwareScrollView>
@@ -305,6 +371,7 @@ const ActionCreators = Object.assign(
     {
         getSociety: inventoryActions.getSociety,
         postPropertyImages: inventoryActions.postPropertyImages,
+        postProperty: inventoryActions.postProperty,
     },
 );
 
@@ -450,14 +517,17 @@ export const styles = StyleSheet.create({
         paddingBottom: 5,
     },
     buttonDark: {
-        backgroundColor: '#2668E0',
         height: 44,
         justifyContent: 'center',
         alignContent: 'center',
-        borderWidth: 1,
-        borderColor: '#2668E0',
         width: '100%',
         borderRadius: 8,
+    },
+    buttonActive: {
+        backgroundColor: '#2668E0',
+    },
+    buttonInActive: {
+        backgroundColor: 'rgba(36,39,44,.3)',
     },
     titleLight: {
         color: '#fff',

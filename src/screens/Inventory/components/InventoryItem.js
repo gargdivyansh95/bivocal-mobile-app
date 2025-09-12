@@ -8,8 +8,9 @@ import LocationIcon from '../../../assets/images/location.png';
 import BuildingIcon from '../../../assets/images/building1.png';
 import CalendarIcon from '../../../assets/images/calendar.png';
 import RupeeIcon from '../../../assets/images/rupee.png';
+import moment from 'moment';
 
-export default function InventoryItem() {
+export default function InventoryItem({item}) {
     return (
         <View style={styles.mainContainer}>
             <View style={styles.inventoryCard}>
@@ -17,15 +18,15 @@ export default function InventoryItem() {
                     <Image source={PropertyImage} style={styles.image} />
                 </View>
                 <View style={styles.contentBlock}>
-                    <Text style={styles.title}>2 BHK Furnished Flat for Rent in Saya Zion at Noida</Text>
+                    <Text style={styles.title}>{item?.title}</Text>
                     <View style={[styles.flexItem, styles.colGap12, styles.mt5]}>
                         <View style={[styles.flexItem, styles.iconBlock]}>
                             <Image source={CropIcon} style={styles.icon} />
-                            <Text style={styles.detailText}>1200 sqft</Text>
+                            <Text style={styles.detailText}>{item?.propDetails?.propertyArea} sqft</Text>
                         </View>
                         <View style={[styles.flexItem, styles.iconBlock]}>
                             <Image source={KeyIcon} style={styles.icon} />
-                            <Text style={styles.detailText}>Yes</Text>
+                            <Text style={styles.detailText}>{item?.propDetails?.keyy === true ? 'Yes' : 'No'}</Text>
                         </View>
                     </View>
                     <View style={[styles.flexItem, styles.colGap6, styles.mt5]}>
@@ -34,21 +35,21 @@ export default function InventoryItem() {
                     </View>
                     <View style={[styles.flexItem, styles.colGap6, styles.mt5]}>
                         <Image source={BuildingIcon} style={styles.icon} />
-                        <Text style={styles.linkText}>Solitaire VVIP Homes</Text>
+                        <Text style={styles.linkText}>{item?.society?.name}</Text>
                     </View>
                     <View style={[styles.flexItem, styles.colGap12, styles.mt5]}>
                         <View style={[styles.flexItem, styles.iconBlock]}>
                             <Image source={CalendarIcon} style={styles.icon} />
                             <View>
                                 <Text style={styles.detailText}>Available from</Text>
-                                <Text style={styles.priceText}>DD/MM/YY</Text>
+                                <Text style={styles.priceText}>{item?.propDetails?.availableFrom ? moment(item?.propDetails?.availableFrom).format('DD/MM/YY') : 'N/A'}</Text>
                             </View>
                         </View>
                         <View style={[styles.flexItem, styles.iconBlock]}>
                             <Image source={RupeeIcon} style={styles.icon} />
                             <View>
                                 <Text style={styles.detailText}>Monthly Rent</Text>
-                                <Text style={styles.priceText}>₹12,345.0</Text>
+                                <Text style={styles.priceText}>₹{item?.propDetails?.expectedRent}</Text>
                             </View>
                         </View>
                     </View>
@@ -94,7 +95,7 @@ export const styles = StyleSheet.create({
     },
     title: {
         fontFamily: GlobalStyle.fontSet.Poppins600,
-        fontSize: 14,
+        fontSize: 12,
         color: '#2668E0',
     },
     flexItem: {
