@@ -46,7 +46,7 @@ const Offers = props => {
     if (requestSent) {
       return (
         <View style={styles.loader}>
-          <ActivityIndicator />
+          <ActivityIndicator color="#2668E0" />
         </View>
       );
     } else {

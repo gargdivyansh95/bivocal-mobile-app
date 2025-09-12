@@ -69,6 +69,17 @@ export function createHeadersWithAuth() {
   };
 }
 
+export function createFormDataHeadersWithAuth() {
+  const {
+    auth: { token },
+  } = store.getState();
+  console.log(token, 'createHeadersWithAuth+++');
+  return {
+    Authorization: 'Bearer ' + token,
+    'Content-Type': 'multipart/form-data',
+  };
+}
+
 export function createHeaders() {
   return {
     'Content-Type': 'application/json',

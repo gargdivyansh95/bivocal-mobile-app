@@ -279,7 +279,7 @@ const VisitList = props => {
     if (requestSent) {
       return (
         <View style={styles.loader}>
-          <ActivityIndicator />
+          <ActivityIndicator color="#2668E0" />
         </View>
       );
     } else {
@@ -297,7 +297,7 @@ const VisitList = props => {
   const renderFooter = () => {
     if (hasMore) {
       return (
-        <ActivityIndicator size="large" color="#2668E0" />
+        <ActivityIndicator color="#2668E0" />
       );
     }
     return null;

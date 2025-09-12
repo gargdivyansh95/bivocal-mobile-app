@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useState } from 'react';
-import { Image, Pressable, SafeAreaView, StyleSheet, Switch, Text, View } from 'react-native';
+import { ActivityIndicator, Image, Pressable, SafeAreaView, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { CustomButton, CustomTextInput } from '../../components';
 import GlobalStyle from '../../style/globalstyle';
@@ -13,9 +13,11 @@ import { bindActionCreators } from 'redux';
 import { inventoryActions } from './Inventory.action';
 import UploadIcon from '../../assets/images/upload.png';
 import ImageCropPicker from 'react-native-image-crop-picker';
+import { API_ENDPOINT_IMG_PREFIX } from '../../constants/constants';
 
 const AddInventory = (props) => {
 
+    const IMAGE_URL = 'https://bivocalbirds-stage.s3.us-east-1.amazonaws.com';
     const [startdate, setStartDate] = useState(new Date());
     const [societyType, setSocietyType] = useState(null);
     const [bhkType, setBhkType] = useState(null);
@@ -25,8 +27,9 @@ const AddInventory = (props) => {
     const [monthlyRent, setMonthlyRent] = useState('');
     const [openAvailDate, setOpenAvailDate] = useState(false);
     const [isKeyAvailable, setIsKeyAvailable] = useState(false);
-    const [propertyImage, setPropertyImage] = useState(null);
+    const [propertyImage, setPropertyImage] = useState([]);
     const [societyList, setSocietyList] = useState([]);
+    const [isRequestSent, setIsRequestSent] = useState(false);
 
     useEffect(() => {
         getSocietyList();
@@ -83,15 +86,39 @@ const AddInventory = (props) => {
 
     const handleChoosePhoto = async () => {
         try {
-            const image = await ImageCropPicker.openPicker({
+            const images = await ImageCropPicker.openPicker({
                 multiple: true,
                 maxFiles: 5,
                 mediaType: 'photo',
                 cropping: false,
             });
-            setPropertyImage(image);
+            let { actions } = props;
+            let uploadedImages = [];
+            setIsRequestSent(true);
+            for (const img of images) {
+                await new Promise((resolve, reject) => {
+                    actions.postPropertyImages(
+                        img,
+                        response => {
+                            if (response?.data) {
+                                uploadedImages.push(response.data[0]);
+                                resolve(true);
+                            } else {
+                                reject('No response data');
+                            }
+                        },
+                        error => {
+                            console.log('ERROR uploading image:', error);
+                            reject(error);
+                        },
+                    );
+                });
+            }
+            setPropertyImage(prev => [...prev, ...uploadedImages]);
         } catch (error) {
             console.log('Error selecting or cropping image:', error);
+        } finally {
+            setIsRequestSent(false);
         }
     };
     console.log(propertyImage, 'propertyImage');
@@ -235,7 +262,19 @@ const AddInventory = (props) => {
                     </View>
                     <View style={styles.inputBox}>
                         <Text style={styles.heading}>Upload property Photo</Text>
-                        {propertyImage?.path && <Image source={{ uri: propertyImage?.path }} style={styles.propertyImage} />}
+                        {/* {propertyImage?.original && <Image source={{ uri: propertyImage?.original }} style={styles.propertyImage} />} */}
+                        {isRequestSent ?
+                            <ActivityIndicator color="#2668E0" /> :
+                            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.propertyImageContainer}>
+                                {propertyImage?.map((item, index) => {
+                                    return (
+                                        <View key={index} style={styles.propertyImageBox}>
+                                            <Image source={{ uri: `${IMAGE_URL}` + item?.thumbnail }} style={styles.propertyImage} />
+                                        </View>
+                                    );
+                                })}
+                            </ScrollView>
+                        }
                         <Pressable style={styles.uploadBox} onPress={handleChoosePhoto}>
                             <Text style={styles.uploadText}>Upload Photo</Text>
                             <Image source={UploadIcon} style={styles.uploadIcon} />
@@ -265,6 +304,7 @@ const ActionCreators = Object.assign(
     {},
     {
         getSociety: inventoryActions.getSociety,
+        postPropertyImages: inventoryActions.postPropertyImages,
     },
 );
 
@@ -393,6 +433,12 @@ export const styles = StyleSheet.create({
         color: '#fff',
         fontFamily: GlobalStyle.fontSet.Poppins500,
         fontSize: 14,
+    },
+    propertyImageContainer: {
+
+    },
+    propertyImageBox: {
+        marginRight: 15,
     },
     propertyImage: {
         width: 150,

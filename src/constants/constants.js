@@ -19,4 +19,5 @@ export const API_ENDPOINTS = {
   VISITLISTCOUNT: API_ENDPOINT_BASE_URL + 'app/property-schedule/count/status',
   NEEDQUERY: API_ENDPOINT_BASE_URL + 'lead/cpquery',
   GETSOCIETY: API_ENDPOINT_BASE_URL + '/society',
+  POSTPROPERTYIMAGES: API_ENDPOINT_BASE_URL + '/property/cpProperty/upload',
 };
