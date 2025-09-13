@@ -147,6 +147,7 @@ const AddInventory = (props) => {
 
     const isAddFormValid = societyType && bhkType && furnishType && propertyType && propertySize && monthlyRent && propertyImage.length > 0;
     const isUpdateFormValid = societyType && bhkType && furnishType && propertyType && propertySize && monthlyRent;
+
     const resetForm = () => {
         setStartDate(new Date());
         setSocietyType(null);
@@ -158,6 +159,7 @@ const AddInventory = (props) => {
         setIsKeyAvailable(false);
         setPropertyImage([]);
     };
+
     const handleAddInventory = () => {
         const updatedPropertyImage = propertyImage.map(item => ({
             ...item,
@@ -445,8 +447,6 @@ const AddInventory = (props) => {
 
 const mapStateToProps = state => ({
     userProfile: state.auth.userProfile,
-    //   userProfileData: state.visitList.userProfileData,
-    //   deviceId: state.auth.deviceId,
 });
 
 const ActionCreators = Object.assign(

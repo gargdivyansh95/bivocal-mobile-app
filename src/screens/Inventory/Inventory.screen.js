@@ -23,6 +23,7 @@ const Inventory = (props) => {
     const [searchText, setSearchText] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [propertyList, setPropertyList] = useState([]);
+    const [filteredPropertyList, setFilteredPropertyList] = useState([]);
     const cpUserId = props?.userProfile?.data?.cpUser?.id;
 
     useEffect(() => {
@@ -42,7 +43,8 @@ const Inventory = (props) => {
             filteredData,
             response => {
                 if (response?.data) {
-                    setPropertyList(response.data);
+                    setPropertyList(response.data?.properties);
+                    setFilteredPropertyList(response.data?.properties);
                     setIsLoading(false);
                 }
             },
@@ -59,14 +61,23 @@ const Inventory = (props) => {
 
     const handleSearchItem = useCallback((text) => {
         setSearchText(text);
-    }, []);
+        if (!text.trim()) {
+            setFilteredPropertyList(propertyList);
+        } else {
+            const filtered = propertyList.filter(item =>
+                item?.title?.toLowerCase().includes(text.toLowerCase()) ||
+                item?.society?.name?.toLowerCase().includes(text.toLowerCase())
+            );
+            setFilteredPropertyList(filtered);
+        }
+    }, [propertyList]);
 
     const handleAddInventory = () => {
-        props.navigation.navigate(NAVIGATION.addInventory, {data: null, onGoBack: refreshList});
+        props.navigation.navigate(NAVIGATION.addInventory, { data: null, onGoBack: refreshList });
     };
 
     const handleEditDetails = (item) => {
-        props.navigation.navigate(NAVIGATION.addInventory, {data: item, from: 'edit', onGoBack: refreshList});
+        props.navigation.navigate(NAVIGATION.addInventory, { data: item, from: 'edit', onGoBack: refreshList });
     };
 
     const renderHeader = useMemo(() => {
@@ -97,7 +108,7 @@ const Inventory = (props) => {
             );
         }
     };
-    console.log(propertyList, 'propertyList')
+    console.log(filteredPropertyList, 'propertyList')
 
     return (
         <SafeAreaView style={styles.container}>
@@ -105,7 +116,7 @@ const Inventory = (props) => {
                 <FlatList
                     ListHeaderComponent={renderHeader}
                     contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
-                    data={propertyList?.properties}
+                    data={filteredPropertyList}
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
                     ListEmptyComponent={() => renderEmpty()}
