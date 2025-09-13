@@ -12,8 +12,10 @@ import RupeeIcon from '../../../assets/images/rupee.png';
 import MoreIcon from '../../../assets/images/more.png';
 import moment from 'moment';
 import { Menu } from 'react-native-paper';
+import SwiperFlatList from 'react-native-swiper-flatlist';
+import { STAGE_IMAGE_URL } from '../../../constants/constants';
 
-export default function InventoryItem({ item, handleEditDetails }) {
+export default function InventoryItem(props) {
 
     const [visible, setVisible] = useState(false);
 
@@ -21,24 +23,37 @@ export default function InventoryItem({ item, handleEditDetails }) {
     const closeMenu = () => setVisible(false);
 
     const handleEdit = () => {
-        handleEditDetails(item);
+        props.handleEditDetails(props.item);
         closeMenu();
+    };
+
+    const renderItem = ({ item, index }) => {
+        return (
+            <Image key={`${index}`} source={{ uri: `${STAGE_IMAGE_URL}` + item?.thumbnail }} style={[styles.imageStyle]} />
+        );
     };
 
     return (
         <View style={styles.mainContainer}>
             <View style={styles.inventoryCard}>
                 <View style={styles.imageBlock}>
-                    <Image source={PropertyImage} style={styles.image} />
+                    <SwiperFlatList
+                        autoplay
+                        autoplayDelay={2}
+                        autoplayLoop
+                        data={props?.item?.propertyImage}
+                        renderItem={renderItem}
+                    />
+                    {/* <Image source={PropertyImage} style={styles.image} /> */}
                 </View>
                 <View style={styles.contentBlock}>
                     <View style={[styles.topBar]}>
                         <View style={[styles.reviewBox, {
-                            borderColor: '#05C168',
-                            backgroundColor: '#05C1681A',
+                            borderColor: props?.item?.status === 0 ? '#FFA500' : '#05C168',
+                            backgroundColor: props?.item?.status === 0 ? '#FFA5001A' : '#05C1681A',
                         }]}>
-                            <View style={[styles.reviewDot, { backgroundColor: '#05C168' }]} />
-                            <Text style={[styles.reviewText, { color: '#05C168' }]}>Published</Text>
+                            <View style={[styles.reviewDot, { backgroundColor: props?.item?.status === 0 ? '#FFA500' : '#05C168' }]} />
+                            <Text style={[styles.reviewText, { color: props?.item?.status === 0 ? '#FFA500' : '#05C168' }]}>{props?.item?.status === 0 ? 'Under Review' : 'Published'}</Text>
                         </View>
                         <Menu visible={visible} onDismiss={closeMenu}
                             anchor={
@@ -52,38 +67,38 @@ export default function InventoryItem({ item, handleEditDetails }) {
                             <Menu.Item titleStyle={styles.menuItemTitle} onPress={() => { }} title="Mark Rent-Out" />
                         </Menu>
                     </View>
-                    <Text style={styles.title}>{item?.title}</Text>
+                    <Text style={styles.title}>{props?.item?.title}</Text>
                     <View style={[styles.flexItem, styles.colGap12, styles.mt5]}>
                         <View style={[styles.flexItem, styles.iconBlock]}>
                             <Image source={CropIcon} style={styles.icon} />
-                            <Text style={styles.detailText}>{item?.propDetails?.propertyArea} sqft</Text>
+                            <Text style={styles.detailText}>{props?.item?.propDetails?.propertyArea} sqft</Text>
                         </View>
                         <View style={[styles.flexItem, styles.iconBlock]}>
                             <Image source={KeyIcon} style={styles.icon} />
-                            <Text style={styles.detailText}>{item?.propDetails?.keyy === true ? 'Yes' : 'No'}</Text>
+                            <Text style={styles.detailText}>{props?.item?.propDetails?.keyy === true ? 'Yes' : 'No'}</Text>
                         </View>
                     </View>
                     <View style={[styles.flexItem, styles.colGap6, styles.mt5]}>
                         <Image source={LocationIcon} style={styles.icon} />
-                        <Text style={styles.infoText}>Noida Extension, Uttar Pradesh</Text>
+                        <Text style={styles.infoText}>{props?.item?.locality?.name}, {props?.item?.city?.name}, {props?.item?.state?.name}</Text>
                     </View>
                     <View style={[styles.flexItem, styles.colGap6, styles.mt5]}>
                         <Image source={BuildingIcon} style={styles.icon} />
-                        <Text style={styles.linkText}>{item?.society?.name}</Text>
+                        <Text style={styles.linkText}>{props?.item?.society?.name}</Text>
                     </View>
                     <View style={[styles.flexItem, styles.colGap12, styles.mt5]}>
                         <View style={[styles.flexItem, styles.iconBlock]}>
                             <Image source={CalendarIcon} style={styles.icon} />
                             <View>
                                 <Text style={styles.detailText}>Available from</Text>
-                                <Text style={styles.priceText}>{item?.propDetails?.availableFrom ? moment(item?.propDetails?.availableFrom).format('DD/MM/YY') : 'N/A'}</Text>
+                                <Text style={styles.priceText}>{props?.item?.propDetails?.availableFrom ? moment(props?.item?.propDetails?.availableFrom).format('DD/MM/YY') : 'N/A'}</Text>
                             </View>
                         </View>
                         <View style={[styles.flexItem, styles.iconBlock]}>
                             <Image source={RupeeIcon} style={styles.icon} />
                             <View>
                                 <Text style={styles.detailText}>Monthly Rent</Text>
-                                <Text style={styles.priceText}>₹{item?.propDetails?.expectedRent}</Text>
+                                <Text style={styles.priceText}>₹{props?.item?.propDetails?.expectedRent}</Text>
                             </View>
                         </View>
                     </View>
@@ -118,11 +133,17 @@ export const styles = StyleSheet.create({
     imageBlock: {
         width: GlobalStyle.width * 0.33,
     },
-    image: {
-        width: '100%',
-        height: 170,
-        // resizeMode: 'contain',
+    // image: {
+    //     width: '100%',
+    //     height: 170,
+    //     // resizeMode: 'contain',
+    //     borderRadius: 8,
+    // },
+    imageStyle: {
+        width: GlobalStyle.width * 0.33,
+        // height: 170,
         borderRadius: 8,
+        resizeMode: 'cover',
     },
     contentBlock: {
         flex: 1,

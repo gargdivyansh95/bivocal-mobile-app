@@ -13,12 +13,11 @@ import { bindActionCreators } from 'redux';
 import { inventoryActions } from './Inventory.action';
 import UploadIcon from '../../assets/images/upload.png';
 import ImageCropPicker from 'react-native-image-crop-picker';
-import { API_ENDPOINT_IMG_PREFIX } from '../../constants/constants';
+import { API_ENDPOINT_IMG_PREFIX, STAGE_IMAGE_URL } from '../../constants/constants';
 import Toast from 'react-native-toast-message';
 
 const AddInventory = (props) => {
 
-    const IMAGE_URL = 'https://bivocalbirds-stage.s3.us-east-1.amazonaws.com';
     const data = props?.route?.params;
     const [startdate, setStartDate] = useState(new Date());
     const [societyType, setSocietyType] = useState(null);
@@ -42,7 +41,7 @@ const AddInventory = (props) => {
     useEffect(() => {
         if (data?.from === 'edit' && data?.data) {
             const property = data?.data;
-            setSocietyType({ id: property?.society?._id });
+            setSocietyType({ id: property?.society?.id });
             setBhkType({ type: property?.bhk });
             setFurnishType({ type: property?.propDetails?.furnish });
             setPropertyType({ type: property?.propType });
@@ -52,9 +51,9 @@ const AddInventory = (props) => {
             if (property?.propDetails?.availableFrom) {
                 setStartDate(new Date(property?.propDetails?.availableFrom));
             }
-            // if (property?.imageList?.length) {
-            //     setPropertyImage(property.imageList);
-            // }
+            if (property?.propertyImage?.length > 0) {
+                setPropertyImage(property.propertyImage);
+            }
         }
     }, [data]);
 
@@ -161,16 +160,16 @@ const AddInventory = (props) => {
     };
 
     const handleAddInventory = () => {
-        const updatedPropertyImage = propertyImage.map(item => ({
+        const updatedPropertyImage = propertyImage.map((item, index) => ({
             ...item,
-            isCover: false,
+            isCover: index === 0 ? true : false,
             delete: false,
         }));
         const payload = {
             fields: {
                 cpUserId: cpUserId,
                 propType: propertyType?.type,
-                status: 1,
+                // status: 1,
                 bhk: bhkType?.type,
                 furnish: furnishType?.type,
                 propertyArea: Number(propertySize),
@@ -220,7 +219,7 @@ const AddInventory = (props) => {
             obj: {
                 fields: {
                     propType: propertyType?.type,
-                    status: 1,
+                    status: data?.data?.status,
                     bhk: bhkType?.type,
                     furnish: furnishType?.type,
                     propertyArea: Number(propertySize),
@@ -406,7 +405,7 @@ const AddInventory = (props) => {
                                 {propertyImage?.map((item, index) => {
                                     return (
                                         <View key={index} style={styles.propertyImageBox}>
-                                            <Image source={{ uri: `${IMAGE_URL}` + item?.thumbnail }} style={styles.propertyImage} />
+                                            <Image source={{ uri: `${STAGE_IMAGE_URL}` + item?.thumbnail }} style={styles.propertyImage} />
                                         </View>
                                     );
                                 })}
