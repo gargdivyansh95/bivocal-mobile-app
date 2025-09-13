@@ -22,6 +22,7 @@ const Inventory = (props) => {
 
     const [searchText, setSearchText] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [isRefreshing, setIsRefreshing] = useState(false);
     const [propertyList, setPropertyList] = useState([]);
     const [filteredPropertyList, setFilteredPropertyList] = useState([]);
     const cpUserId = props?.userProfile?.data?.cpUser?.id;
@@ -30,13 +31,17 @@ const Inventory = (props) => {
         getPropertyList();
     }, []);
 
-    const getPropertyList = () => {
+    const getPropertyList = (refresh = false) => {
         const filter = {
             'where': {
                 'cpUserId': cpUserId,
             },
         };
-        setIsLoading(true);
+        if (refresh) {
+            setIsRefreshing(true);
+        } else {
+            setIsLoading(true);
+        }
         const filteredData = JSON.stringify(filter);
         let { actions } = props;
         actions.getProperty(
@@ -46,17 +51,23 @@ const Inventory = (props) => {
                     setPropertyList(response.data?.properties);
                     setFilteredPropertyList(response.data?.properties);
                     setIsLoading(false);
+                    setIsRefreshing(false);
                 }
             },
             error => {
                 console.log('ERROR', error);
                 setIsLoading(false);
+                setIsRefreshing(false);
             },
         );
     };
 
     const refreshList = () => {
         getPropertyList();
+    };
+
+    const onRefreshList = () => {
+        getPropertyList(true);
     };
 
     const handleSearchItem = useCallback((text) => {
@@ -96,7 +107,7 @@ const Inventory = (props) => {
     };
 
     const renderEmpty = () => {
-        if (isLoading) {
+        if (isLoading || isRefreshing) {
             return (
                 <View style={styles.loader}>
                     <ActivityIndicator color="#2668E0" />
@@ -120,6 +131,8 @@ const Inventory = (props) => {
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
                     ListEmptyComponent={() => renderEmpty()}
+                    onRefresh={onRefreshList}
+                    refreshing={isRefreshing}
                 />
                 <Pressable style={styles.inventoryBtn} onPress={handleAddInventory}>
                     <LinearGradient
