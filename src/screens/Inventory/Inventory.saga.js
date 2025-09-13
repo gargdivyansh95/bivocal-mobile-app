@@ -110,9 +110,34 @@ export function* getPropertyList(action) {
     return true;
 }
 
+export function* postUpdateProperty(action) {
+    let requestURL = API_ENDPOINTS.UPDATEPROPERTY.replace('<PROPERTY_ID>', action.payload.propertyId);
+    let options = {};
+    options.headers = createHeadersWithAuth();
+    options.method = 'PATCH';
+    options.body = JSON.stringify(action.payload.obj);
+    try {
+        const response = yield call(requestPromise, requestURL, options);
+        if (response && response.isSuccess === true) {
+            action.onSuccess(response);
+        } else {
+            action.onError(response);
+        }
+    } catch (error) {
+        console.log('Saga Error postUpdateProperty+++', error);
+        action.onError({
+            s: '500',
+            m: 'Error while process your request!',
+            log: error,
+        });
+    }
+    return true;
+}
+
 export function* saga() {
     yield takeLatest(actionTypes.GetSociety, getSocietyList);
     yield takeLatest(actionTypes.PostPropertyImages, postPropertyImages);
     yield takeLatest(actionTypes.PostProperty, postProperty);
     yield takeLatest(actionTypes.GetProperty, getPropertyList);
+    yield takeLatest(actionTypes.UpdateProperty, postUpdateProperty);
 }

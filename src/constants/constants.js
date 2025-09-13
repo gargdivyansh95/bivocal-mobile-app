@@ -22,4 +22,5 @@ export const API_ENDPOINTS = {
   POSTPROPERTYIMAGES: API_ENDPOINT_BASE_URL + '/property/cpProperty/upload',
   POSTPROPERTY: API_ENDPOINT_BASE_URL + '/property/cpProperty',
   GETPROPERTY: API_ENDPOINT_BASE_URL + '/property/cpProperty',
+  UPDATEPROPERTY: API_ENDPOINT_BASE_URL + '/property/cpProperty/<PROPERTY_ID>',
 };

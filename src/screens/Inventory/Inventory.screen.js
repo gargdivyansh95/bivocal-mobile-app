@@ -53,12 +53,20 @@ const Inventory = (props) => {
         );
     };
 
+    const refreshList = () => {
+        getPropertyList();
+    };
+
     const handleSearchItem = useCallback((text) => {
         setSearchText(text);
     }, []);
 
     const handleAddInventory = () => {
-        props.navigation.navigate(NAVIGATION.addInventory);
+        props.navigation.navigate(NAVIGATION.addInventory, {data: null, onGoBack: refreshList});
+    };
+
+    const handleEditDetails = (item) => {
+        props.navigation.navigate(NAVIGATION.addInventory, {data: item, from: 'edit', onGoBack: refreshList});
     };
 
     const renderHeader = useMemo(() => {
@@ -72,7 +80,7 @@ const Inventory = (props) => {
 
     const renderItem = ({ item }) => {
         return (
-            <InventoryItem item={item} />
+            <InventoryItem item={item} handleEditDetails={handleEditDetails} />
         );
     };
 

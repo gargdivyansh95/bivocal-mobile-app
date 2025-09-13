@@ -3,6 +3,7 @@ export const actionTypes = {
     PostPropertyImages: '[Inventory] Post Property Images Action',
     PostProperty: '[Inventory] Post Property Action',
     GetProperty: '[Inventory] Get Property Action',
+    UpdateProperty: '[Inventory] Update Property Action',
   };
 
   export const inventoryActions = {
@@ -10,4 +11,5 @@ export const actionTypes = {
     postPropertyImages: (payload, onSuccess, onError) => ({ type: actionTypes.PostPropertyImages, payload, onSuccess, onError }),
     postProperty: (payload, onSuccess, onError) => ({ type: actionTypes.PostProperty, payload, onSuccess, onError }),
     getProperty: (payload, onSuccess, onError) => ({ type: actionTypes.GetProperty, payload, onSuccess, onError }),
+    updateProperty: (payload, onSuccess, onError) => ({ type: actionTypes.UpdateProperty, payload, onSuccess, onError }),
   };

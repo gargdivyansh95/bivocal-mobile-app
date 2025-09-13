@@ -13,12 +13,17 @@ import MoreIcon from '../../../assets/images/more.png';
 import moment from 'moment';
 import { Menu } from 'react-native-paper';
 
-export default function InventoryItem({ item }) {
+export default function InventoryItem({ item, handleEditDetails }) {
 
     const [visible, setVisible] = useState(false);
 
     const openMenu = () => setVisible(true);
     const closeMenu = () => setVisible(false);
+
+    const handleEdit = () => {
+        handleEditDetails(item);
+        closeMenu();
+    };
 
     return (
         <View style={styles.mainContainer}>
@@ -43,7 +48,7 @@ export default function InventoryItem({ item }) {
                             }
                             contentStyle={styles.menuStyle}
                         >
-                            <Menu.Item titleStyle={styles.menuItemTitle} onPress={() => { }} title="Edit Details" />
+                            <Menu.Item titleStyle={styles.menuItemTitle} onPress={handleEdit} title="Edit Details" />
                             <Menu.Item titleStyle={styles.menuItemTitle} onPress={() => { }} title="Mark Rent-Out" />
                         </Menu>
                     </View>

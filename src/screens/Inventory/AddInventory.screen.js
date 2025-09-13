@@ -19,6 +19,7 @@ import Toast from 'react-native-toast-message';
 const AddInventory = (props) => {
 
     const IMAGE_URL = 'https://bivocalbirds-stage.s3.us-east-1.amazonaws.com';
+    const data = props?.route?.params;
     const [startdate, setStartDate] = useState(new Date());
     const [societyType, setSocietyType] = useState(null);
     const [bhkType, setBhkType] = useState(null);
@@ -37,6 +38,25 @@ const AddInventory = (props) => {
     useEffect(() => {
         getSocietyList();
     }, []);
+
+    useEffect(() => {
+        if (data?.from === 'edit' && data?.data) {
+            const property = data?.data;
+            setSocietyType({ id: property?.society?._id });
+            setBhkType({ type: property?.bhk });
+            setFurnishType({ type: property?.propDetails?.furnish });
+            setPropertyType({ type: property?.propType });
+            setPropertySize(String(property?.propDetails?.propertyArea));
+            setMonthlyRent(String(property?.propDetails?.expectedRent));
+            setIsKeyAvailable(property?.propDetails?.keyy);
+            if (property?.propDetails?.availableFrom) {
+                setStartDate(new Date(property?.propDetails?.availableFrom));
+            }
+            // if (property?.imageList?.length) {
+            //     setPropertyImage(property.imageList);
+            // }
+        }
+    }, [data]);
 
     const getSocietyList = () => {
         const filter = {
@@ -125,8 +145,20 @@ const AddInventory = (props) => {
         }
     };
 
-    const isFormValid = societyType && bhkType && furnishType && propertyType && propertySize && monthlyRent && propertyImage.length > 0;
-    const handleSubmit = () => {
+    const isAddFormValid = societyType && bhkType && furnishType && propertyType && propertySize && monthlyRent && propertyImage.length > 0;
+    const isUpdateFormValid = societyType && bhkType && furnishType && propertyType && propertySize && monthlyRent;
+    const resetForm = () => {
+        setStartDate(new Date());
+        setSocietyType(null);
+        setBhkType(null);
+        setFurnishType(null);
+        setPropertyType(null);
+        setPropertySize('');
+        setMonthlyRent('');
+        setIsKeyAvailable(false);
+        setPropertyImage([]);
+    };
+    const handleAddInventory = () => {
         const updatedPropertyImage = propertyImage.map(item => ({
             ...item,
             isCover: false,
@@ -160,16 +192,57 @@ const AddInventory = (props) => {
                         text1: response?.data?.message || 'Property Added Successfully.',
                         text2: '',
                     });
-                    setStartDate(new Date());
-                    setSocietyType(null);
-                    setBhkType(null);
-                    setFurnishType(null);
-                    setPropertyType(null);
-                    setPropertySize('');
-                    setMonthlyRent('');
-                    setIsKeyAvailable(false);
-                    setPropertyImage([]);
+                    resetForm();
+                    const onGoBack = props.route.params?.onGoBack;
+                    if (onGoBack) {
+                        onGoBack(true);
+                    }
+                    props.navigation.goBack();
+                }
+            },
+            error => {
+                console.log('ERROR', error);
+                setIsFormSubmit(false);
+                Toast.show({
+                    type: 'error',
+                    text1: error?.message || 'Something went wrong.',
+                    text2: '',
+                });
+            },
+        );
+    };
+
+    const handleUpdateInventory = () => {
+        const payload = {
+            propertyId: data?.data?.id,
+            obj: {
+                fields: {
+                    propType: propertyType?.type,
+                    status: 1,
+                    bhk: bhkType?.type,
+                    furnish: furnishType?.type,
+                    propertyArea: Number(propertySize),
+                    expectedRent: Number(monthlyRent),
+                },
+            },
+        };
+        setIsFormSubmit(true);
+        let { actions } = props;
+        actions.updateProperty(
+            payload,
+            response => {
+                if (response?.data?.success === true) {
+                    console.log(response, 'property response');
+                    Toast.show({
+                        type: 'success',
+                        text1: response?.data?.message || 'Property Updated Successfully.',
+                        text2: '',
+                    });
                     setIsFormSubmit(false);
+                    const onGoBack = props.route.params?.onGoBack;
+                    if (onGoBack) {
+                        onGoBack(true);
+                    }
                     props.navigation.goBack();
                 }
             },
@@ -202,7 +275,7 @@ const AddInventory = (props) => {
                             labelField="title"
                             valueField="id"
                             placeholder="Select the Society"
-                            value={bhkType?.type}
+                            value={societyType?.id}
                             onChange={item => handleSocietyType(item)}
                             itemTextStyle={styles.itemTextStyle}
                             placeholderStyle={styles.placeholderStyle}
@@ -344,16 +417,26 @@ const AddInventory = (props) => {
                     </View>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <CustomButton
-                        // style={[styles.buttonDark]}
-                        style={[styles.buttonDark, isFormValid ? styles.buttonActive : styles.buttonInActive]}
-                        labelStyle={[styles.titleLight]}
-                        title={'Add Inventory'}
-                        mode="contained"
-                        disabled={!isFormValid}
-                        loading={isFormSubmit}
-                        onPress={handleSubmit}
-                    />
+                    {data?.from === 'edit' ?
+                        <CustomButton
+                            style={[styles.buttonDark, isUpdateFormValid ? styles.buttonActive : styles.buttonInActive]}
+                            labelStyle={[styles.titleLight]}
+                            title={'Update Inventory'}
+                            mode="contained"
+                            disabled={!isUpdateFormValid}
+                            loading={isFormSubmit}
+                            onPress={handleUpdateInventory}
+                        /> :
+                        <CustomButton
+                            style={[styles.buttonDark, isAddFormValid ? styles.buttonActive : styles.buttonInActive]}
+                            labelStyle={[styles.titleLight]}
+                            title={'Add Inventory'}
+                            mode="contained"
+                            disabled={!isAddFormValid}
+                            loading={isFormSubmit}
+                            onPress={handleAddInventory}
+                        />
+                    }
                 </View>
             </KeyboardAwareScrollView>
         </SafeAreaView>
@@ -372,6 +455,7 @@ const ActionCreators = Object.assign(
         getSociety: inventoryActions.getSociety,
         postPropertyImages: inventoryActions.postPropertyImages,
         postProperty: inventoryActions.postProperty,
+        updateProperty: inventoryActions.updateProperty,
     },
 );
 
