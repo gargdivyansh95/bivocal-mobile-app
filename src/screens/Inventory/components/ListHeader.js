@@ -11,14 +11,14 @@ export default function ListHeader({value, onChangeText}) {
         <View style={styles.headerContainer}>
             <View style={styles.header}>
                 <Text style={styles.title}>Inventory</Text>
-                <View style={styles.actionsIcon}>
+                {/* <View style={styles.actionsIcon}>
                     <View style={styles.iconBlock}>
                         <Image source={FilterIcon} style={styles.icon} />
                     </View>
                     <View style={styles.iconBlock}>
                         <Image source={SortingIcon} style={styles.icon} />
                     </View>
-                </View>
+                </View> */}
             </View>
             <View style={styles.searchBox}>
                 <Image source={SearchIcon} style={styles.searchIcon} />

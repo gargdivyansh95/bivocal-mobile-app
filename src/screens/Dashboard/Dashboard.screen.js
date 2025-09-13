@@ -269,7 +269,7 @@ const Dashboard = (props) => {
           }
         </View>
       </ScrollView>
-      <Pressable style={styles.inventoryBtn}>
+      {/* <Pressable style={styles.inventoryBtn}>
         <LinearGradient
           colors={['#9C67D9', '#2668E0']}
           start={{ x: 0, y: 0 }}
@@ -279,7 +279,7 @@ const Dashboard = (props) => {
           <Image style={styles.gradientIcon} source={AddIcon} />
           <Text style={styles.gradientButton}>Add New Inventory</Text>
         </LinearGradient>
-      </Pressable>
+      </Pressable> */}
     </SafeAreaView>
   );
 };
