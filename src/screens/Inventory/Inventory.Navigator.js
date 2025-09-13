@@ -56,11 +56,11 @@ export function InventoryNavigator(props) {
                             />
                         );
                     },
-                    headerTitle: props => {
-                        return (
-                            <Text style={styles.navigatorText}>Add New Inventory</Text>
-                        );
-                    },
+                    // headerTitle: props => {
+                    //     return (
+                    //         <Text style={styles.navigatorText}>Add New Inventory</Text>
+                    //     );
+                    // },
                 })}
             />
         </Stack.Navigator>

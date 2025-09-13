@@ -1,5 +1,6 @@
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react-native/no-inline-styles */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ActivityIndicator, Image, Pressable, SafeAreaView, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { CustomButton, CustomTextInput } from '../../components';
@@ -13,7 +14,7 @@ import { bindActionCreators } from 'redux';
 import { inventoryActions } from './Inventory.action';
 import UploadIcon from '../../assets/images/upload.png';
 import ImageCropPicker from 'react-native-image-crop-picker';
-import { API_ENDPOINT_IMG_PREFIX, STAGE_IMAGE_URL } from '../../constants/constants';
+import { STAGE_IMAGE_URL } from '../../constants/constants';
 import Toast from 'react-native-toast-message';
 
 const AddInventory = (props) => {
@@ -33,6 +34,18 @@ const AddInventory = (props) => {
     const [isRequestSent, setIsRequestSent] = useState(false);
     const [isFormSubmit, setIsFormSubmit] = useState(false);
     const cpUserId = props?.userProfile?.data?.cpUser?.id;
+
+    useLayoutEffect(() => {
+        props.navigation.setOptions({
+            headerTitle: props => {
+                return (
+                    <Text style={styles.navigatorText}>
+                        {data?.from === 'edit' ? 'Update Inventory' : 'Add New Inventory'}
+                    </Text>
+                );
+            },
+        });
+    }, []);
 
     useEffect(() => {
         getSocietyList();
@@ -616,5 +629,10 @@ export const styles = StyleSheet.create({
         color: '#fff',
         fontFamily: GlobalStyle.fontSet.Poppins500,
         fontSize: 14,
+    },
+    navigatorText: {
+        color: '#000',
+        fontSize: 16,
+        fontFamily: GlobalStyle.fontSet.Poppins600,
     },
 });

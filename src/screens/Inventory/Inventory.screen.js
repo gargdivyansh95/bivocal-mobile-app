@@ -119,7 +119,7 @@ const Inventory = (props) => {
             );
         }
     };
-    console.log(filteredPropertyList, 'propertyList')
+    // console.log(filteredPropertyList, 'propertyList')
 
     return (
         <SafeAreaView style={styles.container}>
