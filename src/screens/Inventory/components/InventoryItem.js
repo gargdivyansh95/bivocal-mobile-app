@@ -64,7 +64,7 @@ export default function InventoryItem(props) {
                             contentStyle={styles.menuStyle}
                         >
                             <Menu.Item titleStyle={styles.menuItemTitle} onPress={handleEdit} title="Edit Details" />
-                            <Menu.Item titleStyle={styles.menuItemTitle} onPress={() => { }} title="Mark Rent-Out" />
+                            <Menu.Item titleStyle={styles.menuItemTitle} onPress={() => props.openMarkRentOutDialog()} title="Mark Rent-Out" />
                         </Menu>
                     </View>
                     <Text style={styles.title}>{props?.item?.title}</Text>

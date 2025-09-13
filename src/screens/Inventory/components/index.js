@@ -1,3 +1,4 @@
 import ListHeader from './ListHeader';
 import InventoryItem from './InventoryItem';
-export {ListHeader, InventoryItem};
+import MarkRentOutDialog from './MarkRentOutDialog';
+export {ListHeader, InventoryItem, MarkRentOutDialog};

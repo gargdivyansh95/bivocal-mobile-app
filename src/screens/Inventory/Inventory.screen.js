@@ -14,7 +14,7 @@ import { bindActionCreators } from '@reduxjs/toolkit';
 import { styles } from './Inventory.style';
 import LinearGradient from 'react-native-linear-gradient';
 import AddIcon from '../../assets/images/add-square.png';
-import { InventoryItem, ListHeader } from './components';
+import { InventoryItem, ListHeader, MarkRentOutDialog } from './components';
 import { NAVIGATION } from '../../constants';
 import { inventoryActions } from './Inventory.action';
 
@@ -25,6 +25,7 @@ const Inventory = (props) => {
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [propertyList, setPropertyList] = useState([]);
     const [filteredPropertyList, setFilteredPropertyList] = useState([]);
+    const [isOpen, setIsOpen] = useState(false);
     const cpUserId = props?.userProfile?.data?.cpUser?.id;
 
     useEffect(() => {
@@ -91,6 +92,10 @@ const Inventory = (props) => {
         props.navigation.navigate(NAVIGATION.addInventory, { data: item, from: 'edit', onGoBack: refreshList });
     };
 
+    const openMarkRentOutDialog = (item) => {
+        setIsOpen(true);
+    };
+
     const renderHeader = useMemo(() => {
         return (
             <ListHeader
@@ -102,7 +107,7 @@ const Inventory = (props) => {
 
     const renderItem = ({ item }) => {
         return (
-            <InventoryItem item={item} handleEditDetails={handleEditDetails} />
+            <InventoryItem item={item} handleEditDetails={handleEditDetails} openMarkRentOutDialog={openMarkRentOutDialog} />
         );
     };
 
@@ -119,7 +124,7 @@ const Inventory = (props) => {
             );
         }
     };
-    // console.log(filteredPropertyList, 'propertyList')
+    console.log(filteredPropertyList, 'propertyList')
 
     return (
         <SafeAreaView style={styles.container}>
@@ -146,6 +151,10 @@ const Inventory = (props) => {
                     </LinearGradient>
                 </Pressable>
             </View>
+            <MarkRentOutDialog
+                visible={isOpen}
+                hideDialog={() => setIsOpen(false)}
+            />
         </SafeAreaView>
     );
 };
