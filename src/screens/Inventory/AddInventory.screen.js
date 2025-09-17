@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { inventoryActions } from './Inventory.action';
 import UploadIcon from '../../assets/images/upload.png';
+import DeleteIcon from '../../assets/images/delete.png';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import { STAGE_IMAGE_URL } from '../../constants/constants';
 import Toast from 'react-native-toast-message';
@@ -31,7 +32,6 @@ const AddInventory = (props) => {
     const [isKeyAvailable, setIsKeyAvailable] = useState(false);
     const [propertyImage, setPropertyImage] = useState([]);
     const [societyList, setSocietyList] = useState([]);
-    const [isRequestSent, setIsRequestSent] = useState(false);
     const [isFormSubmit, setIsFormSubmit] = useState(false);
     const cpUserId = props?.userProfile?.data?.cpUser?.id;
 
@@ -65,7 +65,13 @@ const AddInventory = (props) => {
                 setStartDate(new Date(property?.propDetails?.availableFrom));
             }
             if (property?.propertyImage?.length > 0) {
-                setPropertyImage(property.propertyImage);
+                const formattedImages = property.propertyImage.map(img => ({
+                    localPath: null,
+                    file: null,
+                    isUploading: false,
+                    uploadedData: img,
+                }));
+                setPropertyImage(formattedImages);
             }
         }
     }, [data]);
@@ -127,16 +133,28 @@ const AddInventory = (props) => {
                 mediaType: 'photo',
                 cropping: false,
             });
-            let { actions } = props;
-            let uploadedImages = [];
-            setIsRequestSent(true);
-            for (const img of images) {
+            // Step A: Add selected images immediately with isUploading true
+            const newImages = images.map(img => ({
+                localPath: img.path,
+                file: img,
+                isUploading: true,
+                uploadedData: null,
+            }));
+            setPropertyImage(prev => [...prev, ...newImages]);
+            // Step B: Upload one by one
+            for (const img of newImages) {
                 await new Promise((resolve, reject) => {
-                    actions.postPropertyImages(
-                        img,
+                    props.actions.postPropertyImages(
+                        img.file,
                         response => {
                             if (response?.data) {
-                                uploadedImages.push(response.data[0]);
+                                setPropertyImage(prev =>
+                                    prev.map(item =>
+                                        item.localPath === img.localPath
+                                            ? { ...item, isUploading: false, uploadedData: response.data[0] }
+                                            : item
+                                    )
+                                );
                                 resolve(true);
                             } else {
                                 reject('No response data');
@@ -149,16 +167,27 @@ const AddInventory = (props) => {
                     );
                 });
             }
-            setPropertyImage(prev => [...prev, ...uploadedImages]);
         } catch (error) {
             console.log('Error selecting or cropping image:', error);
-        } finally {
-            setIsRequestSent(false);
         }
     };
 
-    const isAddFormValid = societyType && bhkType && furnishType && propertyType && propertySize && monthlyRent && propertyImage.length > 0;
-    const isUpdateFormValid = societyType && bhkType && furnishType && propertyType && propertySize && monthlyRent;
+    const handleDeleteImage = (index) => {
+        setPropertyImage(prev =>
+            prev.map((item, i) => {
+                if (i === index && item.uploadedData) {
+                    return {
+                        ...item,
+                        uploadedData: {
+                            ...item.uploadedData,
+                            delete: true,
+                        },
+                    };
+                }
+                return item;
+            })
+        );
+    };
 
     const resetForm = () => {
         setStartDate(new Date());
@@ -173,11 +202,24 @@ const AddInventory = (props) => {
     };
 
     const handleAddInventory = () => {
-        const updatedPropertyImage = propertyImage.map((item, index) => ({
-            ...item,
-            isCover: index === 0 ? true : false,
-            delete: false,
-        }));
+        const nonDeletedImages = propertyImage.filter(item => item.uploadedData && !item.uploadedData?.delete);
+        const updatedPropertyImage = propertyImage.filter(item => item.uploadedData).map((item, index) => {
+            if (item.uploadedData?.delete) {
+                return {
+                    ...item.uploadedData,
+                    isCover: false,
+                    delete: true,
+                };
+            }
+            const nonDeletedIndex = nonDeletedImages.findIndex(
+                nd => nd.uploadedData === item.uploadedData
+            );
+            return {
+                ...item.uploadedData,
+                isCover: nonDeletedIndex === 0,
+                delete: false,
+            };
+        });
         const payload = {
             fields: {
                 cpUserId: cpUserId,
@@ -227,6 +269,23 @@ const AddInventory = (props) => {
     };
 
     const handleUpdateInventory = () => {
+        const nonDeletedImages = propertyImage.filter(
+            item => item.uploadedData && !item.uploadedData?.delete
+        );
+        const updatedImageList = propertyImage.filter(item => item.uploadedData).map((item) => {
+            const isDeleted = item.uploadedData?.delete === true;
+            const nonDeletedIndex = nonDeletedImages.findIndex(
+                nd => nd.uploadedData === item.uploadedData
+            );
+            return {
+                delete: isDeleted,
+                fileName: item.uploadedData.fileName,
+                isCover: !isDeleted && nonDeletedIndex === 0,
+                original: item.uploadedData.original,
+                sequence: item.uploadedData.sequence,
+                thumbnail: item.uploadedData.thumbnail,
+            };
+        });
         const payload = {
             propertyId: data?.data?.id,
             obj: {
@@ -238,6 +297,7 @@ const AddInventory = (props) => {
                     propertyArea: Number(propertySize),
                     expectedRent: Number(monthlyRent),
                 },
+                imageList: updatedImageList,
             },
         };
         setIsFormSubmit(true);
@@ -271,6 +331,11 @@ const AddInventory = (props) => {
             },
         );
     };
+
+    const isAnyImageUploading = propertyImage.some(img => img.isUploading);
+    const areAllImagesUploaded = propertyImage.length > 0 && propertyImage.every(img => !img.isUploading && img.uploadedData);
+    const isAddFormValid = societyType && bhkType && furnishType && propertyType && propertySize && monthlyRent && areAllImagesUploaded;
+    const isUpdateFormValid = societyType && bhkType && furnishType && propertyType && propertySize && monthlyRent;
 
     return (
         <SafeAreaView style={[styles.container]}>
@@ -411,23 +476,32 @@ const AddInventory = (props) => {
                     </View>
                     <View style={styles.inputBox}>
                         <Text style={styles.heading}>Upload property Photo</Text>
-                        {/* {propertyImage?.original && <Image source={{ uri: propertyImage?.original }} style={styles.propertyImage} />} */}
-                        {isRequestSent ?
-                            <ActivityIndicator color="#2668E0" /> :
-                            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.propertyImageContainer}>
-                                {propertyImage?.map((item, index) => {
-                                    return (
-                                        <View key={index} style={styles.propertyImageBox}>
-                                            <Image source={{ uri: `${STAGE_IMAGE_URL}` + item?.thumbnail }} style={styles.propertyImage} />
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.propertyImageContainer}>
+                            {propertyImage?.filter(item => !item.uploadedData?.delete).map((item, index) => (
+                                <View key={index} style={styles.propertyImageBox}>
+                                    <Image
+                                        source={{ uri: item.localPath || `${STAGE_IMAGE_URL}${item?.uploadedData?.thumbnail}` }}
+                                        style={styles.propertyImage}
+                                    />
+                                    {!item.isUploading && item.uploadedData &&
+                                        <Pressable style={styles.deleteContainer} onPress={() => handleDeleteImage(index)}>
+                                            <Image source={DeleteIcon} style={styles.deleteIcon} />
+                                        </Pressable>
+                                    }
+                                    {item.isUploading && (
+                                        <View style={styles.loadingContainer}>
+                                            <ActivityIndicator color="#fff" />
                                         </View>
-                                    );
-                                })}
-                            </ScrollView>
+                                    )}
+                                </View>
+                            ))}
+                        </ScrollView>
+                        {!isAnyImageUploading &&
+                            <Pressable style={styles.uploadBox} onPress={handleChoosePhoto}>
+                                <Text style={styles.uploadText}>Upload Photo</Text>
+                                <Image source={UploadIcon} style={styles.uploadIcon} />
+                            </Pressable>
                         }
-                        <Pressable style={styles.uploadBox} onPress={handleChoosePhoto}>
-                            <Text style={styles.uploadText}>Upload Photo</Text>
-                            <Image source={UploadIcon} style={styles.uploadIcon} />
-                        </Pressable>
                     </View>
                 </View>
                 <View style={styles.buttonContainer}>
@@ -598,7 +672,7 @@ export const styles = StyleSheet.create({
         fontSize: 14,
     },
     propertyImageContainer: {
-
+        marginBottom: 10,
     },
     propertyImageBox: {
         marginRight: 15,
@@ -607,7 +681,6 @@ export const styles = StyleSheet.create({
         width: 150,
         height: 150,
         borderRadius: 8,
-        marginBottom: 10,
     },
     buttonContainer: {
         paddingBottom: 5,
@@ -634,5 +707,25 @@ export const styles = StyleSheet.create({
         color: '#000',
         fontSize: 16,
         fontFamily: GlobalStyle.fontSet.Poppins600,
+    },
+    loadingContainer: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+        backgroundColor: 'rgba(0,0,0,0.6)',
+        borderRadius: 8,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    deleteContainer: {
+        position: 'absolute',
+        right: 8,
+        top: 8,
+    },
+    deleteIcon: {
+        width: 20,
+        height: 20,
     },
 });
