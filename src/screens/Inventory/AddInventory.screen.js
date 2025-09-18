@@ -284,6 +284,8 @@ const AddInventory = (props) => {
                 original: item.uploadedData.original,
                 sequence: item.uploadedData.sequence,
                 thumbnail: item.uploadedData.thumbnail,
+                _id: item.uploadedData._id,
+                propertyId: item.uploadedData.propertyId,
             };
         });
         const payload = {
