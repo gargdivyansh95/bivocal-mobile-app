@@ -87,9 +87,9 @@ const Login = props => {
           //onPress={() => setFlagComment(!flagComment)}
           /> */}
           < Text style={styles.subHeading}>{`By continuing I agree with the `}
-            <Text style={{ textDecorationLine: 'underline' }} onPress={() => Linking.openURL('https://bivocalbirds.com/privacy-policy')}>Privacy Policy</Text>
+            <Text style={{ textDecorationLine: 'underline', color: '#2668E0' }} onPress={() => Linking.openURL('https://bivocalbirds.com/privacy-policy')}>Privacy Policy</Text>
             <Text>,</Text>
-            <Text style={{ textDecorationLine: 'underline' }} onPress={() => Linking.openURL('https://bivocalbirds.com/terms-and-conditions')}>Terms & Conditions</Text>
+            <Text style={{ textDecorationLine: 'underline', color: '#2668E0' }} onPress={() => Linking.openURL('https://bivocalbirds.com/terms-and-conditions')}>Terms & Conditions</Text>
           </Text>
         </View>
       </View >

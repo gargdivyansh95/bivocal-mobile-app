@@ -148,13 +148,26 @@ const AddInventory = (props) => {
                         img.file,
                         response => {
                             if (response?.data) {
-                                setPropertyImage(prev =>
-                                    prev.map(item =>
+                                setPropertyImage(prev => {
+                                    const uploadedCount = prev.filter(p => p.uploadedData && !p.isUploading).length;
+                                    return prev.map(item =>
                                         item.localPath === img.localPath
-                                            ? { ...item, isUploading: false, uploadedData: response.data[0] }
+                                            ? {
+                                                ...item,
+                                                isUploading: false,
+                                                uploadedData: {
+                                                    ...response.data[0],
+                                                    sequence: uploadedCount + 1,
+                                                },
+                                            }
                                             : item
-                                    )
-                                );
+                                    );
+                                    // prev.map(item =>
+                                    //     item.localPath === img.localPath
+                                    //         ? { ...item, isUploading: false, uploadedData: response.data[0] }
+                                    //         : item
+                                    // )
+                                });
                                 resolve(true);
                             } else {
                                 reject('No response data');
