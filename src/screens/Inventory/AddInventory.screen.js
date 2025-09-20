@@ -305,6 +305,7 @@ const AddInventory = (props) => {
             propertyId: data?.data?.id,
             obj: {
                 fields: {
+                    societyId: societyType?.id,
                     propType: propertyType?.type,
                     status: data?.data?.status,
                     bhk: bhkType?.type,
@@ -315,6 +316,7 @@ const AddInventory = (props) => {
                 imageList: updatedImageList,
             },
         };
+        console.log(payload, 'update payload');
         setIsFormSubmit(true);
         let { actions } = props;
         actions.updateProperty(
