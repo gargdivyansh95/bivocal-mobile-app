@@ -86,18 +86,18 @@ export default function InventoryItem(props) {
                         <Image source={BuildingIcon} style={styles.icon} />
                         <Text style={styles.linkText}>{props?.item?.society?.name}</Text>
                     </View>
-                    <View style={[styles.flexItem, styles.colGap12, styles.mt5]}>
-                        <View style={[styles.flexItem, styles.iconBlock]}>
+                    <View style={[styles.flexItem, styles.colGap6, styles.mt5]}>
+                        <View style={[styles.flexItem, styles.iconBlock, { flex: 1 }]}>
                             <Image source={CalendarIcon} style={styles.icon} />
-                            <View>
-                                <Text style={styles.detailText}>Available from</Text>
+                            <View style={{flex: 1}}>
+                                <Text style={[styles.detailText]}>Available from</Text>
                                 <Text style={styles.priceText}>{props?.item?.propDetails?.availableFrom ? moment(props?.item?.propDetails?.availableFrom).format('DD/MM/YY') : 'N/A'}</Text>
                             </View>
                         </View>
-                        <View style={[styles.flexItem, styles.iconBlock]}>
+                        <View style={[styles.flexItem, styles.iconBlock, { flex: 1 }]}>
                             <Image source={RupeeIcon} style={styles.icon} />
-                            <View>
-                                <Text style={styles.detailText}>Monthly Rent</Text>
+                            <View style={{flex: 1}}>
+                                <Text style={[[styles.detailText]]}>Monthly Rent</Text>
                                 <Text style={styles.priceText}>₹{props?.item?.propDetails?.expectedRent}</Text>
                             </View>
                         </View>
@@ -132,6 +132,10 @@ export const styles = StyleSheet.create({
     },
     imageBlock: {
         width: GlobalStyle.width * 0.33,
+        borderWidth: 0.5,
+        borderColor: '#F2F2F2',
+        borderRadius: 8,
+        overflow: 'hidden',
     },
     // image: {
     //     width: '100%',
@@ -204,6 +208,7 @@ export const styles = StyleSheet.create({
         fontFamily: GlobalStyle.fontSet.Poppins500,
         fontSize: 12,
         color: '#000',
+        flex: 1,
     },
     linkText: {
         fontFamily: GlobalStyle.fontSet.Poppins500,

@@ -400,6 +400,7 @@ const AddInventory = (props) => {
                                 style={styles.inputStyle}
                                 onChangeText={setPropertySize}
                                 value={propertySize ?? ''}
+                                keyboardType="numeric"
                             />
                         </View>
                     </View>
@@ -487,6 +488,7 @@ const AddInventory = (props) => {
                             style={styles.inputStyle}
                             onChangeText={setMonthlyRent}
                             value={monthlyRent ?? ''}
+                            keyboardType="numeric"
                         />
                     </View>
                     <View style={styles.inputBox}>

@@ -24,11 +24,13 @@ export default function VisitListCarousel(props) {
         autoplayDelay={2}
         autoplayLoop
         // index={2}
-        // showPagination
-        // paginationActiveColor="#2668E0"
-        // paginationDefaultColor="#ccc"
+        showPagination
+        paginationActiveColor="#2668E0"
+        paginationDefaultColor="#ccc"
         data={props.data}
         renderItem={renderItem}
+        paginationStyle={{ bottom: -30 }}
+        paginationStyleItem={{ width: 8, height: 8, marginHorizontal: 4, borderRadius: 4 }}
       />
     </View>
   );

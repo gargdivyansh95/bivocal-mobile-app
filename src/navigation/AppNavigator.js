@@ -36,6 +36,7 @@ export default function AppNavigator() {
         },
         tabBarShowLabel: true,
         headerShown: false,
+        tabBarHideOnKeyboard: true,
         tabBarIcon: ({ color }) => {
           var iconName;
           if (route.name === NAVIGATION.tabHome) {

@@ -18,6 +18,9 @@ export const styles = StyleSheet.create({
     inventoryBtn: {
         paddingBottom: 10,
         paddingHorizontal: 15,
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
     },
     gradientBox: {
         borderRadius: 8,
