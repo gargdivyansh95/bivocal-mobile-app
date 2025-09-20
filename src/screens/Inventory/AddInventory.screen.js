@@ -742,8 +742,13 @@ export const styles = StyleSheet.create({
     },
     deleteContainer: {
         position: 'absolute',
-        right: 8,
-        top: 8,
+        right: 4,
+        top: 4,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        borderRadius: 50,
+        padding: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     deleteIcon: {
         width: 20,
