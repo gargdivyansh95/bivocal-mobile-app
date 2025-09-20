@@ -29,13 +29,13 @@ export default function InventoryItem(props) {
 
     const renderItem = ({ item, index }) => {
         return (
-            <Image key={`${index}`} source={{ uri: `${STAGE_IMAGE_URL}` + item?.thumbnail }} style={[styles.imageStyle]} />
+            <Image key={`${index}`} source={{ uri: `${STAGE_IMAGE_URL}` + item?.original }} style={[styles.imageStyle]} />
         );
     };
 
     return (
         <View style={styles.mainContainer}>
-            <View style={styles.inventoryCard}>
+            <Pressable style={styles.inventoryCard} onPress={handleEdit}>
                 <View style={styles.imageBlock}>
                     <SwiperFlatList
                         autoplay
@@ -103,7 +103,7 @@ export default function InventoryItem(props) {
                         </View>
                     </View>
                 </View>
-            </View>
+            </Pressable>
         </View>
     );
 }
@@ -147,7 +147,7 @@ export const styles = StyleSheet.create({
         width: GlobalStyle.width * 0.33,
         // height: 170,
         borderRadius: 8,
-        resizeMode: 'cover',
+        resizeMode: 'contain',
     },
     contentBlock: {
         flex: 1,

@@ -499,7 +499,7 @@ const AddInventory = (props) => {
                             {propertyImage?.filter(item => !item.uploadedData?.delete).map((item, index) => (
                                 <View key={index} style={styles.propertyImageBox}>
                                     <Image
-                                        source={{ uri: item.localPath || `${STAGE_IMAGE_URL}${item?.uploadedData?.thumbnail}` }}
+                                        source={{ uri: item.localPath || `${STAGE_IMAGE_URL}${item?.uploadedData?.original}` }}
                                         style={styles.propertyImage}
                                     />
                                     {!item.isUploading && item.uploadedData &&
@@ -700,6 +700,8 @@ export const styles = StyleSheet.create({
         width: 150,
         height: 150,
         borderRadius: 8,
+        // resizeMode: 'cover',
+        // resizeMode: 'contain',
     },
     buttonContainer: {
         paddingBottom: 5,
