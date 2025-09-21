@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react-native/no-inline-styles */
-import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { ActivityIndicator, Image, Pressable, SafeAreaView, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { ActivityIndicator, Dimensions, FlatList, Image, Modal, Pressable, SafeAreaView, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { CustomButton, CustomTextInput } from '../../components';
 import GlobalStyle from '../../style/globalstyle';
@@ -17,10 +17,18 @@ import DeleteIcon from '../../assets/images/delete.png';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import { STAGE_IMAGE_URL } from '../../constants/constants';
 import Toast from 'react-native-toast-message';
+import { IconButton } from 'react-native-paper';
+import CloseIcon from 'react-native-vector-icons/AntDesign';
+import LeftIcon from 'react-native-vector-icons/Entypo';
+import RightIcon from 'react-native-vector-icons/Entypo';
 
+const { width, height } = Dimensions.get('window');
 const AddInventory = (props) => {
 
     const data = props?.route?.params;
+    const [visible, setVisible] = useState(false);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const flatListRef = useRef(null);
     const [startdate, setStartDate] = useState(new Date());
     const [societyType, setSocietyType] = useState(null);
     const [bhkType, setBhkType] = useState(null);
@@ -34,6 +42,7 @@ const AddInventory = (props) => {
     const [societyList, setSocietyList] = useState([]);
     const [isFormSubmit, setIsFormSubmit] = useState(false);
     const cpUserId = props?.userProfile?.data?.cpUser?.id;
+
 
     useLayoutEffect(() => {
         props.navigation.setOptions({
@@ -349,6 +358,22 @@ const AddInventory = (props) => {
         );
     };
 
+    const openModal = (index) => {
+        setCurrentIndex(index);
+        setVisible(true);
+        // scroll directly to tapped image
+        setTimeout(() => {
+            flatListRef.current?.scrollToIndex({ index, animated: false });
+        }, 100);
+    };
+
+    const handleScrollTo = (index) => {
+        if (index >= 0 && index < propertyImage.length) {
+            flatListRef.current?.scrollToIndex({ index, animated: true });
+            setCurrentIndex(index);
+        }
+    };
+
     const isAnyImageUploading = propertyImage.some(img => img.isUploading);
     const areAllImagesUploaded = propertyImage.length > 0 && propertyImage.every(img => !img.isUploading && img.uploadedData);
     const isAddFormValid = societyType && bhkType && furnishType && propertyType && propertySize && monthlyRent && areAllImagesUploaded;
@@ -498,10 +523,12 @@ const AddInventory = (props) => {
                         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.propertyImageContainer}>
                             {propertyImage?.filter(item => !item.uploadedData?.delete).map((item, index) => (
                                 <View key={index} style={styles.propertyImageBox}>
-                                    <Image
-                                        source={{ uri: item.localPath || `${STAGE_IMAGE_URL}${item?.uploadedData?.original}` }}
-                                        style={styles.propertyImage}
-                                    />
+                                    <Pressable onPress={() => openModal(index)}>
+                                        <Image
+                                            source={{ uri: item.localPath || `${STAGE_IMAGE_URL}${item?.uploadedData?.original}` }}
+                                            style={styles.propertyImage}
+                                        />
+                                    </Pressable>
                                     {!item.isUploading && item.uploadedData &&
                                         <Pressable style={styles.deleteContainer} onPress={() => handleDeleteImage(index)}>
                                             <Image source={DeleteIcon} style={styles.deleteIcon} />
@@ -546,6 +573,62 @@ const AddInventory = (props) => {
                     }
                 </View>
             </KeyboardAwareScrollView>
+            <Modal visible={visible} transparent={true}>
+                <View style={styles.modalContainer}>
+                    <FlatList
+                        ref={flatListRef}
+                        data={propertyImage}
+                        keyExtractor={(_, idx) => idx.toString()}
+                        horizontal
+                        pagingEnabled
+                        initialScrollIndex={currentIndex}
+                        getItemLayout={(_, index) => ({
+                            length: width,
+                            offset: width * index,
+                            index,
+                        })}
+                        renderItem={({ item }) => (
+                            <View style={{ width, height, justifyContent: 'center', alignItems: 'center' }}>
+                                <Image source={{ uri: item.localPath || `${STAGE_IMAGE_URL}${item?.uploadedData?.original}` }} style={styles.fullImage} />
+                            </View>
+                        )}
+                    />
+                    <IconButton style={styles.closeButton}
+                        icon={() =>
+                            <CloseIcon
+                                name="close"
+                                size={24}
+                                color="#000"
+                            />}
+                        size={24}
+                        onPress={() => setVisible(false)}
+                    />
+                    {currentIndex > 0 && (
+                        <IconButton style={[styles.navButton, { left: 10 }]}
+                            icon={() =>
+                                <LeftIcon
+                                    name="chevron-thin-left"
+                                    size={24}
+                                    color="#000"
+                                />}
+                            size={24}
+                            onPress={() => handleScrollTo(currentIndex - 1)}
+                        />
+                    )}
+                    {currentIndex < propertyImage.length - 1 && (
+                        <IconButton style={[styles.navButton, { right: 10 }]}
+                            icon={() =>
+                                <RightIcon
+                                    name="chevron-thin-right"
+                                    size={24}
+                                    color="#000"
+                                />}
+                            size={24}
+                            onPress={() => handleScrollTo(currentIndex + 1)}
+                        />
+                    )}
+                </View>
+            </Modal>
         </SafeAreaView>
     );
 };
@@ -753,5 +836,27 @@ export const styles = StyleSheet.create({
     deleteIcon: {
         width: 20,
         height: 20,
+    },
+    modalContainer: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.9)',
+    },
+    fullImage: {
+        width: width,
+        height: height - 200,
+        resizeMode: 'contain',
+    },
+    closeButton: {
+        position: 'absolute',
+        top: 20,
+        right: 10,
+        backgroundColor: '#fff',
+    },
+    navButton: {
+        position: 'absolute',
+        top: '50%',
+        backgroundColor: '#fff',
+        borderRadius: 50,
+        transform: [{ translateY: -25 }],
     },
 });
