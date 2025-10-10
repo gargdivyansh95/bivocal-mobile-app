@@ -129,3 +129,12 @@ export const PropertyFurnishOptions = [
   { id: 2, type: 2, label: 'Semi-Furnished' },
 ];
 
+export const RentOutReasonOptions = [
+  { id: 1, type: 1, label: 'Tenant finalized' },
+  { id: 2, type: 2, label: 'Property occupied' },
+  { id: 3, type: 3, label: 'Owner request' },
+  { id: 4, type: 4, label: 'Deal closed through CP' },
+  { id: 5, type: 5, label: 'Rented through another source' },
+  { id: 6, type: 6, label: 'Other' },
+];
+

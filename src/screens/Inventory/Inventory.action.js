@@ -4,6 +4,7 @@ export const actionTypes = {
     PostProperty: '[Inventory] Post Property Action',
     GetProperty: '[Inventory] Get Property Action',
     UpdateProperty: '[Inventory] Update Property Action',
+    PostRentOutProperty: '[Inventory] Post Rent Out Property Action',
   };
 
   export const inventoryActions = {
@@ -12,4 +13,5 @@ export const actionTypes = {
     postProperty: (payload, onSuccess, onError) => ({ type: actionTypes.PostProperty, payload, onSuccess, onError }),
     getProperty: (payload, onSuccess, onError) => ({ type: actionTypes.GetProperty, payload, onSuccess, onError }),
     updateProperty: (payload, onSuccess, onError) => ({ type: actionTypes.UpdateProperty, payload, onSuccess, onError }),
+    postRentOutProperty: (payload, onSuccess, onError) => ({ type: actionTypes.PostRentOutProperty, payload, onSuccess, onError }),
   };

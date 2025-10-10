@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
     SafeAreaView,
     View,
@@ -17,15 +17,20 @@ import AddIcon from '../../assets/images/add-square.png';
 import { InventoryItem, ListHeader, MarkRentOutDialog } from './components';
 import { NAVIGATION } from '../../constants';
 import { inventoryActions } from './Inventory.action';
+import Toast from 'react-native-toast-message';
 
 const Inventory = (props) => {
 
+    const reasonInputRef = useRef(null);
     const [searchText, setSearchText] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [propertyList, setPropertyList] = useState([]);
     const [filteredPropertyList, setFilteredPropertyList] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
+    const [propertyId, setPropertyId] = useState(null);
+    const [reasonType, setReasonType] = useState(null);
+    const [isFormSubmit, setIsFormSubmit] = useState(false);
     const cpUserId = props?.userProfile?.data?.cpUser?.id;
 
     useEffect(() => {
@@ -92,8 +97,51 @@ const Inventory = (props) => {
         props.navigation.navigate(NAVIGATION.addInventory, { data: item, from: 'edit', onGoBack: refreshList });
     };
 
-    const openMarkRentOutDialog = (item) => {
+    const openMarkRentOutDialog = (id) => {
         setIsOpen(true);
+        setPropertyId(id);
+    };
+
+    const closeMarkRentOutDialog = () => {
+        setIsOpen(false);
+        setPropertyId(null);
+    };
+
+    const handleReasonType = (item) => {
+        setReasonType(item);
+    };
+
+    const handleChangeRentOutReason = (text) => {
+        reasonInputRef.current = text;
+    };
+
+    const handleMarkRentOut = () => {
+        let payload = {
+            propertyId: propertyId,
+            cpUserId: cpUserId,
+            rentOutReason: reasonType?.type,
+            otherRentOutReason: reasonInputRef.current,
+        };
+        setIsFormSubmit(true);
+        let { actions } = props;
+        actions.postRentOutProperty(
+            payload,
+            response => {
+            if (response?.data?.success === true) {
+                Toast.show({
+                    type: 'success',
+                    text1: response?.data?.message,
+                    text2: '',
+                });
+                setIsFormSubmit(false);
+                closeMarkRentOutDialog();
+                setReasonType(null);
+                reasonInputRef.current = null;
+            }
+        }, error => {
+            console.log('ERROR', error);
+            setIsFormSubmit(false);
+        });
     };
 
     const renderHeader = useMemo(() => {
@@ -107,7 +155,11 @@ const Inventory = (props) => {
 
     const renderItem = ({ item }) => {
         return (
-            <InventoryItem item={item} handleEditDetails={handleEditDetails} openMarkRentOutDialog={openMarkRentOutDialog} />
+            <InventoryItem
+                item={item}
+                handleEditDetails={handleEditDetails}
+                openMarkRentOutDialog={openMarkRentOutDialog}
+            />
         );
     };
 
@@ -153,7 +205,13 @@ const Inventory = (props) => {
             </View>
             <MarkRentOutDialog
                 visible={isOpen}
-                hideDialog={() => setIsOpen(false)}
+                isFormSubmit={isFormSubmit}
+                reasonType={reasonType}
+                reasonInputRef={reasonInputRef}
+                handleReasonType={handleReasonType}
+                handleChangeRentOutReason={handleChangeRentOutReason}
+                handleMarkRentOut={handleMarkRentOut}
+                hideDialog={closeMarkRentOutDialog}
             />
         </SafeAreaView>
     );
@@ -167,6 +225,7 @@ const ActionCreators = Object.assign(
     {},
     {
         getProperty: inventoryActions.getProperty,
+        postRentOutProperty: inventoryActions.postRentOutProperty,
     },
 );
 

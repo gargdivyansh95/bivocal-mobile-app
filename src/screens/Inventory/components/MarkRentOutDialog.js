@@ -1,23 +1,32 @@
 import React, { useState } from 'react';
 import { Dialog, Portal } from 'react-native-paper';
 import { StyleSheet, Text, View } from 'react-native';
-import { CustomButton } from '../../../components';
+import { CustomButton, CustomTextInput } from '../../../components';
 import GlobalStyle from '../../../style/globalstyle';
 import { Dropdown } from 'react-native-element-dropdown';
+import { RentOutReasonOptions } from '../../../constants/enum';
+import Toast from 'react-native-toast-message';
 
 export default function MarkRentOutDialog(props) {
 
-    const reasonList = [
-        { id: 1, title: 'Reason 1' },
-        { id: 2, title: 'Reason 2' },
-        { id: 3, title: 'Reason 3' },
-        { id: 4, title: 'Reason 4' },
-        { id: 5, title: 'Reason 5' },
-    ];
-    const [reasonType, setReasonType] = useState(null);
-
-    const handleReasonType = (item) => {
-        setReasonType(item);
+    const handleMark = () => {
+        if (!props.reasonType) {
+            Toast.show({
+                type: 'error',
+                text1: 'Please Select Rent Out Reason',
+                text2: '',
+            });
+            return;
+        }
+        if (props.reasonType?.type === 6 && !props.reasonInputRef) {
+            Toast.show({
+                type: 'error',
+                text1: 'Please Enter Rent Out Reason',
+                text2: '',
+            });
+            return;
+        }
+        props.handleMarkRentOut();
     };
 
     return (
@@ -30,16 +39,25 @@ export default function MarkRentOutDialog(props) {
                         <Text style={styles.heading}>Rent Out Reason</Text>
                         <Dropdown
                             style={styles.selectContainer}
-                            data={reasonList}
-                            labelField="title"
-                            valueField="id"
+                            data={RentOutReasonOptions}
+                            labelField="label"
+                            valueField="type"
                             placeholder="Select Rent Out Reason"
-                            value={reasonType?.id}
-                            onChange={item => handleReasonType(item)}
+                            value={props.reasonType?.type}
+                            onChange={item => props.handleReasonType(item)}
                             itemTextStyle={styles.itemTextStyle}
                             placeholderStyle={styles.placeholderStyle}
                             selectedTextStyle={styles.selectedTextStyle}
                         />
+                        {props.reasonType?.type === 6 &&
+                            <CustomTextInput
+                                placeholder="Please Enter Reason"
+                                placeholderTextColor="#808191"
+                                style={styles.inputStyle}
+                                onChangeText={props.handleChangeRentOutReason}
+                                value={props.reasonInputRef ?? ''}
+                            />
+                        }
                     </View>
                 </Dialog.Content>
                 <Dialog.Actions style={styles.dailogFooter}>
@@ -53,6 +71,8 @@ export default function MarkRentOutDialog(props) {
                         title="Confirm"
                         style={styles.btnDark}
                         labelStyle={styles.titleLight}
+                        loading={props.isFormSubmit}
+                        onPress={handleMark}
                     />
                 </Dialog.Actions>
             </Dialog>
@@ -146,5 +166,20 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontFamily: GlobalStyle.fontSet.Poppins500,
         fontSize: 14,
+    },
+    inputStyle: {
+        height: 44,
+        fontSize: 14,
+        paddingHorizontal: 10,
+        // backgroundColor: '#f2f3f7',
+        // borderRadius: 4,
+        borderWidth: 1,
+        borderColor: '#E8E8E8',
+        borderRadius: 8,
+        color: '#000',
+        fontFamily: GlobalStyle.fontSet.Poppins400,
+        paddingTop: 0,
+        paddingBottom: 0,
+        marginTop: 15,
     },
 });

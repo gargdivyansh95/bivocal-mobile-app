@@ -24,4 +24,5 @@ export const API_ENDPOINTS = {
   POSTPROPERTY: API_ENDPOINT_BASE_URL + '/property/cpProperty',
   GETPROPERTY: API_ENDPOINT_BASE_URL + '/property/cpProperty',
   UPDATEPROPERTY: API_ENDPOINT_BASE_URL + '/property/cpProperty/<PROPERTY_ID>',
+  POSTRENTOUTPROPERTY: API_ENDPOINT_BASE_URL + '/property/cpProperty/rentOutReq',
 };

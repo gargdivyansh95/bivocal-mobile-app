@@ -134,10 +134,35 @@ export function* postUpdateProperty(action) {
     return true;
 }
 
+export function* postRentOutProperty(action) {
+    let requestURL = API_ENDPOINTS.POSTRENTOUTPROPERTY;
+    let options = {};
+    options.headers = createHeadersWithAuth();
+    options.method = 'POST';
+    options.body = JSON.stringify(action.payload);
+    try {
+        const response = yield call(requestPromise, requestURL, options);
+        if (response && response.isSuccess === true) {
+            action.onSuccess(response);
+        } else {
+            action.onError(response);
+        }
+    } catch (error) {
+        console.log('Saga Error post rent out property+++', error);
+        action.onError({
+            s: '500',
+            m: 'Error while process your request!',
+            log: error,
+        });
+    }
+    return true;
+}
+
 export function* saga() {
     yield takeLatest(actionTypes.GetSociety, getSocietyList);
     yield takeLatest(actionTypes.PostPropertyImages, postPropertyImages);
     yield takeLatest(actionTypes.PostProperty, postProperty);
     yield takeLatest(actionTypes.GetProperty, getPropertyList);
     yield takeLatest(actionTypes.UpdateProperty, postUpdateProperty);
+    yield takeLatest(actionTypes.PostRentOutProperty, postRentOutProperty);
 }
