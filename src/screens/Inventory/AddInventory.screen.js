@@ -1,9 +1,9 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react-native/no-inline-styles */
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, Dimensions, FlatList, Image, Modal, Pressable, SafeAreaView, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { CustomButton, CustomTextInput } from '../../components';
+import { CustomButton, CustomTextInput, SocietySearchPicker } from '../../components';
 import GlobalStyle from '../../style/globalstyle';
 import { Dropdown } from 'react-native-element-dropdown';
 import { PropertyBHKOptions, PropertyFurnishOptions, PropertyTypeOptions } from '../../constants/enum';
@@ -21,15 +21,19 @@ import { IconButton } from 'react-native-paper';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
 import LeftIcon from 'react-native-vector-icons/Entypo';
 import RightIcon from 'react-native-vector-icons/Entypo';
+import ArrowDownIcon from '../../assets/images/ArrowDown.png';
+import { debounce } from '../../util/debounce';
 
 const { width, height } = Dimensions.get('window');
 const AddInventory = (props) => {
 
     const data = props?.route?.params;
+    const bottomSheetSocietyRef = useRef(null);
+    const flatListRef = useRef(null);
     const [visible, setVisible] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
-    const flatListRef = useRef(null);
     const [startdate, setStartDate] = useState(new Date());
+    const [searchText, setSearchText] = useState(null);
     const [societyType, setSocietyType] = useState(null);
     const [bhkType, setBhkType] = useState(null);
     const [furnishType, setFurnishType] = useState(null);
@@ -41,8 +45,8 @@ const AddInventory = (props) => {
     const [propertyImage, setPropertyImage] = useState([]);
     const [societyList, setSocietyList] = useState([]);
     const [isFormSubmit, setIsFormSubmit] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const cpUserId = props?.userProfile?.data?.cpUser?.id;
-
 
     useLayoutEffect(() => {
         props.navigation.setOptions({
@@ -57,13 +61,10 @@ const AddInventory = (props) => {
     }, []);
 
     useEffect(() => {
-        getSocietyList();
-    }, []);
-
-    useEffect(() => {
         if (data?.from === 'edit' && data?.data) {
             const property = data?.data;
-            setSocietyType({ id: property?.society?.id });
+            // setSocietyType({ id: property?.society?.id });
+            setSocietyType({ id: property?.society?.id, title: property?.society?.title });
             setBhkType({ type: property?.bhk });
             setFurnishType({ type: property?.propDetails?.furnish });
             setPropertyType({ type: property?.propType });
@@ -85,16 +86,19 @@ const AddInventory = (props) => {
         }
     }, [data]);
 
-    const getSocietyList = () => {
+    const getSocietyList = (text) => {
         const filter = {
             'where': {
                 'name': {
                     'options': 'i',
-                    'like': 'sa.*',
+                    // 'like': searchText ?? '',
+                    'like': text ? `${text}.*` : '',
                 },
                 'active': true,
             },
+            'limit': 20,
         };
+        setIsLoading(true);
         const filteredData = JSON.stringify(filter);
         let { actions } = props;
         actions.getSociety(
@@ -102,12 +106,18 @@ const AddInventory = (props) => {
             response => {
                 if (response?.data) {
                     setSocietyList(response.data);
+                    setIsLoading(false);
                 }
             },
             error => {
                 console.log('ERROR', error);
+                setIsLoading(false);
             },
         );
+    };
+
+    const handleOpenPicker = () => {
+        bottomSheetSocietyRef?.current?.present();
     };
 
     const handleSocietyType = (item) => {
@@ -374,6 +384,24 @@ const AddInventory = (props) => {
         }
     };
 
+    const debouncedSearch = useMemo(() => debounce((query) => {
+        if (query && query.trim().length > 0) {
+            getSocietyList(query);
+        }
+    }, 500), []);
+
+    const handleSearchSociety = (text) => {
+        setSearchText(text);
+        const trimmed = text.trim();
+        if (!trimmed) {
+            // cancel any running debounce + clear list
+            debouncedSearch.cancel();
+            setSocietyList([]);
+            return;
+        }
+        debouncedSearch(trimmed);
+    };
+
     const isAnyImageUploading = propertyImage.some(img => img.isUploading);
     const areAllImagesUploaded = propertyImage.length > 0 && propertyImage.every(img => !img.isUploading && img.uploadedData);
     const isAddFormValid = societyType && bhkType && furnishType && propertyType && propertySize && monthlyRent && areAllImagesUploaded;
@@ -390,18 +418,10 @@ const AddInventory = (props) => {
                 <View style={styles.screenContainer}>
                     <View style={styles.inputBox}>
                         <Text style={styles.heading}>Society</Text>
-                        <Dropdown
-                            style={styles.selectContainer}
-                            data={societyList}
-                            labelField="title"
-                            valueField="id"
-                            placeholder="Select the Society"
-                            value={societyType?.id}
-                            onChange={item => handleSocietyType(item)}
-                            itemTextStyle={styles.itemTextStyle}
-                            placeholderStyle={styles.placeholderStyle}
-                            selectedTextStyle={styles.selectedTextStyle}
-                        />
+                        <Pressable onPress={handleOpenPicker} style={styles.selectBox}>
+                            <Text style={[styles.selectTitle, { flex: 1 }]}>{societyType?.title ?? 'Select Society'}</Text>
+                            <Image source={ArrowDownIcon} style={styles.icon} />
+                        </Pressable>
                     </View>
                     <View style={styles.inputRow}>
                         <View style={styles.inputCol}>
@@ -629,6 +649,14 @@ const AddInventory = (props) => {
                     )}
                 </View>
             </Modal>
+            <SocietySearchPicker
+                bottomSheetRef={bottomSheetSocietyRef}
+                societyList={societyList}
+                searchText={searchText}
+                isLoading={isLoading}
+                onSelectItem={(ele) => handleSocietyType(ele)}
+                onSearchSociety={(text) => handleSearchSociety(text)}
+            />
         </SafeAreaView>
     );
 };
@@ -678,6 +706,11 @@ export const styles = StyleSheet.create({
     },
     inputCol: {
         width: '48%',
+    },
+    icon: {
+        width: 24,
+        height: 24,
+        resizeMode: 'contain',
     },
     heading: {
         fontFamily: GlobalStyle.fontSet.Poppins500,
@@ -735,6 +768,9 @@ export const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 10,
         width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
     },
     selectTitle: {
         fontSize: 14,

@@ -15,8 +15,8 @@ import Toast from 'react-native-toast-message';
 import RemotePushController from './services/RemotePushController';
 import { RootNavigator } from './navigation';
 import VersionFind from './util/VersionFind';
-// import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-// import { PortalProvider } from '@gorhom/portal';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { PortalProvider } from '@gorhom/portal';
 
 const App = () => {
 
@@ -29,13 +29,13 @@ const App = () => {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <PaperProvider>
-            {/* <BottomSheetModalProvider>
-              <PortalProvider> */}
+            <BottomSheetModalProvider>
+              <PortalProvider>
                 <RootNavigator />
                 <RemotePushController />
                 <Toast />
-              {/* </PortalProvider>
-            </BottomSheetModalProvider> */}
+              </PortalProvider>
+            </BottomSheetModalProvider>
           </PaperProvider>
         </PersistGate>
       </Provider>
