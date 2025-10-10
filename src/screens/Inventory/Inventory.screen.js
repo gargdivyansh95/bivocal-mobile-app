@@ -116,6 +116,22 @@ const Inventory = (props) => {
     };
 
     const handleMarkRentOut = () => {
+        if (!reasonType) {
+            Toast.show({
+                type: 'error',
+                text1: 'Please Select Rent Out Reason',
+                text2: '',
+            });
+            return;
+        }
+        if (reasonType?.type === 6 && !reasonInputRef.current) {
+            Toast.show({
+                type: 'error',
+                text1: 'Please Enter Rent Out Reason',
+                text2: '',
+            });
+            return;
+        }
         let payload = {
             propertyId: propertyId,
             cpUserId: cpUserId,
@@ -207,7 +223,6 @@ const Inventory = (props) => {
                 visible={isOpen}
                 isFormSubmit={isFormSubmit}
                 reasonType={reasonType}
-                reasonInputRef={reasonInputRef}
                 handleReasonType={handleReasonType}
                 handleChangeRentOutReason={handleChangeRentOutReason}
                 handleMarkRentOut={handleMarkRentOut}

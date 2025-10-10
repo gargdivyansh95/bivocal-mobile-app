@@ -5,29 +5,8 @@ import { CustomButton, CustomTextInput } from '../../../components';
 import GlobalStyle from '../../../style/globalstyle';
 import { Dropdown } from 'react-native-element-dropdown';
 import { RentOutReasonOptions } from '../../../constants/enum';
-import Toast from 'react-native-toast-message';
 
 export default function MarkRentOutDialog(props) {
-
-    const handleMark = () => {
-        if (!props.reasonType) {
-            Toast.show({
-                type: 'error',
-                text1: 'Please Select Rent Out Reason',
-                text2: '',
-            });
-            return;
-        }
-        if (props.reasonType?.type === 6 && !props.reasonInputRef) {
-            Toast.show({
-                type: 'error',
-                text1: 'Please Enter Rent Out Reason',
-                text2: '',
-            });
-            return;
-        }
-        props.handleMarkRentOut();
-    };
 
     return (
         <Portal>
@@ -55,7 +34,6 @@ export default function MarkRentOutDialog(props) {
                                 placeholderTextColor="#808191"
                                 style={styles.inputStyle}
                                 onChangeText={props.handleChangeRentOutReason}
-                                value={props.reasonInputRef ?? ''}
                             />
                         }
                     </View>
@@ -72,7 +50,7 @@ export default function MarkRentOutDialog(props) {
                         style={styles.btnDark}
                         labelStyle={styles.titleLight}
                         loading={props.isFormSubmit}
-                        onPress={handleMark}
+                        onPress={props.handleMarkRentOut}
                     />
                 </Dialog.Actions>
             </Dialog>
