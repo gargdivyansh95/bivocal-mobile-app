@@ -25,7 +25,7 @@ const MyProfileScreen = (props) => {
   useEffect(() => {
     setFName(userData?.contact?.firstName);
     setLName(userData?.contact?.lastName);
-    setEmail(userData?.email);
+    setEmail(userData?.contact?.email);
   }, [userData]);
 
   // useEffect(() => {
