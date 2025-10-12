@@ -220,6 +220,7 @@ const AddInventory = (props) => {
             })
         );
     };
+    console.log(propertyImage, 'propertyimage');
 
     const resetForm = () => {
         setStartDate(new Date());
@@ -541,26 +542,29 @@ const AddInventory = (props) => {
                     <View style={styles.inputBox}>
                         <Text style={styles.heading}>Upload property Photo</Text>
                         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.propertyImageContainer}>
-                            {propertyImage?.filter(item => !item.uploadedData?.delete).map((item, index) => (
-                                <View key={index} style={styles.propertyImageBox}>
-                                    <Pressable onPress={() => openModal(index)}>
-                                        <Image
-                                            source={{ uri: item.localPath || `${STAGE_IMAGE_URL}${item?.uploadedData?.original}` }}
-                                            style={styles.propertyImage}
-                                        />
-                                    </Pressable>
-                                    {!item.isUploading && item.uploadedData &&
-                                        <Pressable style={styles.deleteContainer} onPress={() => handleDeleteImage(index)}>
-                                            <Image source={DeleteIcon} style={styles.deleteIcon} />
+                            {propertyImage.map((item, originalIndex) => {
+                                if (item.uploadedData?.delete) {return null;}
+                                return (
+                                    <View key={originalIndex} style={styles.propertyImageBox}>
+                                        <Pressable onPress={() => openModal(originalIndex)}>
+                                            <Image
+                                                source={{ uri: item.localPath || `${STAGE_IMAGE_URL}${item?.uploadedData?.original}` }}
+                                                style={styles.propertyImage}
+                                            />
                                         </Pressable>
-                                    }
-                                    {item.isUploading && (
-                                        <View style={styles.loadingContainer}>
-                                            <ActivityIndicator color="#fff" />
-                                        </View>
-                                    )}
-                                </View>
-                            ))}
+                                        {!item.isUploading && item.uploadedData && (
+                                            <Pressable style={styles.deleteContainer} onPress={() => handleDeleteImage(originalIndex)}>
+                                                <Image source={DeleteIcon} style={styles.deleteIcon} />
+                                            </Pressable>
+                                        )}
+                                        {item.isUploading && (
+                                            <View style={styles.loadingContainer}>
+                                                <ActivityIndicator color="#fff" />
+                                            </View>
+                                        )}
+                                    </View>
+                                );
+                            })}
                         </ScrollView>
                         {!isAnyImageUploading &&
                             <Pressable style={styles.uploadBox} onPress={handleChoosePhoto}>
