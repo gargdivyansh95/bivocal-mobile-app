@@ -220,7 +220,6 @@ const AddInventory = (props) => {
             })
         );
     };
-    console.log(propertyImage, 'propertyimage');
 
     const resetForm = () => {
         setStartDate(new Date());
