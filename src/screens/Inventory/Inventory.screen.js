@@ -136,7 +136,7 @@ const Inventory = (props) => {
             propertyId: propertyId,
             cpUserId: cpUserId,
             rentOutReason: reasonType?.type,
-            otherRentOutReason: reasonInputRef.current,
+            otherRentOutReason: reasonInputRef.current ?? '',
         };
         setIsFormSubmit(true);
         let { actions } = props;
@@ -149,6 +149,7 @@ const Inventory = (props) => {
                     text1: response?.data?.message,
                     text2: '',
                 });
+                getPropertyList();
                 setIsFormSubmit(false);
                 closeMarkRentOutDialog();
                 setReasonType(null);

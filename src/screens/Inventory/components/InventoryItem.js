@@ -33,6 +33,8 @@ export default function InventoryItem(props) {
         );
     };
 
+    const rentOutStatus = props?.item?.rentOutReq?.responseType;
+
     return (
         <View style={styles.mainContainer}>
             <Pressable style={styles.inventoryCard} onPress={handleEdit}>
@@ -64,7 +66,9 @@ export default function InventoryItem(props) {
                             contentStyle={styles.menuStyle}
                         >
                             <Menu.Item titleStyle={styles.menuItemTitle} onPress={handleEdit} title="Edit Details" />
-                            <Menu.Item titleStyle={styles.menuItemTitle} onPress={() => props.openMarkRentOutDialog(props?.item?.id)} title="Mark Rent-Out" />
+                            {!props?.item?.rentOutReq || rentOutStatus === 2 ?
+                                <Menu.Item titleStyle={styles.menuItemTitle} onPress={() => props.openMarkRentOutDialog(props?.item?.id)} title="Mark Rent-Out" /> : null
+                            }
                         </Menu>
                     </View>
                     <Text style={styles.title}>{props?.item?.title}</Text>
@@ -102,6 +106,20 @@ export default function InventoryItem(props) {
                             </View>
                         </View>
                     </View>
+                    {props?.item?.rentOutReq &&
+                        <View style={styles.statusContainer}>
+                            <Text style={styles.detailText}>Rent Out Status:</Text>
+                            <View style={[styles.statusBox, {
+                                borderColor: rentOutStatus === 3 ? '#FFA500' :
+                                    rentOutStatus === 2 ? '#FF0000' : '#05C168',
+                                backgroundColor: rentOutStatus === 3 ? '#FFA5001A' : rentOutStatus === 2 ? '#FF00001A' : '#05C1681A',
+                            }]}>
+                                <Text style={[styles.statusText, { color: rentOutStatus === 3 ? '#FFA500' : rentOutStatus === 2 ? '#FF0000' : '#05C168' }]}>
+                                    {rentOutStatus === 3 ? 'Pending' : rentOutStatus === 2 ? 'Rejected' : 'Accepted'}
+                                </Text>
+                            </View>
+                        </View>
+                    }
                 </View>
             </Pressable>
         </View>
@@ -236,6 +254,22 @@ export const styles = StyleSheet.create({
         borderRadius: 50,
     },
     reviewText: {
+        fontFamily: GlobalStyle.fontSet.Poppins600,
+        fontSize: 10,
+    },
+    statusContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        columnGap: 4,
+        marginTop: 6,
+    },
+    statusBox: {
+        borderWidth: 0.4,
+        borderRadius: 4,
+        paddingVertical: 2,
+        paddingHorizontal: 5,
+    },
+    statusText: {
         fontFamily: GlobalStyle.fontSet.Poppins600,
         fontSize: 10,
     },

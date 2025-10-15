@@ -138,3 +138,8 @@ export const RentOutReasonOptions = [
   { id: 6, type: 6, label: 'Other' },
 ];
 
+// export const RentOutStatus = [
+//   { id: 1, type: 1, label: 'Accept' },
+//   { id: 2, type: 2, label: 'Reject' },
+//   { id: 3, type: 3, label: 'Pending' },
+// ];
