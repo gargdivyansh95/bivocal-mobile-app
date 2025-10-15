@@ -66,8 +66,8 @@ export default function InventoryItem(props) {
                             contentStyle={styles.menuStyle}
                         >
                             <Menu.Item titleStyle={styles.menuItemTitle} onPress={handleEdit} title="Edit Details" />
-                            {!props?.item?.rentOutReq || rentOutStatus === 2 ?
-                                <Menu.Item titleStyle={styles.menuItemTitle} onPress={() => props.openMarkRentOutDialog(props?.item?.id)} title="Mark Rent-Out" /> : null
+                            {rentOutStatus === 1 || rentOutStatus === 3 ? null :
+                                <Menu.Item titleStyle={styles.menuItemTitle} onPress={() => props.openMarkRentOutDialog(props?.item?.id)} title="Mark Rent-Out" />
                             }
                         </Menu>
                     </View>
