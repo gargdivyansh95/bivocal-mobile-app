@@ -331,6 +331,8 @@ const AddInventory = (props) => {
                     furnish: furnishType?.type,
                     propertyArea: Number(propertySize),
                     expectedRent: Number(monthlyRent),
+                    keyy: isKeyAvailable,
+                    availableFrom: startdate.toISOString(),
                 },
                 imageList: updatedImageList,
             },
