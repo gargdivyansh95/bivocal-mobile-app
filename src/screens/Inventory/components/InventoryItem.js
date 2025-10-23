@@ -13,7 +13,7 @@ import MoreIcon from '../../../assets/images/more.png';
 import moment from 'moment';
 import { Menu } from 'react-native-paper';
 import SwiperFlatList from 'react-native-swiper-flatlist';
-import { STAGE_IMAGE_URL } from '../../../constants/constants';
+import { API_ENDPOINT_IMG_PREFIX, STAGE_IMAGE_URL } from '../../../constants/constants';
 
 export default function InventoryItem(props) {
 
@@ -29,7 +29,7 @@ export default function InventoryItem(props) {
 
     const renderItem = ({ item, index }) => {
         return (
-            <Image key={`${index}`} source={{ uri: `${STAGE_IMAGE_URL}` + item?.original }} style={[styles.imageStyle]} />
+            <Image key={`${index}`} source={{ uri: `${API_ENDPOINT_IMG_PREFIX}` + item?.original }} style={[styles.imageStyle]} />
         );
     };
 

@@ -15,7 +15,7 @@ import { inventoryActions } from './Inventory.action';
 import UploadIcon from '../../assets/images/upload.png';
 import DeleteIcon from '../../assets/images/delete.png';
 import ImageCropPicker from 'react-native-image-crop-picker';
-import { STAGE_IMAGE_URL } from '../../constants/constants';
+import { API_ENDPOINT_IMG_PREFIX, STAGE_IMAGE_URL } from '../../constants/constants';
 import Toast from 'react-native-toast-message';
 import { IconButton } from 'react-native-paper';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
@@ -549,7 +549,7 @@ const AddInventory = (props) => {
                                     <View key={originalIndex} style={styles.propertyImageBox}>
                                         <Pressable onPress={() => openModal(originalIndex)}>
                                             <Image
-                                                source={{ uri: item.localPath || `${STAGE_IMAGE_URL}${item?.uploadedData?.original}` }}
+                                                source={{ uri: item.localPath || `${API_ENDPOINT_IMG_PREFIX}${item?.uploadedData?.original}` }}
                                                 style={styles.propertyImage}
                                             />
                                         </Pressable>
@@ -614,7 +614,7 @@ const AddInventory = (props) => {
                         })}
                         renderItem={({ item }) => (
                             <View style={{ width, height, justifyContent: 'center', alignItems: 'center' }}>
-                                <Image source={{ uri: item.localPath || `${STAGE_IMAGE_URL}${item?.uploadedData?.original}` }} style={styles.fullImage} />
+                                <Image source={{ uri: item.localPath || `${API_ENDPOINT_IMG_PREFIX}${item?.uploadedData?.original}` }} style={styles.fullImage} />
                             </View>
                         )}
                     />
