@@ -1,12 +1,8 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { View, Text, SafeAreaView, Platform, Pressable, Image, Keyboard } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, SafeAreaView, Keyboard } from 'react-native';
 import { styles } from './NeedQuery.style';
 import { CustomButton, CustomTextInput } from '../../components';
-import BackIcon from 'react-native-vector-icons/AntDesign';
-import { FullWindowOverlay } from 'react-native-screens';
-import { IconButton } from 'react-native-paper';
-import ArrowDownIcon from '../../assets/images/ArrowDown.png';
 import { ECustomerType } from '../../constants/enum';
 import Toast from 'react-native-toast-message';
 import { connect } from 'react-redux';
@@ -14,6 +10,7 @@ import { bindActionCreators } from '@reduxjs/toolkit';
 import { needQueryActions } from './NeedQuery.action';
 import { Dropdown } from 'react-native-element-dropdown';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { isValidEmail, isValidIndianMobile, isValidName } from '../../util/helpers';
 
 const NeedQuery = (props) => {
 
@@ -30,46 +27,54 @@ const NeedQuery = (props) => {
   };
 
   const handleSubmit = () => {
-    if (!fName) {
+    if (!isFormValid) {
       Toast.show({
         type: 'error',
-        text1: 'First Name is Required',
+        text1: 'Please enter required fileds',
         text2: '',
       });
       return false;
     }
-    if (!lName) {
-      Toast.show({
-        type: 'error',
-        text1: 'Last Name is Required',
-        text2: '',
-      });
-      return false;
-    }
-    if (!email) {
-      Toast.show({
-        type: 'error',
-        text1: 'Please Enter Valid Email',
-        text2: '',
-      });
-      return false;
-    }
-    if (!mobile || mobile.length < 10) {
-      Toast.show({
-        type: 'error',
-        text1: 'Please Enter a valid 10-digit Mobile Number',
-        text2: '',
-      });
-      return false;
-    }
-    if (!customerType) {
-      Toast.show({
-        type: 'error',
-        text1: 'Please Select Customer Type',
-        text2: '',
-      });
-      return false;
-    }
+    // if (!isValidName(fName)) {
+    //   Toast.show({
+    //     type: 'error',
+    //     text1: 'First Name is Required',
+    //     text2: '',
+    //   });
+    //   return false;
+    // }
+    // if (!isValidName(lName)) {
+    //   Toast.show({
+    //     type: 'error',
+    //     text1: 'Last Name is Required',
+    //     text2: '',
+    //   });
+    //   return false;
+    // }
+    // if (!isValidEmail(email)) {
+    //   Toast.show({
+    //     type: 'error',
+    //     text1: 'Please Enter Valid Email',
+    //     text2: '',
+    //   });
+    //   return false;
+    // }
+    // if (!isValidIndianMobile(mobile)) {
+    //   Toast.show({
+    //     type: 'error',
+    //     text1: 'Please Enter a valid 10-digit Mobile Number',
+    //     text2: '',
+    //   });
+    //   return false;
+    // }
+    // if (!customerType) {
+    //   Toast.show({
+    //     type: 'error',
+    //     text1: 'Please Select Customer Type',
+    //     text2: '',
+    //   });
+    //   return false;
+    // }
     let payload = {
       availableFromProp: null,
       callStatus: 2,
@@ -113,6 +118,15 @@ const NeedQuery = (props) => {
     );
   };
 
+  const isFormValid =
+    isValidName(fName) &&
+    (!lName || isValidName(lName)) &&
+    (!email || isValidEmail(email)) &&
+    isValidIndianMobile(mobile) &&
+    !!customerType;
+
+  console.log("isFormValid: ", isFormValid);
+
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAwareScrollView
@@ -131,7 +145,7 @@ const NeedQuery = (props) => {
             data={ECustomerType}
             labelField="label"
             valueField="type"
-            placeholder="Select Customer Type"
+            placeholder="Select Customer Type*"
             value={customerType?.type}
             onChange={item => handleType(item)}
             itemTextStyle={styles.itemTextStyle}
@@ -140,7 +154,7 @@ const NeedQuery = (props) => {
           />
           <View style={styles.inputBox}>
             <CustomTextInput
-              placeholder="First Name"
+              placeholder="First Name*"
               placeholderTextColor="#808191"
               style={styles.inputStyle}
               onChangeText={setFName}
@@ -168,8 +182,9 @@ const NeedQuery = (props) => {
           </View>
           <View style={styles.inputBox}>
             <CustomTextInput
-              placeholder="Mobile"
+              placeholder="Mobile*"
               placeholderTextColor="#808191"
+              maxLength={1044444}
               style={styles.inputStyle}
               onChangeText={setMobile}
               value={mobile ?? ''}
@@ -179,11 +194,11 @@ const NeedQuery = (props) => {
         </View>
         <View style={styles.buttonContainer}>
           <CustomButton
-            style={[styles.buttonStyle, fName && lName && email && mobile && customerType ? styles.buttonActive : styles.buttonInActive]}
+            style={[styles.buttonStyle, isFormValid ? styles.buttonActive : styles.buttonInActive]}
             labelStyle={styles.actionTitle}
-            title="Submit"
+            title="Submitt"
             mode="contained"
-            disabled={fName && lName && email && mobile && customerType ? false : true || loading ? true : false}
+            disabled={isFormValid ? false : true}
             onPress={() => handleSubmit()}
             loading={loading}
           />

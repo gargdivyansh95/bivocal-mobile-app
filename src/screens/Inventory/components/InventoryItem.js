@@ -93,14 +93,14 @@ export default function InventoryItem(props) {
                     <View style={[styles.flexItem, styles.colGap6, styles.mt5]}>
                         <View style={[styles.flexItem, styles.iconBlock, { flex: 1 }]}>
                             <Image source={CalendarIcon} style={styles.icon} />
-                            <View style={{flex: 1}}>
+                            <View style={{ flex: 1 }}>
                                 <Text style={[styles.detailText]}>Available from</Text>
                                 <Text style={styles.priceText}>{props?.item?.propDetails?.availableFrom ? moment(props?.item?.propDetails?.availableFrom).format('DD/MM/YY') : 'N/A'}</Text>
                             </View>
                         </View>
                         <View style={[styles.flexItem, styles.iconBlock, { flex: 1 }]}>
                             <Image source={RupeeIcon} style={styles.icon} />
-                            <View style={{flex: 1}}>
+                            <View style={{ flex: 1 }}>
                                 <Text style={[[styles.detailText]]}>Monthly Rent</Text>
                                 <Text style={styles.priceText}>₹{props?.item?.propDetails?.expectedRent}</Text>
                             </View>

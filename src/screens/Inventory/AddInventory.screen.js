@@ -23,6 +23,7 @@ import LeftIcon from 'react-native-vector-icons/Entypo';
 import RightIcon from 'react-native-vector-icons/Entypo';
 import ArrowDownIcon from '../../assets/images/ArrowDown.png';
 import { debounce } from '../../util/debounce';
+import CITIES from '../../assets/city.json';
 
 const { width, height } = Dimensions.get('window');
 const AddInventory = (props) => {
@@ -46,6 +47,10 @@ const AddInventory = (props) => {
     const [societyList, setSocietyList] = useState([]);
     const [isFormSubmit, setIsFormSubmit] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [city, setCity] = useState({
+        "id": "5f54cf182799ec0004a8bad7",
+        "label": "Noida Extension"
+    })//keep Noida Extention default
     const cpUserId = props?.userProfile?.data?.cpUser?.id;
 
     useLayoutEffect(() => {
@@ -64,13 +69,15 @@ const AddInventory = (props) => {
         if (data?.from === 'edit' && data?.data) {
             const property = data?.data;
             // setSocietyType({ id: property?.society?.id });
-            setSocietyType({ id: property?.society?.id, title: property?.society?.title });
+            setSocietyType({ id: property?.society?.id, name: property?.society?.name });
             setBhkType({ type: property?.bhk });
             setFurnishType({ type: property?.propDetails?.furnish });
             setPropertyType({ type: property?.propType });
             setPropertySize(String(property?.propDetails?.propertyArea));
             setMonthlyRent(String(property?.propDetails?.expectedRent));
             setIsKeyAvailable(property?.propDetails?.keyy);
+            setCity({ id: property?.city?.id, label: property?.city?.name });
+
             if (property?.propDetails?.availableFrom) {
                 setStartDate(new Date(property?.propDetails?.availableFrom));
             }
@@ -95,6 +102,7 @@ const AddInventory = (props) => {
                     'like': text ? `${text}.*` : '',
                 },
                 'active': true,
+                'cityId': city?.id ?? '5f54cf182799ec0004a8bad7'
             },
             'limit': 20,
         };
@@ -104,6 +112,7 @@ const AddInventory = (props) => {
         actions.getSociety(
             filteredData,
             response => {
+                console.log("resp: ", response)
                 if (response?.data) {
                     setSocietyList(response.data);
                     setIsLoading(false);
@@ -120,7 +129,15 @@ const AddInventory = (props) => {
         bottomSheetSocietyRef?.current?.present();
     };
 
+    const handleCity = (item) => {
+        console.log("city: ", item)
+        setCity(item);
+        setSocietyType(null);
+    }
+
     const handleSocietyType = (item) => {
+        setSearchText('');
+        setSocietyList(null);
         setSocietyType(item);
     };
 
@@ -265,6 +282,7 @@ const AddInventory = (props) => {
                 availableFrom: startdate.toISOString(),
                 societyId: societyType?.id,
                 sharedByPartner: true,
+                cityId: city?.id
             },
             imageList: updatedPropertyImage,
         };
@@ -318,6 +336,7 @@ const AddInventory = (props) => {
                 thumbnail: item.uploadedData.thumbnail,
                 _id: item.uploadedData._id,
                 propertyId: item.uploadedData.propertyId,
+
             };
         });
         const payload = {
@@ -333,6 +352,7 @@ const AddInventory = (props) => {
                     expectedRent: Number(monthlyRent),
                     keyy: isKeyAvailable,
                     availableFrom: startdate.toISOString(),
+                    cityId: city?.id
                 },
                 imageList: updatedImageList,
             },
@@ -386,11 +406,11 @@ const AddInventory = (props) => {
         }
     };
 
-    const debouncedSearch = useMemo(() => debounce((query) => {
+    const debouncedSearch = debounce((query) => {
         if (query && query.trim().length > 0) {
             getSocietyList(query);
         }
-    }, 500), []);
+    }, 500);
 
     const handleSearchSociety = (text) => {
         setSearchText(text);
@@ -407,7 +427,8 @@ const AddInventory = (props) => {
     const isAnyImageUploading = propertyImage.some(img => img.isUploading);
     const areAllImagesUploaded = propertyImage.length > 0 && propertyImage.every(img => !img.isUploading && img.uploadedData);
     const isAddFormValid = societyType && bhkType && furnishType && propertyType && propertySize && monthlyRent && areAllImagesUploaded;
-    const isUpdateFormValid = societyType && bhkType && furnishType && propertyType && propertySize && monthlyRent;
+    const notDeletedImages = propertyImage.filter((item) => !item?.uploadedData?.delete)
+    const isUpdateFormValid = societyType && bhkType && furnishType && propertyType && propertySize && monthlyRent && (notDeletedImages.length > 0 && areAllImagesUploaded);
 
     return (
         <SafeAreaView style={[styles.container]}>
@@ -418,16 +439,31 @@ const AddInventory = (props) => {
                 keyboardShouldPersistTaps="handled"
             >
                 <View style={styles.screenContainer}>
-                    <View style={styles.inputBox}>
-                        <Text style={styles.heading}>Society</Text>
+                    <View style={[styles.inputCol, { width: '96%' }]}>
+                        <Text style={styles.heading}>City*</Text>
+                        <Dropdown
+                            style={styles.selectContainer}
+                            data={CITIES}
+                            labelField="label"
+                            valueField="id"
+                            placeholder="Select City"
+                            value={city?.id}
+                            onChange={item => handleCity(item)}
+                            itemTextStyle={styles.itemTextStyle}
+                            placeholderStyle={styles.placeholderStyle}
+                            selectedTextStyle={styles.selectedTextStyle}
+                        />
+                    </View>
+                    <View style={[styles.inputBox, { marginTop: 20 }]}>
+                        <Text style={styles.heading}>Society*</Text>
                         <Pressable onPress={handleOpenPicker} style={styles.selectBox}>
-                            <Text style={[styles.selectTitle, { flex: 1 }]}>{societyType?.title ?? 'Select Society'}</Text>
+                            <Text style={[styles.selectTitle, { flex: 1 }]}>{societyType?.name ?? 'Select Society'}</Text>
                             <Image source={ArrowDownIcon} style={styles.icon} />
                         </Pressable>
                     </View>
                     <View style={styles.inputRow}>
                         <View style={styles.inputCol}>
-                            <Text style={styles.heading}>BHK Type</Text>
+                            <Text style={styles.heading}>BHK Type*</Text>
                             <Dropdown
                                 style={styles.selectContainer}
                                 data={PropertyBHKOptions}
@@ -442,7 +478,7 @@ const AddInventory = (props) => {
                             />
                         </View>
                         <View style={styles.inputCol}>
-                            <Text style={styles.heading}>Property Size</Text>
+                            <Text style={styles.heading}>Property Size (Sq. feet)*</Text>
                             <CustomTextInput
                                 placeholder="Enter Size"
                                 placeholderTextColor="#808191"
@@ -455,7 +491,7 @@ const AddInventory = (props) => {
                     </View>
                     <View style={styles.inputRow}>
                         <View style={styles.inputCol}>
-                            <Text style={styles.heading}>Furnishing Type</Text>
+                            <Text style={styles.heading}>Furnishing Type*</Text>
                             <Dropdown
                                 style={styles.selectContainer}
                                 data={PropertyFurnishOptions}
@@ -470,7 +506,7 @@ const AddInventory = (props) => {
                             />
                         </View>
                         <View style={styles.inputCol}>
-                            <Text style={styles.heading}>Available From</Text>
+                            <Text style={styles.heading}>Available From*</Text>
                             <Pressable onPress={() => handleAvailableDate()} style={styles.selectBox}>
                                 <Text style={styles.selectTitle}>{moment(startdate).format('DD/MM/YYYY')}</Text>
                             </Pressable>
@@ -491,7 +527,7 @@ const AddInventory = (props) => {
                     </View>
                     <View style={styles.inputRow}>
                         <View style={styles.inputCol}>
-                            <Text style={styles.heading}>Property Type</Text>
+                            <Text style={styles.heading}>Property Type*</Text>
                             <Dropdown
                                 style={styles.selectContainer}
                                 data={PropertyTypeOptions}
@@ -506,7 +542,7 @@ const AddInventory = (props) => {
                             />
                         </View>
                         <View style={styles.inputCol}>
-                            <Text style={styles.heading}>Key Available</Text>
+                            <Text style={styles.heading}>Key Available*</Text>
                             <View style={[styles.modeSwitchContainer,
                             {
                                 flexDirection: !isKeyAvailable ? 'row-reverse' : 'row',
@@ -530,7 +566,7 @@ const AddInventory = (props) => {
                         </View>
                     </View>
                     <View style={styles.inputBox}>
-                        <Text style={styles.heading}>Monthly Rent</Text>
+                        <Text style={styles.heading}>Monthly Rent*</Text>
                         <CustomTextInput
                             placeholder="Enter Monthly Rent"
                             placeholderTextColor="#808191"
@@ -541,10 +577,10 @@ const AddInventory = (props) => {
                         />
                     </View>
                     <View style={styles.inputBox}>
-                        <Text style={styles.heading}>Upload property Photo</Text>
+                        <Text style={styles.heading}>Upload property Photo*</Text>
                         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.propertyImageContainer}>
                             {propertyImage.map((item, originalIndex) => {
-                                if (item.uploadedData?.delete) {return null;}
+                                if (item.uploadedData?.delete) { return null; }
                                 return (
                                     <View key={originalIndex} style={styles.propertyImageBox}>
                                         <Pressable onPress={() => openModal(originalIndex)}>
@@ -732,6 +768,7 @@ export const styles = StyleSheet.create({
         borderColor: '#E8E8E8',
         borderRadius: 8,
         paddingLeft: 10,
+
     },
     itemTextStyle: {
         fontFamily: GlobalStyle.fontSet.Poppins500,

@@ -14,32 +14,31 @@ import { PaperProvider } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import RemotePushController from './services/RemotePushController';
 import { RootNavigator } from './navigation';
-import VersionFind from './util/VersionFind';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { PortalProvider } from '@gorhom/portal';
-
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 const App = () => {
-
-  useEffect(() => {
-    // VersionFind();
-  }, []);
-
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <PaperProvider>
-            <BottomSheetModalProvider>
-              <PortalProvider>
-                <RootNavigator />
-                <RemotePushController />
-                <Toast />
-              </PortalProvider>
-            </BottomSheetModalProvider>
-          </PaperProvider>
-        </PersistGate>
-      </Provider>
-    </GestureHandlerRootView>
+    <SafeAreaProvider>
+      <SafeAreaView style={{ flex: 1 }} edges={['bottom']}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+              <PaperProvider>
+                <PortalProvider>
+                  <BottomSheetModalProvider>
+                    <RootNavigator />
+                    <RemotePushController />
+                  </BottomSheetModalProvider>
+                  <Toast />
+                </PortalProvider>
+              </PaperProvider>
+            </PersistGate>
+          </Provider>
+        </GestureHandlerRootView>
+      </SafeAreaView>
+    </SafeAreaProvider>
+
   );
 };
 

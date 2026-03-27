@@ -1,4 +1,4 @@
-import {store} from '../store';
+import { store } from '../store';
 import moment from 'moment';
 
 export function getToken() {
@@ -174,6 +174,30 @@ export function getTime(date) {
 
 export function getFormatedDate(str) {
     return moment(str).format('MMM DD, YYYY');
+}
+
+export function isValidName(name) {
+    if (!name) {
+        return false
+    }
+    const regex = /^[A-Za-z]+$/;
+    return regex.test(name.trimEnd());
+}
+
+export function isValidEmail(email) {
+    if (!email) {
+        return false
+    }
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    return regex.test(email.trim());
+}
+
+export function isValidIndianMobile(mobile) {
+    if (!mobile) {
+        return false
+    }
+    const regex = /^[6-9]\d{9}$/;
+    return regex.test(mobile);
 }
 
 

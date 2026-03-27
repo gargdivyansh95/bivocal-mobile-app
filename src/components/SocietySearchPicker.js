@@ -8,7 +8,7 @@ import { IconButton } from 'react-native-paper';
 import BackIcon from 'react-native-vector-icons/AntDesign';
 import EmptyMessage from './EmptyMessage';
 
-export default function SocietySearchPicker({bottomSheetRef, societyList, searchText, isLoading, onSelectItem, onSearchSociety}) {
+export default function SocietySearchPicker({ bottomSheetRef, societyList, searchText, isLoading, onSelectItem, onSearchSociety }) {
 
     const snapPoints = useMemo(() => ['50%', '90%'], []);
 
@@ -37,10 +37,10 @@ export default function SocietySearchPicker({bottomSheetRef, societyList, search
     //     onSearchSociety(text);
     // };
 
-    const renderItem = ({item}) => {
+    const renderItem = ({ item }) => {
         return (
             <Pressable style={styles.option} onPress={() => onChangeItem(item)}>
-                <Text style={[styles.optionText, {color: '#000'}]}>{item.title}</Text>
+                <Text style={[styles.optionText, { color: '#000' }]}>{item.name}</Text>
             </Pressable>
         );
     };
@@ -56,10 +56,10 @@ export default function SocietySearchPicker({bottomSheetRef, societyList, search
             <View style={styles.sheetHeader}>
                 <IconButton
                     icon={() => <BackIcon
-                    name="arrowleft"
-                    size={24}
-                    color="#000"
-                />}
+                        name="arrowleft"
+                        size={24}
+                        color="#000"
+                    />}
                     size={20}
                     style={styles.closeIcon}
                     onPress={() => bottomSheetRef.current.close()}

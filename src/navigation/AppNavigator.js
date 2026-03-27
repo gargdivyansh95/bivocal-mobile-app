@@ -22,17 +22,17 @@ export default function AppNavigator() {
       screenOptions={({ route, navigation }) => ({
         tabBarStyle: {
           backgroundColor: '#fff',
-          height: 75,
-          borderTopWidth: 0.6,
-          paddingTop: 5,
-          elevation: 2,
-          shadowColor: '#000000',
-          shadowOffset: {
-            width: 0,
-            height: -1,
-          },
-          shadowOpacity: 0.1,
-          shadowRadius: 1,
+          //height: 75,
+          //borderTopWidth: 0.6,
+          //paddingTop: 5,
+          //elevation: 2,
+          //shadowColor: '#000000',
+          // shadowOffset: {
+          //   width: 0,
+          //   height: -1,
+          // },
+          // shadowOpacity: 0.1,
+          // shadowRadius: 1,
         },
         tabBarShowLabel: true,
         headerShown: false,
@@ -57,7 +57,7 @@ export default function AppNavigator() {
         tabBarLabelStyle: {
           fontSize: 12,
           fontFamily: GlobalStyle.fontSet.Poppins500,
-          marginBottom: 10,
+          // marginBottom: 10,
         },
       })}>
       <Tab.Screen

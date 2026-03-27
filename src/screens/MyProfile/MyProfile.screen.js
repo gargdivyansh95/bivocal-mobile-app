@@ -10,6 +10,7 @@ import { bindActionCreators } from '@reduxjs/toolkit';
 import Toast from 'react-native-toast-message';
 import { dashboardActions } from '../Dashboard/Dashboard.action';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { isValidEmail, isValidName } from '../../util/helpers';
 
 const MyProfileScreen = (props) => {
   const [userData, setUserData] = useState(null);
@@ -52,7 +53,21 @@ const MyProfileScreen = (props) => {
     );
   };
 
+  const isFormValid =
+    isValidName(fName) &&
+    (!lName || isValidName(lName)) &&
+    (!email || isValidEmail(email))
+
   const handleSubmit = () => {
+    if (!isFormValid) {
+      Toast.show({
+        type: 'error',
+        text1: 'Please enter required field.',
+        text2: '',
+      });
+
+      return
+    }
     Keyboard.dismiss();
     setLoading(true);
     let data = {
@@ -112,7 +127,7 @@ const MyProfileScreen = (props) => {
         </View>
         <Text style={styles.mainHeading}>Basic Info</Text>
         <View style={styles.inputBox}>
-          <Text style={styles.heading}>First Name</Text>
+          <Text style={styles.heading}>First Name*</Text>
           <CustomTextInput
             placeholder="First Name"
             placeholderTextColor="#848484"
@@ -154,11 +169,11 @@ const MyProfileScreen = (props) => {
           </Text>
         </View>
         <CustomButton
-          style={[styles.buttonStyle, styles.buttonActive]}
+          style={[styles.buttonStyle, isFormValid ? styles.buttonActive : styles.buttonInActive]}
           labelStyle={styles.actionTitle}
           title="Submit"
           mode="contained"
-          // disabled={loading ? true : false}
+          disabled={isFormValid ? false : true}
           onPress={() => handleSubmit()}
           loading={loading}
         />
