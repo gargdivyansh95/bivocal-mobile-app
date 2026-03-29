@@ -200,4 +200,13 @@ export function isValidIndianMobile(mobile) {
     return regex.test(mobile);
 }
 
+export function isNumber(value) {
+    return !isNaN(value) && value !== '';
+}
+
+export function isNonZeroNumber(value) {
+    const regex = /^[1-9]\d*$/;
+    return regex.test(value);
+}
+
 

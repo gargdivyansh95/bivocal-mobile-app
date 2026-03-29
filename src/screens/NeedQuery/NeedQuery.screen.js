@@ -196,7 +196,7 @@ const NeedQuery = (props) => {
           <CustomButton
             style={[styles.buttonStyle, isFormValid ? styles.buttonActive : styles.buttonInActive]}
             labelStyle={styles.actionTitle}
-            title="Submitt"
+            title="Submit"
             mode="contained"
             disabled={isFormValid ? false : true}
             onPress={() => handleSubmit()}

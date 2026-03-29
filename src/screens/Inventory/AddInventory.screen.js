@@ -24,6 +24,7 @@ import RightIcon from 'react-native-vector-icons/Entypo';
 import ArrowDownIcon from '../../assets/images/ArrowDown.png';
 import { debounce } from '../../util/debounce';
 import CITIES from '../../assets/city.json';
+import { isNonZeroNumber, isNumber } from '../../util/helpers';
 
 const { width, height } = Dimensions.get('window');
 const AddInventory = (props) => {
@@ -426,9 +427,9 @@ const AddInventory = (props) => {
 
     const isAnyImageUploading = propertyImage.some(img => img.isUploading);
     const areAllImagesUploaded = propertyImage.length > 0 && propertyImage.every(img => !img.isUploading && img.uploadedData);
-    const isAddFormValid = societyType && bhkType && furnishType && propertyType && propertySize && monthlyRent && areAllImagesUploaded;
+    const isAddFormValid = societyType && bhkType && furnishType && propertyType && isNonZeroNumber(propertySize) && isNonZeroNumber(monthlyRent) && areAllImagesUploaded;
     const notDeletedImages = propertyImage.filter((item) => !item?.uploadedData?.delete)
-    const isUpdateFormValid = societyType && bhkType && furnishType && propertyType && propertySize && monthlyRent && (notDeletedImages.length > 0 && areAllImagesUploaded);
+    const isUpdateFormValid = societyType && bhkType && furnishType && propertyType && isNonZeroNumber(propertySize) && isNonZeroNumber(monthlyRent) && (notDeletedImages.length > 0 && areAllImagesUploaded);
 
     return (
         <SafeAreaView style={[styles.container]}>

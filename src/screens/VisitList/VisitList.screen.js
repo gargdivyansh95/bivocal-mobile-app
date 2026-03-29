@@ -19,6 +19,7 @@ import { offersActions } from '../Offers/Offers.action';
 import { visitListActions } from './VisitList.action';
 import moment from 'moment';
 import { authActions } from '../Auth/Auth.action';
+import { IconButton } from 'react-native-paper';
 
 const PAGE_SIZE = 20;
 
@@ -38,21 +39,18 @@ const VisitList = props => {
 
   console.log(visitListState, 'visitListState');
 
-  React.useLayoutEffect(() => {
-    props.navigation.setOptions({
-      headerBackVisible: false,
-      headerRight: props => {
-        return (
-          <FilterIcon
-            name="filter"
-            size={28}
-            color="#000"
-            onPress={() => handleClickFilter()}
-          />
-        );
-      },
-    });
-  });
+  // React.useLayoutEffect(() => {
+  //   props.navigation.setOptions({
+  //     headerBackVisible: false,
+  //     headerRight: () => (
+  //       <IconButton
+  //         icon="filter"
+  //         iconColor='#000'
+  //         onPress={() => handleClickFilter()}
+  //       />
+  //     ),
+  //   });
+  // }, []); // ← runs only once on mount
 
   useEffect(() => {
     console.log('userProfile: ', props.userProfile);
@@ -67,6 +65,13 @@ const VisitList = props => {
     getUserDetail();
     // saveDeviceId()
   }, []);
+
+  useEffect(() => {
+    if (props.route.params?.filterPressed) {
+      handleClickFilter();
+    }
+  }, [props.route.params?.filterPressed]);
+
 
   // useEffect(() => {
   //   if (visitListState.notificationPayload) {
